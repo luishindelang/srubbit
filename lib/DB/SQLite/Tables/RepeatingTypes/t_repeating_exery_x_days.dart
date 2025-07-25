@@ -9,8 +9,8 @@ class TRepeatingEveryXDays {
   static String createTable() {
     return """
     CREATE TABLE IF NOT EXISTS $tableName (
-      $id TEXT PRIMARY KEY,
-      $templateId TEXT NOT NULL,
+      $id TEXT  PRIMARY KEY,
+      $templateId TEXT,
       $intervalDays INTEGER NOT NULL,
       FOREIGN KEY ($templateId) REFERENCES ${TRepeatingTemplates.tableName}(${TRepeatingTemplates.id})
     );

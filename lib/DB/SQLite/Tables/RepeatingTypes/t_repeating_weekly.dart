@@ -2,7 +2,6 @@ import 'package:scrubbit/DB/SQLite/Tables/t_repeating_templates.dart';
 
 class TRepeatingWeekly {
   static const String tableName = "repeating_weekly";
-
   static const String id = "id";
   static const String templateId = "template_id";
   static const String weekday = "weekday";
