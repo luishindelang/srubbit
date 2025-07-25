@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/DB/database_service.dart';
 
 void main() {
   runApp(const MyApp());
