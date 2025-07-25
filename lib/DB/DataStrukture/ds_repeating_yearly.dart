@@ -1,4 +1,4 @@
-import 'package:scrubbit/DB/SQLite/Tables/RepeatingTypes/t_repeating_yearly.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_repeating_yearly.dart';
 
 class DsRepeatingYearly {
   final String id;

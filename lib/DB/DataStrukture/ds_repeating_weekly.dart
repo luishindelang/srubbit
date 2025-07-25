@@ -1,4 +1,4 @@
-import 'package:scrubbit/DB/SQLite/Tables/RepeatingTypes/t_repeating_weekly.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_repeating_weekly.dart';
 
 class DsRepeatingWeekly {
   final String id;

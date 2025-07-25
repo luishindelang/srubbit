@@ -1,4 +1,4 @@
-import 'package:scrubbit/DB/SQLite/Tables/RepeatingTypes/t_repeating_monthly.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_repeating_monthly.dart';
 
 class DsRepeatingMonthly {
   final String id;

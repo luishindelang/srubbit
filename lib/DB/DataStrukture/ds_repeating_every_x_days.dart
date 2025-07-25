@@ -1,4 +1,4 @@
-import 'package:scrubbit/DB/SQLite/Tables/RepeatingTypes/t_repeating_exery_x_days.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_repeating_exery_x_days.dart';
 
 class DsRepeatingEveryXDays {
   final String id;

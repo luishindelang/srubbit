@@ -5,18 +5,18 @@ class DsRepeatingTemplates {
   final String name;
   final int startDateInt;
   final int completionWindowDays;
+  final String repeatType;
   final int? timeFromInt;
   final int? timeUntilInt;
-  final String repeatType;
 
   const DsRepeatingTemplates({
     required this.id,
     required this.name,
     required this.startDateInt,
     required this.completionWindowDays,
+    required this.repeatType,
     this.timeFromInt,
     this.timeUntilInt,
-    required this.repeatType,
   });
 
   factory DsRepeatingTemplates.fromMap(Map<String, dynamic> map) {
@@ -28,9 +28,9 @@ class DsRepeatingTemplates {
       startDateInt: map[TRepeatingTemplates.startDate] as int,
       completionWindowDays:
           map[TRepeatingTemplates.completionWindowDays] as int,
+      repeatType: map[TRepeatingTemplates.repeatType] as String,
       timeFromInt: toIntOrNull(map[TRepeatingTemplates.timeFrom]),
       timeUntilInt: toIntOrNull(map[TRepeatingTemplates.timeUntil]),
-      repeatType: map[TRepeatingTemplates.repeatType] as String,
     );
   }
 
@@ -40,18 +40,19 @@ class DsRepeatingTemplates {
       TRepeatingTemplates.name: name,
       TRepeatingTemplates.startDate: startDateInt,
       TRepeatingTemplates.completionWindowDays: completionWindowDays,
+      TRepeatingTemplates.repeatType: repeatType,
       TRepeatingTemplates.timeFrom: timeFromInt,
       TRepeatingTemplates.timeUntil: timeUntilInt,
-      TRepeatingTemplates.repeatType: repeatType,
     };
   }
 
-  DateTime get startDate =>
-      DateTime.fromMillisecondsSinceEpoch(startDateInt);
-  DateTime? get timeFrom => timeFromInt != null
-      ? DateTime.fromMillisecondsSinceEpoch(timeFromInt!)
-      : null;
-  DateTime? get timeUntil => timeUntilInt != null
-      ? DateTime.fromMillisecondsSinceEpoch(timeUntilInt!)
-      : null;
+  DateTime get startDate => DateTime.fromMillisecondsSinceEpoch(startDateInt);
+  DateTime? get timeFrom =>
+      timeFromInt != null
+          ? DateTime.fromMillisecondsSinceEpoch(timeFromInt!)
+          : null;
+  DateTime? get timeUntil =>
+      timeUntilInt != null
+          ? DateTime.fromMillisecondsSinceEpoch(timeUntilInt!)
+          : null;
 }
