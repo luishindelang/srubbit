@@ -2,13 +2,13 @@ import 'package:scrubbit/DB/SQLite/Tables/t_repeating_yearly.dart';
 
 class DsRepeatingYearly {
   final String id;
-  final String templateId;
+  final String repeatingTemplateId;
   final int month;
   final int day;
 
   const DsRepeatingYearly({
     required this.id,
-    required this.templateId,
+    required this.repeatingTemplateId,
     required this.month,
     required this.day,
   });
@@ -16,7 +16,7 @@ class DsRepeatingYearly {
   factory DsRepeatingYearly.fromMap(Map<String, dynamic> map) {
     return DsRepeatingYearly(
       id: map[TRepeatingYearly.id] as String,
-      templateId: map[TRepeatingYearly.templateId] as String,
+      repeatingTemplateId: map[TRepeatingYearly.repeatingTemplateId] as String,
       month: map[TRepeatingYearly.month] as int,
       day: map[TRepeatingYearly.day] as int,
     );
@@ -25,7 +25,7 @@ class DsRepeatingYearly {
   Map<String, dynamic> toMap() {
     return {
       TRepeatingYearly.id: id,
-      TRepeatingYearly.templateId: templateId,
+      TRepeatingYearly.repeatingTemplateId: repeatingTemplateId,
       TRepeatingYearly.month: month,
       TRepeatingYearly.day: day,
     };

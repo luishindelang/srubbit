@@ -5,22 +5,20 @@ class DsTasks {
   final String name;
   final int plannedDateInt;
   final int completionWindowDays;
+  final int offset;
   final int? timeFromInt;
   final int? timeUntilInt;
-  final int? doneDateInt;
-  final String? doneBy;
-  final String? templateId;
+  final String? repeatingTemplateId;
 
   const DsTasks({
     required this.id,
     required this.name,
     required this.plannedDateInt,
-    required this.completionWindowDays,
+    this.completionWindowDays = 0,
+    this.offset = 0,
     this.timeFromInt,
     this.timeUntilInt,
-    this.doneDateInt,
-    this.doneBy,
-    this.templateId,
+    this.repeatingTemplateId,
   });
 
   factory DsTasks.fromMap(Map<String, dynamic> map) {
@@ -32,11 +30,10 @@ class DsTasks {
       name: map[TTasks.name] as String,
       plannedDateInt: map[TTasks.plannedDate] as int,
       completionWindowDays: map[TTasks.completionWindowDays] as int,
+      offset: map[TTasks.offset] as int,
       timeFromInt: toIntOrNull(map[TTasks.timeFrom]),
       timeUntilInt: toIntOrNull(map[TTasks.timeUntil]),
-      doneDateInt: toIntOrNull(map[TTasks.doneDate]),
-      doneBy: toStringOrNull(map[TTasks.doneBy]),
-      templateId: toStringOrNull(map[TTasks.templateId]),
+      repeatingTemplateId: toStringOrNull(map[TTasks.repeatingTemplateId]),
     );
   }
 
@@ -48,13 +45,11 @@ class DsTasks {
       TTasks.completionWindowDays: completionWindowDays,
       TTasks.timeFrom: timeFromInt,
       TTasks.timeUntil: timeUntilInt,
-      TTasks.doneDate: doneDateInt,
-      TTasks.doneBy: doneBy,
-      TTasks.templateId: templateId,
+      TTasks.repeatingTemplateId: repeatingTemplateId,
     };
   }
 
-  bool get isDone => doneDateInt != null && doneBy != null;
+  bool get isDone => repeatingTemplateId != null;
 
   DateTime get plannedDate =>
       DateTime.fromMillisecondsSinceEpoch(plannedDateInt);
@@ -65,9 +60,5 @@ class DsTasks {
   DateTime? get timeUntil =>
       timeUntilInt != null
           ? DateTime.fromMillisecondsSinceEpoch(timeUntilInt!)
-          : null;
-  DateTime? get doneDate =>
-      doneDateInt != null
-          ? DateTime.fromMillisecondsSinceEpoch(doneDateInt!)
           : null;
 }
