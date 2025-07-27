@@ -1,28 +1,28 @@
-class DsRepeatingTemplates<T> {
+class DsRepeatingTemplates {
   final String id;
   final String repeatingType;
-  final T repeatingData;
+  final int repeatingAmount;
   final DateTime startDateInt;
   final DateTime? endDateInt;
 
   const DsRepeatingTemplates({
     required this.id,
     required this.repeatingType,
-    required this.repeatingData,
+    required this.repeatingAmount,
     required this.startDateInt,
     this.endDateInt,
   });
 
   DsRepeatingTemplates copyWith({
     String? newRepeatingType,
-    T? newRepeatingData,
+    int? newRepeatingAmount,
     DateTime? newStartDate,
     DateTime? newEndDate,
   }) {
     return DsRepeatingTemplates(
       id: id,
       repeatingType: newRepeatingType ?? repeatingType,
-      repeatingData: newRepeatingData ?? repeatingData,
+      repeatingAmount: newRepeatingAmount ?? repeatingAmount,
       startDateInt: newStartDate ?? startDateInt,
       endDateInt: newEndDate ?? endDateInt,
     );
