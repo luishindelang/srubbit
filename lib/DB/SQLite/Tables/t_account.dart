@@ -1,5 +1,5 @@
-class TAccounts {
-  static const String tableName = "accounts";
+class TAccount {
+  static const String tableName = "account";
   static const String id = "accout_id";
   static const String name = "name";
   static const String color = "farbe";
@@ -13,7 +13,7 @@ class TAccounts {
       $name TEXT NOT NULL,
       $color INTEGER NOT NULL,
       $iconCode INTEGER NOT NULL,
-      $iconFamily TEXT NOT NULL
+      $iconFamily TEXT
     );
     """;
   }
