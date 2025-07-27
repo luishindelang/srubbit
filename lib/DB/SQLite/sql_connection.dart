@@ -1,6 +1,4 @@
 import 'package:path/path.dart';
-import 'package:scrubbit/DB/SQLite/Tables/t_accounts.dart';
-import 'package:scrubbit/DB/SQLite/Tables/t_tasks.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SqlConnection {
@@ -36,13 +34,7 @@ class SqlConnection {
     await createTables(db);
   }
 
-  static Future<void> createTables(Database db) async {
-    await db.execute(TAccounts.createTable());
-    await db.execute(TTasks.createTable());
-  }
+  static Future<void> createTables(Database db) async {}
 
-  static Future<void> deleteTables(Database db) async {
-    await db.execute(TAccounts.deleteTable());
-    await db.execute(TTasks.deleteTable());
-  }
+  static Future<void> deleteTables(Database db) async {}
 }
