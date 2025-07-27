@@ -1,9 +1,11 @@
 <diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>405</x><y>108</y><w>234</w><h>27</h></coordinates><panel_attributes>Task
 
-group=group-0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>135</y><w>144</w><h>144</h></coordinates><panel_attributes>--
+group=group-0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>135</y><w>144</w><h>162</h></coordinates><panel_attributes>--
 task_id
 --
 name
+--
+on_every_date
 --
 offset_date
 --
@@ -16,10 +18,12 @@ task_owner_id
 repeating_template_id
 
 
-group=group-0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>135</y><w>90</w><h>144</h></coordinates><panel_attributes>--
+group=group-0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>135</y><w>90</w><h>162</h></coordinates><panel_attributes>--
 String PK
 --
 String NN
+--
+int NN
 --
 int
 --
@@ -76,20 +80,24 @@ done_date
 
 group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>144</x><y>270</y><w>234</w><h>27</h></coordinates><panel_attributes>TaskDoneByAccount
 
-group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>810</x><y>135</y><w>90</w><h>90</h></coordinates><panel_attributes>--
+group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>810</x><y>135</y><w>90</w><h>108</h></coordinates><panel_attributes>--
 String PK
 --
 String NN
 --
 int NN
 --
+int NN
+--
 int
 
 
-group=group-3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>666</x><y>135</y><w>144</w><h>90</h></coordinates><panel_attributes>--
+group=group-3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>666</x><y>135</y><w>144</w><h>108</h></coordinates><panel_attributes>--
 repeating_template_id
 --
-repating_type
+repeating_type
+--
+repeating_amount
 --
 start_date
 --
@@ -98,35 +106,35 @@ end_date
 
 group=group-3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>666</x><y>108</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingTemplate
 
-group=group-3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1071</x><y>135</y><w>90</w><h>54</h></coordinates><panel_attributes>--
+group=group-3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1485</x><y>558</y><w>90</w><h>54</h></coordinates><panel_attributes>--
 String PK FK
 --
 int NN
 
 
-group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>135</y><w>144</w><h>54</h></coordinates><panel_attributes>--
+group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1341</x><y>558</y><w>144</w><h>54</h></coordinates><panel_attributes>--
 repeating_template_id
 --
 weekday
 
 
-group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>108</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingWeekly
+group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1341</x><y>531</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingWeekly
 
-group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1071</x><y>243</y><w>90</w><h>54</h></coordinates><panel_attributes>--
+group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1485</x><y>666</y><w>90</w><h>54</h></coordinates><panel_attributes>--
 String PK FK
 --
 int NN
 
 
-group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>243</y><w>144</w><h>54</h></coordinates><panel_attributes>--
+group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1341</x><y>666</y><w>144</w><h>54</h></coordinates><panel_attributes>--
 repeating_template_id
 --
 monthday
 
 
-group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>216</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingMonthly
+group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1341</x><y>639</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingMonthly
 
-group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1071</x><y>351</y><w>90</w><h>72</h></coordinates><panel_attributes>--
+group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1485</x><y>774</y><w>90</w><h>72</h></coordinates><panel_attributes>--
 String PK FK
 --
 int NN
@@ -134,7 +142,7 @@ int NN
 int NN
 
 
-group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>351</y><w>144</w><h>72</h></coordinates><panel_attributes>--
+group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1341</x><y>774</y><w>144</w><h>72</h></coordinates><panel_attributes>--
 repeating_template_id
 --
 month
@@ -142,9 +150,9 @@ month
 day
 
 
-group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>324</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingYearly
+group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1341</x><y>747</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingYearly
 
-group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1071</x><y>477</y><w>90</w><h>72</h></coordinates><panel_attributes>--
+group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1485</x><y>900</y><w>90</w><h>72</h></coordinates><panel_attributes>--
 String PK FK
 --
 String NN
@@ -152,7 +160,7 @@ String NN
 int NN
 
 
-group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>477</y><w>144</w><h>72</h></coordinates><panel_attributes>--
+group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1341</x><y>900</y><w>144</w><h>72</h></coordinates><panel_attributes>--
 repeating_template_id
 --
 unit
@@ -160,9 +168,9 @@ unit
 amount
 
 
-group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>450</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingEverXIntervall
+group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1341</x><y>873</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingEverXIntervall
 
-group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>333</y><w>144</w><h>90</h></coordinates><panel_attributes>--
+group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>351</y><w>144</w><h>90</h></coordinates><panel_attributes>--
 task_date_id
 --
 planned_date
@@ -171,7 +179,7 @@ completion_window
 --
 task_id
 
-group=group-8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>333</y><w>90</w><h>90</h></coordinates><panel_attributes>--
+group=group-8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>351</y><w>90</w><h>90</h></coordinates><panel_attributes>--
 String PK
 --
 int NN
@@ -181,6 +189,6 @@ int NN D=0
 String NN FK
 
 
-group=group-8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>306</y><w>234</w><h>27</h></coordinates><panel_attributes>TaskDate
+group=group-8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>324</y><w>234</w><h>27</h></coordinates><panel_attributes>TaskDate
 
 group=group-8</panel_attributes><additional_attributes></additional_attributes></element></diagram>

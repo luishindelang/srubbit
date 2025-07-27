@@ -5,6 +5,7 @@ class TTask {
   static const String tableName = "task";
   static const String id = "task_id";
   static const String name = "name";
+  static const String onEveryDate = "on_every_date";
   static const String offsetDate = "offset_date";
   static const String timeFrom = "time_from";
   static const String timeUntil = "time_until";
@@ -16,6 +17,7 @@ class TTask {
     CREATE TEABLE IF NOT EXISTS $tableName (
       $id TEXT PRIMERY KEY,
       $name TEXT NOT NULL,
+      $onEveryDate INTEGER NOT NULL,
       $offsetDate INTEGER,
       $timeFrom INTEGER,
       $timeUntil INTEGER,
