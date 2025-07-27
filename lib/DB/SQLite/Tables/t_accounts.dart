@@ -1,6 +1,6 @@
 class TAccounts {
   static const String tableName = "accounts";
-  static const String id = "id";
+  static const String id = "accout_id";
   static const String name = "name";
   static const String color = "farbe";
   static const String iconCode = "icon_code";

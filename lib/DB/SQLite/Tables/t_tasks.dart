@@ -2,7 +2,7 @@ import 'package:scrubbit/DB/SQLite/Tables/t_repeating_templates.dart';
 
 class TTasks {
   static const String tableName = "tasks";
-  static const String id = "id";
+  static const String id = "task_id";
   static const String name = "name";
   static const String plannedDate = "planned_date";
   static const String completionWindowDays = "completion_window_days";
@@ -22,7 +22,7 @@ class TTasks {
       $timeFrom INTEGER,
       $timeUntil INTEGER,
       $repeatingTemplateId TEXT,
-      FOREIGN KEY ($repeatingTemplateId) REFERENCES ${TRepeatingTemplates.tableName}(${TRepeatingTemplates.id})
+      FOREIGN KEY ($repeatingTemplateId) REFERENCES ${TRepeatingTemplates.tableName}(${TRepeatingTemplates.id}) ON DELETE SET NULL
     );
     """;
   }

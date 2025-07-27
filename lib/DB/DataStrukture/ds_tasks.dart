@@ -1,3 +1,4 @@
+import 'package:scrubbit/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_tasks.dart';
 
 class DsTasks {
@@ -21,7 +22,10 @@ class DsTasks {
     this.repeatingTemplateId,
   });
 
-  factory DsTasks.fromMap(Map<String, dynamic> map) {
+  factory DsTasks.fromMap(
+    Map<String, dynamic> map,
+    DsRepeatingTemplates repeatingTemplate,
+  ) {
     int? toIntOrNull(dynamic value) => value is int ? value : null;
     String? toStringOrNull(dynamic value) => value is String ? value : null;
 

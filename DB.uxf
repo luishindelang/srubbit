@@ -106,17 +106,13 @@ end_date
 
 group=group-3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>765</x><y>162</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingTemplates
 
-group=group-3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>189</y><w>90</w><h>72</h></coordinates><panel_attributes>--
-String PK
---
-String NN FK
+group=group-3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>189</y><w>90</w><h>54</h></coordinates><panel_attributes>--
+String PK FK
 --
 int NN
 
 
-group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>189</y><w>144</w><h>72</h></coordinates><panel_attributes>--
-id
---
+group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>189</y><w>144</w><h>54</h></coordinates><panel_attributes>--
 repeating_template_id
 --
 weekday
@@ -124,17 +120,13 @@ weekday
 
 group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>162</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingWeekly
 
-group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>315</y><w>90</w><h>72</h></coordinates><panel_attributes>--
-String PK
---
-String NN FK
+group=group-4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>315</y><w>90</w><h>54</h></coordinates><panel_attributes>--
+String PK FK
 --
 int NN
 
 
-group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>315</y><w>144</w><h>72</h></coordinates><panel_attributes>--
-id
---
+group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>315</y><w>144</w><h>54</h></coordinates><panel_attributes>--
 repeating_template_id
 --
 monthday
@@ -142,19 +134,15 @@ monthday
 
 group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>288</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingMonthly
 
-group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>441</y><w>90</w><h>90</h></coordinates><panel_attributes>--
-String PK
---
-String NN FK
+group=group-5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>423</y><w>90</w><h>72</h></coordinates><panel_attributes>--
+String PK FK
 --
 int NN
 --
 int NN
 
 
-group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>441</y><w>144</w><h>90</h></coordinates><panel_attributes>--
-id
---
+group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>423</y><w>144</w><h>72</h></coordinates><panel_attributes>--
 repeating_template_id
 --
 month
@@ -162,21 +150,17 @@ month
 day
 
 
-group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>414</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingYearly
+group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>396</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingYearly
 
-group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>585</y><w>90</w><h>90</h></coordinates><panel_attributes>--
-String PK
---
-String NN FK
+group=group-6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1170</x><y>549</y><w>90</w><h>72</h></coordinates><panel_attributes>--
+String PK FK
 --
 String NN
 --
 int NN
 
 
-group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>585</y><w>144</w><h>90</h></coordinates><panel_attributes>--
-id
---
+group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>549</y><w>144</w><h>72</h></coordinates><panel_attributes>--
 repeating_template_id
 --
 type
@@ -184,6 +168,6 @@ type
 ammount
 
 
-group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>558</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingEverXIntervall
+group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1026</x><y>522</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingEverXIntervall
 
 group=group-7</panel_attributes><additional_attributes></additional_attributes></element></diagram>

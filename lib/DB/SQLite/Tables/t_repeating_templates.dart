@@ -1,6 +1,6 @@
 class TRepeatingTemplates {
   static const String tableName = "repeating_templates";
-  static const String id = "id";
+  static const String id = "repeating_templates_id";
   static const String repeatingType = "repeating_type";
   static const String startDate = "start_date";
   static const String endDate = "end_date";

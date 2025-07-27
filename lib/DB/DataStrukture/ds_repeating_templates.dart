@@ -16,9 +16,12 @@ class DsRepeatingTemplates {
   factory DsRepeatingTemplates.fromMap(Map<String, dynamic> map) {
     int? toIntOrNull(dynamic value) => value is int ? value : null;
 
+    final repeatingTypeFromMap =
+        map[TRepeatingTemplates.repeatingType] as String;
+
     return DsRepeatingTemplates(
       id: map[TRepeatingTemplates.id] as String,
-      repeatingType: map[TRepeatingTemplates.repeatingType] as String,
+      repeatingType: repeatingTypeFromMap,
       startDateInt: map[TRepeatingTemplates.startDate] as int,
       endDateInt: toIntOrNull(map[TRepeatingTemplates.endDate]),
     );
