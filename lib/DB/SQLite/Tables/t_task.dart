@@ -5,8 +5,6 @@ class TTask {
   static const String tableName = "task";
   static const String id = "task_id";
   static const String name = "name";
-  static const String plannedDate = "planned_date";
-  static const String completionWindow = "completion_window";
   static const String offsetDate = "offset_date";
   static const String timeFrom = "time_from";
   static const String timeUntil = "time_until";
@@ -18,8 +16,6 @@ class TTask {
     CREATE TEABLE IF NOT EXISTS $tableName (
       $id TEXT PRIMERY KEY,
       $name TEXT NOT NULL,
-      $plannedDate INTEGER NOT NULL,
-      $completionWindow INTEGER NOT NULL DEFAULT 0,
       $offsetDate INTEGER,
       $timeFrom INTEGER,
       $timeUntil INTEGER,

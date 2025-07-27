@@ -1,13 +1,9 @@
 <diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>405</x><y>108</y><w>234</w><h>27</h></coordinates><panel_attributes>Task
 
-group=group-0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>135</y><w>144</w><h>180</h></coordinates><panel_attributes>--
+group=group-0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>135</y><w>144</w><h>144</h></coordinates><panel_attributes>--
 task_id
 --
 name
---
-planned_date
---
-completion_window
 --
 offset_date
 --
@@ -20,14 +16,10 @@ task_owner_id
 repeating_template_id
 
 
-group=group-0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>135</y><w>90</w><h>180</h></coordinates><panel_attributes>--
+group=group-0</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>135</y><w>90</w><h>144</h></coordinates><panel_attributes>--
 String PK
 --
 String NN
---
-int NN
---
-int NN D=0
 --
 int
 --
@@ -170,4 +162,25 @@ amount
 
 group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>450</y><w>234</w><h>27</h></coordinates><panel_attributes>RepeatingEverXIntervall
 
-group=group-7</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+group=group-7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>333</y><w>144</w><h>90</h></coordinates><panel_attributes>--
+task_date_id
+--
+planned_date
+--
+completion_window
+--
+task_id
+
+group=group-8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>333</y><w>90</w><h>90</h></coordinates><panel_attributes>--
+String PK
+--
+int NN
+--
+int NN D=0
+--
+String NN FK
+
+
+group=group-8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>405</x><y>306</y><w>234</w><h>27</h></coordinates><panel_attributes>TaskDate
+
+group=group-8</panel_attributes><additional_attributes></additional_attributes></element></diagram>
