@@ -1,44 +1,30 @@
-import 'package:scrubbit/DB/SQLite/Tables/t_repeating_templates.dart';
-
-class DsRepeatingTemplates {
+class DsRepeatingTemplates<T> {
   final String id;
   final String repeatingType;
-  final int startDateInt;
-  final int? endDateInt;
+  final T repeatingData;
+  final DateTime startDateInt;
+  final DateTime? endDateInt;
 
   const DsRepeatingTemplates({
     required this.id,
     required this.repeatingType,
+    required this.repeatingData,
     required this.startDateInt,
     this.endDateInt,
   });
 
-  factory DsRepeatingTemplates.fromMap(Map<String, dynamic> map) {
-    int? toIntOrNull(dynamic value) => value is int ? value : null;
-
-    final repeatingTypeFromMap =
-        map[TRepeatingTemplates.repeatingType] as String;
-
+  DsRepeatingTemplates copyWith({
+    String? newRepeatingType,
+    T? newRepeatingData,
+    DateTime? newStartDate,
+    DateTime? newEndDate,
+  }) {
     return DsRepeatingTemplates(
-      id: map[TRepeatingTemplates.id] as String,
-      repeatingType: repeatingTypeFromMap,
-      startDateInt: map[TRepeatingTemplates.startDate] as int,
-      endDateInt: toIntOrNull(map[TRepeatingTemplates.endDate]),
+      id: id,
+      repeatingType: newRepeatingType ?? repeatingType,
+      repeatingData: newRepeatingData ?? repeatingData,
+      startDateInt: newStartDate ?? startDateInt,
+      endDateInt: newEndDate ?? endDateInt,
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      TRepeatingTemplates.id: id,
-      TRepeatingTemplates.repeatingType: repeatingType,
-      TRepeatingTemplates.startDate: startDateInt,
-      TRepeatingTemplates.endDate: endDateInt,
-    };
-  }
-
-  DateTime get startDate => DateTime.fromMillisecondsSinceEpoch(startDateInt);
-  DateTime? get endDate =>
-      endDateInt != null
-          ? DateTime.fromMillisecondsSinceEpoch(endDateInt!)
-          : null;
 }

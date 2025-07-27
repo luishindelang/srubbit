@@ -1,5 +1,3 @@
-import 'package:scrubbit/DB/SQLite/Tables/t_repeating_weekly.dart';
-
 class DsRepeatingWeekly {
   final String repeatingTemplateId;
   final int weekday;
@@ -9,17 +7,10 @@ class DsRepeatingWeekly {
     required this.weekday,
   });
 
-  factory DsRepeatingWeekly.fromMap(Map<String, dynamic> map) {
+  DsRepeatingWeekly copyWith({int? newWeekday}) {
     return DsRepeatingWeekly(
-      repeatingTemplateId: map[TRepeatingWeekly.repeatingTemplateId] as String,
-      weekday: map[TRepeatingWeekly.weekday] as int,
+      repeatingTemplateId: repeatingTemplateId,
+      weekday: newWeekday ?? weekday,
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      TRepeatingWeekly.repeatingTemplateId: repeatingTemplateId,
-      TRepeatingWeekly.weekday: weekday,
-    };
   }
 }

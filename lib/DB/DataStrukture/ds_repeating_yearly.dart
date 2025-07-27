@@ -1,5 +1,3 @@
-import 'package:scrubbit/DB/SQLite/Tables/t_repeating_yearly.dart';
-
 class DsRepeatingYearly {
   final String repeatingTemplateId;
   final int month;
@@ -11,19 +9,11 @@ class DsRepeatingYearly {
     required this.day,
   });
 
-  factory DsRepeatingYearly.fromMap(Map<String, dynamic> map) {
+  DsRepeatingYearly copyWith({int? newMonth, int? newDay}) {
     return DsRepeatingYearly(
-      repeatingTemplateId: map[TRepeatingYearly.repeatingTemplateId] as String,
-      month: map[TRepeatingYearly.month] as int,
-      day: map[TRepeatingYearly.day] as int,
+      repeatingTemplateId: repeatingTemplateId,
+      month: newMonth ?? month,
+      day: newDay ?? day,
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      TRepeatingYearly.repeatingTemplateId: repeatingTemplateId,
-      TRepeatingYearly.month: month,
-      TRepeatingYearly.day: day,
-    };
   }
 }

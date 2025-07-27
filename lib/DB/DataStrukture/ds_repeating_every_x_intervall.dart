@@ -1,30 +1,22 @@
-import 'package:scrubbit/DB/SQLite/Tables/t_repeating_exery_x_intervall.dart';
-
 class DsRepeatingEveryXInterall {
   final String repeatingTemplateId;
-  final String intervalType;
+  final String intervalUnit;
   final int intervalAmount;
 
   const DsRepeatingEveryXInterall({
     required this.repeatingTemplateId,
-    required this.intervalType,
+    required this.intervalUnit,
     required this.intervalAmount,
   });
 
-  factory DsRepeatingEveryXInterall.fromMap(Map<String, dynamic> map) {
+  DsRepeatingEveryXInterall copyWith({
+    String? newIntervalUnit,
+    int? newIntervalAmount,
+  }) {
     return DsRepeatingEveryXInterall(
-      repeatingTemplateId:
-          map[TRepeatingEveryXIntervall.repeatingTemplateId] as String,
-      intervalType: map[TRepeatingEveryXIntervall.intervallType] as String,
-      intervalAmount: map[TRepeatingEveryXIntervall.intervallAmount] as int,
+      repeatingTemplateId: repeatingTemplateId,
+      intervalUnit: newIntervalUnit ?? intervalUnit,
+      intervalAmount: newIntervalAmount ?? intervalAmount,
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      TRepeatingEveryXIntervall.repeatingTemplateId: repeatingTemplateId,
-      TRepeatingEveryXIntervall.intervallType: intervalType,
-      TRepeatingEveryXIntervall.intervallAmount: intervalAmount,
-    };
   }
 }
