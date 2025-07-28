@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:scrubbit/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_account.dart';
 import 'package:sqflite/sqflite.dart';
@@ -50,5 +49,4 @@ class DaoAccount extends MappingAccount {
       whereArgs: [id],
     );
   }
-
 }
