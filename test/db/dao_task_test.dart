@@ -25,7 +25,7 @@ void main() {
   DsRepeatingTemplates buildTemplate() {
     return DsRepeatingTemplates(
       repeatingType: TRepeatingTemplates.daily,
-      repeatingAmount: 1,
+      repeatingIntervall: 1,
       startDateInt: DateTime.utc(2024, 1, 1),
       endDateInt: null,
     );

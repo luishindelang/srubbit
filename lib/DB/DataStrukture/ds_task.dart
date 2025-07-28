@@ -61,52 +61,52 @@ class DsTask {
   }
 
   DsTask? nextRepeatingTask() {
-    if (repeatingTemplate != null) {
-      List<DsTaskDate> newTaskDates = [];
-      for (var date in taskDates) {
-        DateTime newPlannedDate;
+    if (repeatingTemplate != null) return null;
+    if (repeatingTemplate!.repeatingCount == 0) return null;
 
-        if (repeatingTemplate!.repeatingType == TRepeatingTemplates.daily) {
-          newPlannedDate = DateTime(
-            date.plannedDate.year,
-            date.plannedDate.month,
-            date.plannedDate.day + repeatingTemplate!.repeatingAmount,
-          );
-        } else if (repeatingTemplate!.repeatingType ==
-            TRepeatingTemplates.weekly) {
-          newPlannedDate = DateTime(
-            date.plannedDate.year,
-            date.plannedDate.month,
-            date.plannedDate.day + (7 * repeatingTemplate!.repeatingAmount),
-          );
-        } else if (repeatingTemplate!.repeatingType ==
-            TRepeatingTemplates.monthly) {
-          newPlannedDate = DateTime(
-            date.plannedDate.year,
-            date.plannedDate.month + repeatingTemplate!.repeatingAmount,
-            date.plannedDate.day,
-          );
-        } else {
-          newPlannedDate = DateTime(
-            date.plannedDate.year + repeatingTemplate!.repeatingAmount,
-            date.plannedDate.month,
-            date.plannedDate.day,
-          );
-        }
+    List<DsTaskDate> newTaskDates = [];
+    for (var date in taskDates) {
+      DateTime newPlannedDate;
 
-        DsTaskDate newDate = date.copyWith(newPlannedDate: newPlannedDate);
-        newTaskDates.add(newDate);
+      if (repeatingTemplate!.repeatingType == TRepeatingTemplates.daily) {
+        newPlannedDate = DateTime(
+          date.plannedDate.year,
+          date.plannedDate.month,
+          date.plannedDate.day + repeatingTemplate!.repeatingIntervall,
+        );
+      } else if (repeatingTemplate!.repeatingType ==
+          TRepeatingTemplates.weekly) {
+        newPlannedDate = DateTime(
+          date.plannedDate.year,
+          date.plannedDate.month,
+          date.plannedDate.day + (7 * repeatingTemplate!.repeatingIntervall),
+        );
+      } else if (repeatingTemplate!.repeatingType ==
+          TRepeatingTemplates.monthly) {
+        newPlannedDate = DateTime(
+          date.plannedDate.year,
+          date.plannedDate.month + repeatingTemplate!.repeatingIntervall,
+          date.plannedDate.day,
+        );
+      } else {
+        newPlannedDate = DateTime(
+          date.plannedDate.year + repeatingTemplate!.repeatingIntervall,
+          date.plannedDate.month,
+          date.plannedDate.day,
+        );
       }
-      return DsTask(
-        id: id,
-        name: name,
-        onEveryDate: onEveryDate,
-        taskDates: newTaskDates,
-        offsetDate: offsetDate,
-        timeFrom: timeFrom,
-        timeUntil: timeUntil,
-      );
+
+      DsTaskDate newDate = date.copyWith(newPlannedDate: newPlannedDate);
+      newTaskDates.add(newDate);
     }
-    return null;
+    return DsTask(
+      id: id,
+      name: name,
+      onEveryDate: onEveryDate,
+      taskDates: newTaskDates,
+      offsetDate: offsetDate,
+      timeFrom: timeFrom,
+      timeUntil: timeUntil,
+    );
   }
 }

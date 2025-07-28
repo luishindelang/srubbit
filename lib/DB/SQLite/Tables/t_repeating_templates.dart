@@ -2,7 +2,8 @@ class TRepeatingTemplates {
   static const String tableName = "repeating_templates";
   static const String id = "repeating_templates_id";
   static const String repeatingType = "repeating_type";
-  static const String repeatingAmount = "repeating_amount";
+  static const String repeatingIntervall = "repeating_intervall";
+  static const String repeatingCount = "repeating_count";
   static const String startDate = "start_date";
   static const String endDate = "end_date";
 
@@ -13,7 +14,8 @@ class TRepeatingTemplates {
       $repeatingType TEXT NOT NULL CHECK (
         $repeatingType IN ('$daily','$weekly', '$monthly', '$yearly')
       ),
-      $repeatingAmount INTEGER NOT NULL,
+      $repeatingIntervall INTEGER NOT NULL,
+      $repeatingCount INTEGER,
       $startDate INTEGER NOT NULL,
       $endDate INTEGER
     );

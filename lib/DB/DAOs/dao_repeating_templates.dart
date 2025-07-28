@@ -55,15 +55,17 @@ class DaoRepeatingTemplates {
     return DsRepeatingTemplates(
       id: rawData[TRepeatingTemplates.id],
       repeatingType: rawData[TRepeatingTemplates.repeatingType],
-      repeatingAmount: rawData[TRepeatingTemplates.repeatingAmount],
+      repeatingIntervall: rawData[TRepeatingTemplates.repeatingIntervall],
+      repeatingCount: rawData[TRepeatingTemplates.repeatingCount],
       startDateInt: DateTime.fromMillisecondsSinceEpoch(
         rawData[TRepeatingTemplates.startDate],
       ),
-      endDateInt: rawData[TRepeatingTemplates.endDate] != null
-          ? DateTime.fromMillisecondsSinceEpoch(
-              rawData[TRepeatingTemplates.endDate],
-            )
-          : null,
+      endDateInt:
+          rawData[TRepeatingTemplates.endDate] != null
+              ? DateTime.fromMillisecondsSinceEpoch(
+                rawData[TRepeatingTemplates.endDate],
+              )
+              : null,
     );
   }
 
@@ -75,11 +77,11 @@ class DaoRepeatingTemplates {
     return {
       TRepeatingTemplates.id: template.id,
       TRepeatingTemplates.repeatingType: template.repeatingType,
-      TRepeatingTemplates.repeatingAmount: template.repeatingAmount,
+      TRepeatingTemplates.repeatingIntervall: template.repeatingIntervall,
+      TRepeatingTemplates.repeatingCount: template.repeatingCount,
       TRepeatingTemplates.startDate:
           template.startDateInt.millisecondsSinceEpoch,
-      TRepeatingTemplates.endDate:
-          template.endDateInt?.millisecondsSinceEpoch,
+      TRepeatingTemplates.endDate: template.endDateInt?.millisecondsSinceEpoch,
     };
   }
 }

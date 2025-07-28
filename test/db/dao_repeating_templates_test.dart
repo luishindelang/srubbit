@@ -24,7 +24,7 @@ void main() {
   DsRepeatingTemplates buildTemplate() {
     return DsRepeatingTemplates(
       repeatingType: TRepeatingTemplates.weekly,
-      repeatingAmount: 1,
+      repeatingIntervall: 1,
       startDateInt: DateTime.utc(2024, 1, 1),
       endDateInt: null,
     );
@@ -42,11 +42,11 @@ void main() {
     final template = buildTemplate();
     await dao.insert(template);
 
-    final updated = template.copyWith(newRepeatingAmount: 3);
+    final updated = template.copyWith(newRepeatingIntervall: 3);
     await dao.update(updated);
 
     final fetched = await dao.get(template.id);
-    expect(fetched!.repeatingAmount, 3);
+    expect(fetched!.repeatingIntervall, 3);
   });
 
   test('getAll lists all templates', () async {
