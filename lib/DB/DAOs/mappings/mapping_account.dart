@@ -24,7 +24,7 @@ class MappingAccount {
     return {
       TAccount.id: account.id,
       TAccount.name: account.name,
-      TAccount.color: account.color.toARGB32(),
+      TAccount.color: account.color.value,
       TAccount.iconCode: account.icon.codePoint,
       TAccount.iconFamily: account.icon.fontFamily,
     };

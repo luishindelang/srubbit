@@ -41,7 +41,7 @@ class DsTask {
     DateTime? newOffsetDate,
     DateTime? newTimeFrom,
     DateTime? newTimeUntil,
-    String? newRepeatingTemplate,
+    DsRepeatingTemplates? newRepeatingTemplate,
     DsAccount? newTaskOwned,
     DateTime? newDoneDate,
     List<DsAccount>? newDoneBy,
@@ -53,7 +53,8 @@ class DsTask {
       taskDates: newTaskDates ?? taskDates,
       offsetDate: newOffsetDate ?? offsetDate,
       timeFrom: newTimeFrom ?? timeFrom,
-      timeUntil: newTimeFrom ?? timeUntil,
+      timeUntil: newTimeUntil ?? timeUntil,
+      repeatingTemplate: newRepeatingTemplate ?? repeatingTemplate,
       taskOwned: newTaskOwned ?? taskOwned,
       doneDate: newDoneDate ?? doneDate,
       doneBy: newDoneBy ?? doneBy,
@@ -61,7 +62,7 @@ class DsTask {
   }
 
   DsTask? nextRepeatingTask() {
-    if (repeatingTemplate != null) return null;
+    if (repeatingTemplate == null) return null;
     if (repeatingTemplate!.repeatingCount == 0) return null;
 
     List<DsTaskDate> newTaskDates = [];
