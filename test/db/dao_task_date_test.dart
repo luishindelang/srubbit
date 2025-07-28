@@ -22,7 +22,7 @@ void main() {
 
   test('insert and getByTaskId', () async {
     final date = DsTaskDate(
-      plannedDate: DateTime.utc(2024, 1, 1),
+      plannedDate: DateTime(2024, 1, 1),
       completionWindow: 0,
     );
     await dao.insert(date, 'task1');
