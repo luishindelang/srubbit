@@ -9,21 +9,21 @@ class TTask {
   static const String offsetDate = "offset_date";
   static const String timeFrom = "time_from";
   static const String timeUntil = "time_until";
-  static const String taskOwnderId = "task_owner_id";
+  static const String taskOwnerId = "task_owner_id";
   static const String repeatingTemplateId = "repeating_template_id";
 
   static String createTable() {
     return """
     CREATE TABLE IF NOT EXISTS $tableName (
-      $id TEXT PRIMERY KEY,
+      $id TEXT PRIMARY KEY,
       $name TEXT NOT NULL,
       $onEveryDate INTEGER NOT NULL,
       $offsetDate INTEGER,
       $timeFrom INTEGER,
       $timeUntil INTEGER,
       $repeatingTemplateId TEXT,
-      $taskOwnderId TEXT,
-      FOREIGN KEY ($taskOwnderId) REFERENCES ${TAccount.tableName}(${TAccount.id}) ON DELETE SET NULL,
+      $taskOwnerId TEXT,
+      FOREIGN KEY ($taskOwnerId) REFERENCES ${TAccount.tableName}(${TAccount.id}) ON DELETE SET NULL,
       FOREIGN KEY ($repeatingTemplateId) REFERENCES ${TRepeatingTemplates.tableName}(${TRepeatingTemplates.id}) ON DELETE SET NULL
     );
     """;

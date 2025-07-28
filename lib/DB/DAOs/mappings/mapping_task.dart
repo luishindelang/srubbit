@@ -54,7 +54,7 @@ class MappingTask {
       TTask.timeFrom: task.timeFrom?.millisecondsSinceEpoch,
       TTask.timeUntil: task.timeUntil?.millisecondsSinceEpoch,
       TTask.repeatingTemplateId: task.repeatingTemplate?.id,
-      TTask.taskOwnderId: task.taskOwned?.id,
+      TTask.taskOwnerId: task.taskOwned?.id,
     };
   }
 }

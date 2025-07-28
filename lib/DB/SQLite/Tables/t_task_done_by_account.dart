@@ -1,5 +1,5 @@
 import 'package:scrubbit/DB/SQLite/Tables/t_task.dart';
-import 'package:scrubbit/DB/Sqlite/Tables/t_account.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_account.dart';
 
 class TTaskDoneByAccount {
   static const String tableName = "task_done_by_account";
