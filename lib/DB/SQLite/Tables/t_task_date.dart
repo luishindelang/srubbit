@@ -18,4 +18,8 @@ class TTaskDate {
     );
     """;
   }
+
+  static String deleteTable() {
+    return "DROP TABLE IF EXISTS $tableName;";
+  }
 }

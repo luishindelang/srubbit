@@ -10,7 +10,7 @@ class DaoAccount {
   Future<void> insert(DsAccount account) async {
     await db.insert(
       TAccount.tableName,
-      await _toMap(account),
+      _toMap(account),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -18,7 +18,7 @@ class DaoAccount {
   Future<void> update(DsAccount account) async {
     await db.update(
       TAccount.tableName,
-      await _toMap(account),
+      _toMap(account),
       where: '${TAccount.id} = ?',
       whereArgs: [account.id],
     );
@@ -52,7 +52,7 @@ class DaoAccount {
 
   // mapper
 
-  Future<DsAccount> _fromMap(Map<String, dynamic> rawData) async {
+  DsAccount _fromMap(Map<String, dynamic> rawData) {
     return DsAccount(
       id: rawData[TAccount.id],
       name: rawData[TAccount.name],
@@ -65,15 +65,15 @@ class DaoAccount {
     );
   }
 
-  Future<List<DsAccount>> _fromList(List<Map<String, dynamic>> rawData) async {
+  List<DsAccount> _fromList(List<Map<String, dynamic>> rawData) {
     List<DsAccount> finalData = [];
     for (var value in rawData) {
-      finalData.add(await _fromMap(value));
+      finalData.add(_fromMap(value));
     }
     return finalData;
   }
 
-  Future<Map<String, dynamic>> _toMap(DsAccount account) async {
+  Map<String, dynamic> _toMap(DsAccount account) {
     return {
       TAccount.id: account.id,
       TAccount.name: account.name,
