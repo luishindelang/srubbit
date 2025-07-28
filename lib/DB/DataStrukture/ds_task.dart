@@ -2,6 +2,7 @@ import 'package:scrubbit/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_repeating_templates.dart';
+import 'package:scrubbit/DB/Service/s_uuid.dart';
 
 class DsTask {
   final String id;
@@ -18,8 +19,8 @@ class DsTask {
 
   final bool fromDB;
 
-  const DsTask({
-    required this.id,
+  DsTask({
+    String? id,
     required this.name,
     required this.onEveryDate,
     required this.taskDates,
@@ -31,7 +32,7 @@ class DsTask {
     this.doneDate,
     this.doneBy,
     this.fromDB = false,
-  });
+  }) : id = id ?? uuid();
 
   DsTask copyWith({
     String? newName,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/DB/DataStrukture/ds_task.dart';
+import 'package:scrubbit/DB/Service/s_uuid.dart';
 
 class DsAccount {
   final String id;
@@ -11,15 +12,15 @@ class DsAccount {
 
   final bool fromDB;
 
-  const DsAccount({
-    required this.id,
+  DsAccount({
+    String? id,
     required this.name,
     required this.color,
     required this.icon,
     this.ownedTasks,
     this.doneTasks,
     this.fromDB = false,
-  });
+  }) : id = id ?? uuid();
 
   DsAccount copyWith({String? newName, Color? newColor, IconData? newIcon}) {
     return DsAccount(

@@ -1,3 +1,5 @@
+import 'package:scrubbit/DB/Service/s_uuid.dart';
+
 class DsTaskDate {
   final String id;
   final DateTime plannedDate;
@@ -5,12 +7,12 @@ class DsTaskDate {
 
   final bool fromDB;
 
-  const DsTaskDate({
-    required this.id,
+  DsTaskDate({
+    String? id,
     required this.plannedDate,
     required this.completionWindow,
     this.fromDB = false,
-  });
+  }) : id = id ?? uuid();
 
   DsTaskDate copyWith({DateTime? newPlannedDate, int? newCompletionWindow}) {
     return DsTaskDate(
