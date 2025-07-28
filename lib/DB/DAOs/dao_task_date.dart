@@ -1,15 +1,16 @@
 import 'package:scrubbit/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_task_date.dart';
 import 'package:sqflite/sqflite.dart';
+import 'mappings/mapping_task_date.dart';
 
-class DaoTaskDate {
+class DaoTaskDate extends MappingTaskDate {
   final Database db;
   DaoTaskDate(this.db);
 
   Future<void> insert(DsTaskDate taskDate, String taskId) async {
     await db.insert(
       TTaskDate.tableName,
-      _toMap(taskDate, taskId),
+      toMap(taskDate, taskId),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -32,7 +33,7 @@ class DaoTaskDate {
       where: '${TTaskDate.taskId} = ?',
       whereArgs: [taskId],
     );
-    return _fromList(result);
+    return fromList(result);
   }
 
   Future<void> deleteByTaskId(String taskId) async {
@@ -43,28 +44,4 @@ class DaoTaskDate {
     );
   }
 
-  // mapper
-
-  DsTaskDate _fromMap(Map<String, dynamic> rawData) {
-    return DsTaskDate(
-      id: rawData[TTaskDate.id],
-      plannedDate:
-          DateTime.fromMillisecondsSinceEpoch(rawData[TTaskDate.plannedDate]),
-      completionWindow: rawData[TTaskDate.completionWindow],
-      fromDB: true,
-    );
-  }
-
-  List<DsTaskDate> _fromList(List<Map<String, dynamic>> rawData) {
-    return rawData.map(_fromMap).toList();
-  }
-
-  Map<String, dynamic> _toMap(DsTaskDate taskDate, String taskId) {
-    return {
-      TTaskDate.id: taskDate.id,
-      TTaskDate.plannedDate: taskDate.plannedDate.millisecondsSinceEpoch,
-      TTaskDate.completionWindow: taskDate.completionWindow,
-      TTaskDate.taskId: taskId,
-    };
-  }
 }
