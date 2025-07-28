@@ -15,29 +15,29 @@ class DaoTask {
   }
 
   Future<void> insert(DsTask task) async {
-    if (task.repeatingTemplate != null) {
-      await _daoRepeatingTemplates.insert(task.repeatingTemplate!);
-    }
     await db.insert(
       TTask.tableName,
       await _toMap(task),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    if (task.repeatingTemplate != null) {
+      await _daoRepeatingTemplates.insert(task.repeatingTemplate!);
+    }
     for (final date in task.taskDates) {
       await _daoTaskDate.insert(date, task.id);
     }
   }
 
   Future<void> update(DsTask task) async {
-    if (task.repeatingTemplate != null) {
-      await _daoRepeatingTemplates.update(task.repeatingTemplate!);
-    }
     await db.update(
       TTask.tableName,
       await _toMap(task),
       where: '${TTask.id} = ?',
       whereArgs: [task.id],
     );
+    if (task.repeatingTemplate != null) {
+      await _daoRepeatingTemplates.update(task.repeatingTemplate!);
+    }
     await _daoTaskDate.deleteByTaskId(task.id);
     for (final date in task.taskDates) {
       await _daoTaskDate.insert(date, task.id);
@@ -61,11 +61,7 @@ class DaoTask {
   }
 
   Future<void> delete(String id) async {
-    await db.delete(
-      TTask.tableName,
-      where: '${TTask.id} = ?',
-      whereArgs: [id],
-    );
+    await db.delete(TTask.tableName, where: '${TTask.id} = ?', whereArgs: [id]);
     await _daoTaskDate.deleteByTaskId(id);
   }
 
@@ -73,9 +69,10 @@ class DaoTask {
 
   Future<DsTask> _fromMap(Map<String, dynamic> rawData) async {
     final repeatingTemplateId = rawData[TTask.repeatingTemplateId] as String?;
-    final repeatingTemplate = repeatingTemplateId != null
-        ? await _daoRepeatingTemplates.get(repeatingTemplateId)
-        : null;
+    final repeatingTemplate =
+        repeatingTemplateId != null
+            ? await _daoRepeatingTemplates.get(repeatingTemplateId)
+            : null;
     final taskDates = await _daoTaskDate.getByTaskId(rawData[TTask.id]);
 
     return DsTask(
@@ -83,15 +80,18 @@ class DaoTask {
       name: rawData[TTask.name],
       onEveryDate: rawData[TTask.onEveryDate] == 1,
       taskDates: taskDates,
-      offsetDate: rawData[TTask.offsetDate] != null
-          ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.offsetDate])
-          : null,
-      timeFrom: rawData[TTask.timeFrom] != null
-          ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeFrom])
-          : null,
-      timeUntil: rawData[TTask.timeUntil] != null
-          ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeUntil])
-          : null,
+      offsetDate:
+          rawData[TTask.offsetDate] != null
+              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.offsetDate])
+              : null,
+      timeFrom:
+          rawData[TTask.timeFrom] != null
+              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeFrom])
+              : null,
+      timeUntil:
+          rawData[TTask.timeUntil] != null
+              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeUntil])
+              : null,
       repeatingTemplate: repeatingTemplate,
       doneDate: null,
       doneBy: null,
@@ -116,7 +116,7 @@ class DaoTask {
       TTask.timeFrom: task.timeFrom?.millisecondsSinceEpoch,
       TTask.timeUntil: task.timeUntil?.millisecondsSinceEpoch,
       TTask.repeatingTemplateId: task.repeatingTemplate?.id,
-      TTask.taskOwnderId: null,
+      TTask.taskOwnderId: task.taskOwned?.id,
     };
   }
 }

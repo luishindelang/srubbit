@@ -12,6 +12,7 @@ class DsTask {
   final DateTime? timeFrom;
   final DateTime? timeUntil;
   final DsRepeatingTemplates? repeatingTemplate;
+  final DsAccount? taskOwned;
   final DateTime? doneDate;
   final List<DsAccount>? doneBy;
 
@@ -26,6 +27,7 @@ class DsTask {
     this.timeFrom,
     this.timeUntil,
     this.repeatingTemplate,
+    this.taskOwned,
     this.doneDate,
     this.doneBy,
     this.fromDB = false,
@@ -39,6 +41,7 @@ class DsTask {
     DateTime? newTimeFrom,
     DateTime? newTimeUntil,
     String? newRepeatingTemplate,
+    DsAccount? newTaskOwned,
     DateTime? newDoneDate,
     List<DsAccount>? newDoneBy,
   }) {
@@ -50,6 +53,7 @@ class DsTask {
       offsetDate: newOffsetDate ?? offsetDate,
       timeFrom: newTimeFrom ?? timeFrom,
       timeUntil: newTimeFrom ?? timeUntil,
+      taskOwned: newTaskOwned ?? taskOwned,
       doneDate: newDoneDate ?? doneDate,
       doneBy: newDoneBy ?? doneBy,
     );
