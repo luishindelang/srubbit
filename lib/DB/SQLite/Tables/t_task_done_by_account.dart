@@ -1,5 +1,5 @@
 import 'package:scrubbit/DB/SQLite/Tables/t_task.dart';
-import 'package:scrubbit/DB/Sqlite/Tables/t_accounts.dart';
+import 'package:scrubbit/DB/Sqlite/Tables/t_account.dart';
 
 class TTaskDoneByAccount {
   static const String tableName = "task_done_by_account";
@@ -13,7 +13,7 @@ class TTaskDoneByAccount {
       $accountId TEXT,
       $taskId TEXT,
       $doneDate INTEGER NOT NULL,
-      FOREIGN KEY ($accountId) REFERENCES ${TAccounts.tableName}(${TAccounts.id}),
+      FOREIGN KEY ($accountId) REFERENCES ${TAccount.tableName}(${TAccount.id}),
       FOREIGN KEY ($taskId) REFERENCES ${TTask.tableName}(${TTask.id}),
       PRIMARY KEY ($accountId, $taskId)
     );
