@@ -14,7 +14,7 @@ class TTask {
 
   static String createTable() {
     return """
-    CREATE TEABLE IF NOT EXISTS $tableName (
+    CREATE TABLE IF NOT EXISTS $tableName (
       $id TEXT PRIMERY KEY,
       $name TEXT NOT NULL,
       $onEveryDate INTEGER NOT NULL,
