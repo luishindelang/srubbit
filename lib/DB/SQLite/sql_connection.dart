@@ -1,4 +1,9 @@
 import 'package:path/path.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_account.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_repeating_templates.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_task.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_task_date.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_task_done_by_account.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SqlConnection {
@@ -34,7 +39,19 @@ class SqlConnection {
     await createTables(db);
   }
 
-  static Future<void> createTables(Database db) async {}
+  static Future<void> createTables(Database db) async {
+    await db.execute(TAccount.createTable());
+    await db.execute(TRepeatingTemplates.createTable());
+    await db.execute(TTask.createTable());
+    await db.execute(TTaskDate.createTable());
+    await db.execute(TTaskDoneByAccount.createTable());
+  }
 
-  static Future<void> deleteTables(Database db) async {}
+  static Future<void> deleteTables(Database db) async {
+    await db.execute(TTaskDoneByAccount.deleteTable());
+    await db.execute(TTaskDate.deleteTable());
+    await db.execute(TTask.deleteTable());
+    await db.execute(TRepeatingTemplates.deleteTable());
+    await db.execute(TAccount.deleteTable());
+  }
 }
