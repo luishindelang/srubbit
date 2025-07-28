@@ -1,3 +1,5 @@
+import 'package:scrubbit/DB/Service/s_uuid.dart';
+
 class DsRepeatingTemplates {
   final String id;
   final String repeatingType;
@@ -5,13 +7,13 @@ class DsRepeatingTemplates {
   final DateTime startDateInt;
   final DateTime? endDateInt;
 
-  const DsRepeatingTemplates({
-    required this.id,
+  DsRepeatingTemplates({
+    String? id,
     required this.repeatingType,
     required this.repeatingAmount,
     required this.startDateInt,
     this.endDateInt,
-  });
+  }) : id = id ?? uuid();
 
   DsRepeatingTemplates copyWith({
     String? newRepeatingType,
