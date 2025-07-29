@@ -6,7 +6,8 @@ class TTask {
   static const String id = "task_id";
   static const String name = "name";
   static const String onEveryDate = "on_every_date";
-  static const String offsetDate = "offset_date";
+  static const String offset = "offset";
+  static const String isImportant = "is_important";
   static const String timeFrom = "time_from";
   static const String timeUntil = "time_until";
   static const String taskOwnerId = "task_owner_id";
@@ -18,7 +19,8 @@ class TTask {
       $id TEXT PRIMARY KEY,
       $name TEXT NOT NULL,
       $onEveryDate INTEGER NOT NULL,
-      $offsetDate INTEGER,
+      $offset INTEGER,
+      $isImportant INTEGER NOT NULL,
       $timeFrom INTEGER,
       $timeUntil INTEGER,
       $repeatingTemplateId TEXT,

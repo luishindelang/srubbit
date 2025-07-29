@@ -11,9 +11,10 @@ class MappingTask {
 
   Future<DsTask> fromMap(Map<String, dynamic> rawData) async {
     final repeatingTemplateId = rawData[TTask.repeatingTemplateId] as String?;
-    final repeatingTemplate = repeatingTemplateId != null
-        ? await daoRepeatingTemplates.get(repeatingTemplateId)
-        : null;
+    final repeatingTemplate =
+        repeatingTemplateId != null
+            ? await daoRepeatingTemplates.get(repeatingTemplateId)
+            : null;
     final taskDates = await daoTaskDate.getByTaskId(rawData[TTask.id]);
 
     return DsTask(
@@ -21,15 +22,16 @@ class MappingTask {
       name: rawData[TTask.name],
       onEveryDate: rawData[TTask.onEveryDate] == 1,
       taskDates: taskDates,
-      offsetDate: rawData[TTask.offsetDate] != null
-          ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.offsetDate])
-          : null,
-      timeFrom: rawData[TTask.timeFrom] != null
-          ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeFrom])
-          : null,
-      timeUntil: rawData[TTask.timeUntil] != null
-          ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeUntil])
-          : null,
+      offset: rawData[TTask.offset],
+      isImportant: rawData[TTask.isImportant] == 1,
+      timeFrom:
+          rawData[TTask.timeFrom] != null
+              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeFrom])
+              : null,
+      timeUntil:
+          rawData[TTask.timeUntil] != null
+              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeUntil])
+              : null,
       repeatingTemplate: repeatingTemplate,
       doneDate: null,
       doneBy: null,
@@ -50,7 +52,8 @@ class MappingTask {
       TTask.id: task.id,
       TTask.name: task.name,
       TTask.onEveryDate: task.onEveryDate ? 1 : 0,
-      TTask.offsetDate: task.offsetDate?.millisecondsSinceEpoch,
+      TTask.offset: task.offset,
+      TTask.isImportant: task.isImportant ? 1 : 0,
       TTask.timeFrom: task.timeFrom?.millisecondsSinceEpoch,
       TTask.timeUntil: task.timeUntil?.millisecondsSinceEpoch,
       TTask.repeatingTemplateId: task.repeatingTemplate?.id,

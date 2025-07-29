@@ -9,7 +9,8 @@ class DsTask {
   final String name;
   final bool onEveryDate;
   final List<DsTaskDate> taskDates;
-  final DateTime? offsetDate;
+  final int? offset;
+  final bool isImportant;
   final DateTime? timeFrom;
   final DateTime? timeUntil;
   final DsRepeatingTemplates? repeatingTemplate;
@@ -24,7 +25,8 @@ class DsTask {
     required this.name,
     required this.onEveryDate,
     required this.taskDates,
-    this.offsetDate,
+    this.offset,
+    required this.isImportant,
     this.timeFrom,
     this.timeUntil,
     this.repeatingTemplate,
@@ -38,7 +40,8 @@ class DsTask {
     String? newName,
     bool? newOnEveryDate,
     List<DsTaskDate>? newTaskDates,
-    DateTime? newOffsetDate,
+    int? newOffset,
+    bool? newIsImportant,
     DateTime? newTimeFrom,
     DateTime? newTimeUntil,
     DsRepeatingTemplates? newRepeatingTemplate,
@@ -51,7 +54,8 @@ class DsTask {
       name: newName ?? name,
       onEveryDate: newOnEveryDate ?? onEveryDate,
       taskDates: newTaskDates ?? taskDates,
-      offsetDate: newOffsetDate ?? offsetDate,
+      offset: newOffset ?? offset,
+      isImportant: newIsImportant ?? isImportant,
       timeFrom: newTimeFrom ?? timeFrom,
       timeUntil: newTimeUntil ?? timeUntil,
       repeatingTemplate: newRepeatingTemplate ?? repeatingTemplate,
@@ -105,7 +109,8 @@ class DsTask {
       name: name,
       onEveryDate: onEveryDate,
       taskDates: newTaskDates,
-      offsetDate: offsetDate,
+      offset: offset,
+      isImportant: isImportant,
       timeFrom: timeFrom,
       timeUntil: timeUntil,
     );
