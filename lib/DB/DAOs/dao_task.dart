@@ -3,12 +3,11 @@ import 'package:scrubbit/DB/DAOs/dao_task_date.dart';
 import 'package:scrubbit/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_task.dart';
 import 'package:sqflite/sqflite.dart';
-import 'mappings/mapping_task.dart';
+import 'Mappings/mapping_task.dart';
 
 class DaoTask extends MappingTask {
   final Database db;
-  DaoTask(this.db)
-      : super(DaoTaskDate(db), DaoRepeatingTemplates(db));
+  DaoTask(this.db) : super(DaoTaskDate(db), DaoRepeatingTemplates(db));
 
   Future<void> insert(DsTask task) async {
     await db.insert(
@@ -60,5 +59,4 @@ class DaoTask extends MappingTask {
     await db.delete(TTask.tableName, where: '${TTask.id} = ?', whereArgs: [id]);
     await daoTaskDate.deleteByTaskId(id);
   }
-
 }

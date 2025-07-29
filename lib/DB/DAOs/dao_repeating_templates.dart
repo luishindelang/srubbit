@@ -1,7 +1,7 @@
 import 'package:scrubbit/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_repeating_templates.dart';
 import 'package:sqflite/sqflite.dart';
-import 'mappings/mapping_repeating_templates.dart';
+import 'Mappings/mapping_repeating_templates.dart';
 
 class DaoRepeatingTemplates extends MappingRepeatingTemplates {
   final Database db;
@@ -49,5 +49,4 @@ class DaoRepeatingTemplates extends MappingRepeatingTemplates {
       whereArgs: [id],
     );
   }
-
 }

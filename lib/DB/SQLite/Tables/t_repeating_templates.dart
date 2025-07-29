@@ -4,6 +4,7 @@ class TRepeatingTemplates {
   static const String repeatingType = "repeating_type";
   static const String repeatingIntervall = "repeating_intervall";
   static const String repeatingCount = "repeating_count";
+  static const String repeatAfterDone = "repeat_after_done";
   static const String startDate = "start_date";
   static const String endDate = "end_date";
 
@@ -16,6 +17,7 @@ class TRepeatingTemplates {
       ),
       $repeatingIntervall INTEGER NOT NULL,
       $repeatingCount INTEGER,
+      $repeatAfterDone INTEGER NOT NULL,
       $startDate INTEGER NOT NULL,
       $endDate INTEGER
     );

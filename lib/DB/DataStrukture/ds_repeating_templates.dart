@@ -5,6 +5,7 @@ class DsRepeatingTemplates {
   final String repeatingType;
   final int repeatingIntervall;
   final int? repeatingCount;
+  final bool repeatAfterDone;
   final DateTime startDateInt;
   final DateTime? endDateInt;
 
@@ -13,6 +14,7 @@ class DsRepeatingTemplates {
     required this.repeatingType,
     required this.repeatingIntervall,
     this.repeatingCount,
+    required this.repeatAfterDone,
     required this.startDateInt,
     this.endDateInt,
   }) : id = id ?? uuid();
@@ -21,6 +23,7 @@ class DsRepeatingTemplates {
     String? newRepeatingType,
     int? newRepeatingIntervall,
     int? newRepeatingCount,
+    bool? newRepeatAfterDone,
     DateTime? newStartDate,
     DateTime? newEndDate,
   }) {
@@ -29,6 +32,7 @@ class DsRepeatingTemplates {
       repeatingType: newRepeatingType ?? repeatingType,
       repeatingIntervall: newRepeatingIntervall ?? repeatingIntervall,
       repeatingCount: newRepeatingCount ?? repeatingCount,
+      repeatAfterDone: newRepeatAfterDone ?? repeatAfterDone,
       startDateInt: newStartDate ?? startDateInt,
       endDateInt: newEndDate ?? endDateInt,
     );

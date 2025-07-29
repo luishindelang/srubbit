@@ -1,7 +1,7 @@
 import 'package:scrubbit/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_task_date.dart';
 import 'package:sqflite/sqflite.dart';
-import 'mappings/mapping_task_date.dart';
+import 'Mappings/mapping_task_date.dart';
 
 class DaoTaskDate extends MappingTaskDate {
   final Database db;
@@ -43,5 +43,4 @@ class DaoTaskDate extends MappingTaskDate {
       whereArgs: [taskId],
     );
   }
-
 }

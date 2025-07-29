@@ -1,7 +1,7 @@
 import 'package:scrubbit/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_account.dart';
 import 'package:sqflite/sqflite.dart';
-import 'mappings/mapping_account.dart';
+import 'Mappings/mapping_account.dart';
 
 class DaoAccount extends MappingAccount {
   final Database db;

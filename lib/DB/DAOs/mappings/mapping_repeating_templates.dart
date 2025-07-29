@@ -8,14 +8,16 @@ class MappingRepeatingTemplates {
       repeatingType: rawData[TRepeatingTemplates.repeatingType],
       repeatingIntervall: rawData[TRepeatingTemplates.repeatingIntervall],
       repeatingCount: rawData[TRepeatingTemplates.repeatingCount],
+      repeatAfterDone: rawData[TRepeatingTemplates.repeatAfterDone] == 1,
       startDateInt: DateTime.fromMillisecondsSinceEpoch(
         rawData[TRepeatingTemplates.startDate],
       ),
-      endDateInt: rawData[TRepeatingTemplates.endDate] != null
-          ? DateTime.fromMillisecondsSinceEpoch(
-              rawData[TRepeatingTemplates.endDate],
-            )
-          : null,
+      endDateInt:
+          rawData[TRepeatingTemplates.endDate] != null
+              ? DateTime.fromMillisecondsSinceEpoch(
+                rawData[TRepeatingTemplates.endDate],
+              )
+              : null,
     );
   }
 
@@ -29,9 +31,10 @@ class MappingRepeatingTemplates {
       TRepeatingTemplates.repeatingType: template.repeatingType,
       TRepeatingTemplates.repeatingIntervall: template.repeatingIntervall,
       TRepeatingTemplates.repeatingCount: template.repeatingCount,
-      TRepeatingTemplates.startDate: template.startDateInt.millisecondsSinceEpoch,
-      TRepeatingTemplates.endDate:
-          template.endDateInt?.millisecondsSinceEpoch,
+      TRepeatingTemplates.repeatAfterDone: template.repeatAfterDone ? 1 : 0,
+      TRepeatingTemplates.startDate:
+          template.startDateInt.millisecondsSinceEpoch,
+      TRepeatingTemplates.endDate: template.endDateInt?.millisecondsSinceEpoch,
     };
   }
 }
