@@ -1,3 +1,4 @@
+import 'package:scrubbit/DB/DAOs/dao_account.dart';
 import 'package:scrubbit/DB/DAOs/dao_repeating_templates.dart';
 import 'package:scrubbit/DB/DAOs/dao_task_date.dart';
 import 'package:scrubbit/DB/DataStrukture/ds_task.dart';
@@ -6,8 +7,9 @@ import 'package:scrubbit/DB/SQLite/Tables/t_task.dart';
 class MappingTask {
   final DaoTaskDate daoTaskDate;
   final DaoRepeatingTemplates daoRepeatingTemplates;
+  final DaoAccount daoAccount;
 
-  MappingTask(this.daoTaskDate, this.daoRepeatingTemplates);
+  MappingTask(this.daoTaskDate, this.daoRepeatingTemplates, this.daoAccount);
 
   Future<DsTask> fromMap(Map<String, dynamic> rawData) async {
     final repeatingTemplateId = rawData[TTask.repeatingTemplateId] as String?;
@@ -16,6 +18,8 @@ class MappingTask {
             ? await daoRepeatingTemplates.get(repeatingTemplateId)
             : null;
     final taskDates = await daoTaskDate.getByTaskId(rawData[TTask.id]);
+    final taskOwned = await daoAccount.get(rawData[TTask.taskOwnerId]);
+    final doneBy = await daoAccount.getDoneBy(rawData[TTask.id]);
 
     return DsTask(
       id: rawData[TTask.id],
@@ -33,8 +37,12 @@ class MappingTask {
               ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeUntil])
               : null,
       repeatingTemplate: repeatingTemplate,
-      doneDate: null,
-      doneBy: null,
+      taskOwned: taskOwned,
+      doneDate:
+          rawData[TTask.doneDate] != null
+              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeFrom])
+              : null,
+      doneBy: doneBy.isNotEmpty ? doneBy : null,
       fromDB: true,
     );
   }
@@ -58,6 +66,7 @@ class MappingTask {
       TTask.timeUntil: task.timeUntil?.millisecondsSinceEpoch,
       TTask.repeatingTemplateId: task.repeatingTemplate?.id,
       TTask.taskOwnerId: task.taskOwned?.id,
+      TTask.doneDate: task.doneDate?.millisecondsSinceEpoch,
     };
   }
 }

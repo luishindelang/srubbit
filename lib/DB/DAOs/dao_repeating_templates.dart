@@ -25,21 +25,21 @@ class DaoRepeatingTemplates extends MappingRepeatingTemplates {
   }
 
   Future<DsRepeatingTemplates?> get(String id) async {
-    final List<Map<String, dynamic>> result = await db.query(
+    final List<Map<String, dynamic>> rawData = await db.query(
       TRepeatingTemplates.tableName,
       where: '${TRepeatingTemplates.id} = ?',
       whereArgs: [id],
       limit: 1,
     );
-    if (result.isEmpty) return null;
-    return fromMap(result.first);
+    if (rawData.isEmpty) return null;
+    return fromMap(rawData.first);
   }
 
   Future<List<DsRepeatingTemplates>> getAll() async {
-    final List<Map<String, dynamic>> result = await db.query(
+    final List<Map<String, dynamic>> rawData = await db.query(
       TRepeatingTemplates.tableName,
     );
-    return fromList(result);
+    return fromList(rawData);
   }
 
   Future<void> delete(String id) async {

@@ -28,12 +28,12 @@ class DaoTaskDate extends MappingTaskDate {
   }
 
   Future<List<DsTaskDate>> getByTaskId(String taskId) async {
-    final List<Map<String, dynamic>> result = await db.query(
+    final List<Map<String, dynamic>> rawData = await db.query(
       TTaskDate.tableName,
       where: '${TTaskDate.taskId} = ?',
       whereArgs: [taskId],
     );
-    return fromList(result);
+    return fromList(rawData);
   }
 
   Future<void> deleteByTaskId(String taskId) async {

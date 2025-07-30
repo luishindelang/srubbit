@@ -1,13 +1,16 @@
+import 'package:scrubbit/DB/DAOs/dao_account.dart';
 import 'package:scrubbit/DB/DAOs/dao_repeating_templates.dart';
 import 'package:scrubbit/DB/DAOs/dao_task_date.dart';
 import 'package:scrubbit/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/DB/SQLite/Tables/t_task.dart';
+import 'package:scrubbit/DB/SQLite/Tables/t_task_done_by_account.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Mappings/mapping_task.dart';
 
 class DaoTask extends MappingTask {
   final Database db;
-  DaoTask(this.db) : super(DaoTaskDate(db), DaoRepeatingTemplates(db));
+  DaoTask(this.db)
+    : super(DaoTaskDate(db), DaoRepeatingTemplates(db), DaoAccount(db));
 
   Future<void> insert(DsTask task) async {
     await db.insert(
@@ -40,19 +43,38 @@ class DaoTask extends MappingTask {
   }
 
   Future<List<DsTask>> getAll() async {
-    final List<Map<String, dynamic>> result = await db.query(TTask.tableName);
-    return fromList(result);
+    final List<Map<String, dynamic>> rawData = await db.query(TTask.tableName);
+    return fromList(rawData);
   }
 
   Future<DsTask?> get(String id) async {
-    final List<Map<String, dynamic>> result = await db.query(
+    final List<Map<String, dynamic>> rawData = await db.query(
       TTask.tableName,
       where: '${TTask.id} = ?',
       whereArgs: [id],
       limit: 1,
     );
-    if (result.isEmpty) return null;
-    return fromMap(result.first);
+    if (rawData.isEmpty) return null;
+    return fromMap(rawData.first);
+  }
+
+  Future<List<DsTask>> getTaskOwned(String accountId) async {
+    final List<Map<String, dynamic>> rawData = await db.query(
+      TTask.tableName,
+      where: "${TTask.taskOwnerId} = ?",
+      whereArgs: [accountId],
+    );
+    return fromList(rawData);
+  }
+
+  Future<List<DsTask>> getDoneBy(String accountId) async {
+    final List<Map<String, dynamic>> rawData = await db.rawQuery("""
+    SELECT * FROM ${TTask.tableName} a
+    LEFT JOUN ${TTaskDoneByAccount.tableName} t
+    ON a.${TTask.id} = t.${TTaskDoneByAccount.taskId}
+    WHERE t.${TTaskDoneByAccount.accountId} = $accountId;
+    """);
+    return fromList(rawData);
   }
 
   Future<void> delete(String id) async {
