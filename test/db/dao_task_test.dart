@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:scrubbit/DB/DAOs/dao_task.dart';
-import 'package:scrubbit/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/DB/DataStrukture/ds_repeating_templates.dart';
-import 'package:scrubbit/DB/DataStrukture/ds_task_date.dart';
-import 'package:scrubbit/DB/SQLite/sql_connection.dart';
-import 'package:scrubbit/DB/SQLite/Tables/t_repeating_templates.dart';
+import 'package:scrubbit/Backend/DB/DAOs/dao_task.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
+import 'package:scrubbit/Backend/DB/SQLite/sql_connection.dart';
+import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
 
 void main() {
   sqfliteFfiInit();
@@ -42,6 +42,7 @@ void main() {
   DsTask buildTask(String name) {
     return DsTask(
       name: 'Task $name',
+      emoji: 'test emojy',
       onEveryDate: false,
       taskDates: [buildDate()],
       offset: null,

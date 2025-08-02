@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:scrubbit/DB/DAOs/dao_account.dart';
-import 'package:scrubbit/DB/DataStrukture/ds_account.dart';
-import 'package:scrubbit/DB/SQLite/sql_connection.dart';
+import 'package:scrubbit/Backend/DB/DAOs/dao_account.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
+import 'package:scrubbit/Backend/DB/SQLite/sql_connection.dart';
 
 void main() {
   sqfliteFfiInit();
