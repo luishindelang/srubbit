@@ -24,7 +24,8 @@ class DaoRepeatingTemplates extends MappingRepeatingTemplates {
     );
   }
 
-  Future<DsRepeatingTemplates?> get(String id) async {
+  Future<DsRepeatingTemplates?> get(String? id) async {
+    if (id == null) return null;
     final List<Map<String, dynamic>> rawData = await db.query(
       TRepeatingTemplates.tableName,
       where: '${TRepeatingTemplates.id} = ?',

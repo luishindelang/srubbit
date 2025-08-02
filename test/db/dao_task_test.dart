@@ -9,12 +9,14 @@ import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
 
 void main() {
   sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
   late Database db;
   late DaoTask dao;
 
   setUp(() async {
-    db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
-    await SqlConnection.createTables(db);
+    db = await SqlConnection.instance.database;
+    await SqlConnection.resetDB(db);
     dao = DaoTask(db);
   });
 
@@ -56,42 +58,45 @@ void main() {
     );
   }
 
-  test('insert and get', () async {
-    final task = buildTask('1');
-    await dao.insert(task);
+  group("DAO task", () {
+    test('insert and get', () async {
+      final task = buildTask('1');
+      await dao.insert(task);
 
-    final fetched = await dao.get(task.id);
-    expect(fetched, isNotNull);
-    expect(fetched!.name, 'Task 1');
-    expect(fetched.repeatingTemplate, isNotNull);
-    expect(fetched.taskDates.length, 1);
-  });
+      final fetched = await dao.get(task.id);
 
-  test('update task', () async {
-    final task = buildTask('1');
-    await dao.insert(task);
+      expect(fetched, isNotNull);
+      expect(fetched!.name, 'Task 1');
+      expect(fetched.repeatingTemplate, isNotNull);
+      expect(fetched.taskDates.length, 1);
+    });
 
-    final updated = task.copyWith(newName: 'Updated');
-    await dao.update(updated);
+    test('update task', () async {
+      final task = buildTask('1');
+      await dao.insert(task);
 
-    final fetched = await dao.get(task.id);
-    expect(fetched!.name, 'Updated');
-  });
+      final updated = task.copyWith(newName: 'Updated');
+      await dao.update(updated);
 
-  test('getAll returns all tasks', () async {
-    await dao.insert(buildTask('1'));
-    await dao.insert(buildTask('2'));
+      final fetched = await dao.get(task.id);
+      expect(fetched!.name, 'Updated');
+    });
 
-    final all = await dao.getAll();
-    expect(all.length, 2);
-  });
+    test('getAll returns all tasks', () async {
+      await dao.insert(buildTask('1'));
+      await dao.insert(buildTask('2'));
 
-  test('delete removes task', () async {
-    final task = buildTask('1');
-    await dao.insert(task);
-    await dao.delete(task.id);
+      final all = await dao.getAll();
+      expect(all.length, 2);
+    });
 
-    final fetched = await dao.get(task.id);
-    expect(fetched, isNull);
+    test('delete removes task', () async {
+      final task = buildTask('1');
+      await dao.insert(task);
+      await dao.delete(task.id);
+
+      final fetched = await dao.get(task.id);
+      expect(fetched, isNull);
+    });
   });
 }

@@ -1,4 +1,3 @@
-import 'package:scrubbit/Backend/DB/DAOs/dao_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_account.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_done_by_account.dart';
@@ -7,7 +6,7 @@ import 'Mappings/mapping_account.dart';
 
 class DaoAccount extends MappingAccount {
   final Database db;
-  DaoAccount(this.db) : super(DaoTask(db));
+  DaoAccount(this.db);
 
   Future<void> insert(DsAccount account) async {
     await db.insert(
@@ -33,7 +32,8 @@ class DaoAccount extends MappingAccount {
     return fromList(rawData);
   }
 
-  Future<DsAccount?> get(String id) async {
+  Future<DsAccount?> get(String? id) async {
+    if (id == null) return null;
     final List<Map<String, dynamic>> rawData = await db.query(
       TAccount.tableName,
       where: '${TAccount.id} = ?',
@@ -47,9 +47,9 @@ class DaoAccount extends MappingAccount {
   Future<List<DsAccount>> getDoneBy(String taskId) async {
     final rawData = await db.rawQuery("""
     SELECT * FROM ${TAccount.tableName} a
-    LEFT JOUN ${TTaskDoneByAccount.tableName} t
+    LEFT JOIN ${TTaskDoneByAccount.tableName} t
     ON a.${TAccount.id} = t.${TTaskDoneByAccount.accountId}
-    WHERE t.${TTaskDoneByAccount.taskId} = $taskId;
+    WHERE t.${TTaskDoneByAccount.taskId} = '$taskId';
     """);
     return fromList(rawData);
   }

@@ -22,9 +22,9 @@ class MappingTask {
     final doneBy = await daoAccount.getDoneBy(rawData[TTask.id]);
 
     return DsTask(
-      id: rawData[TTask.id],
-      name: rawData[TTask.name],
-      emoji: rawData[TTask.emoji],
+      id: rawData[TTask.id] as String,
+      name: rawData[TTask.name] as String,
+      emoji: rawData[TTask.emoji] as String,
       onEveryDate: rawData[TTask.onEveryDate] == 1,
       taskDates: taskDates,
       offset: rawData[TTask.offset],

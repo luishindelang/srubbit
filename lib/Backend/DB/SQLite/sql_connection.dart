@@ -10,7 +10,7 @@ class SqlConnection {
   static Database? _db;
   static final SqlConnection instance = SqlConnection._constructor();
 
-  final String dbName = "mywallet.db";
+  final String dbName = "srubbit.db";
 
   SqlConnection._constructor();
 
@@ -33,8 +33,7 @@ class SqlConnection {
     return database;
   }
 
-  static Future<void> resetDB() async {
-    final db = await SqlConnection.instance.database;
+  static Future<void> resetDB(db) async {
     await deleteTables(db);
     await createTables(db);
   }

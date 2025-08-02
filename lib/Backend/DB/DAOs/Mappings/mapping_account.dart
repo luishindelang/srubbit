@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:scrubbit/Backend/DB/DAOs/dao_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_account.dart';
 
 class MappingAccount {
-  final DaoTask daoTask;
-  MappingAccount(this.daoTask);
-
   Future<DsAccount> fromMap(Map<String, dynamic> rawData) async {
-    final ownedTasks = await daoTask.getTaskOwned(rawData[TAccount.id]);
-    final doneTasks = await daoTask.getDoneBy(rawData[TAccount.id]);
-
     return DsAccount(
       id: rawData[TAccount.id],
       name: rawData[TAccount.name],
@@ -19,8 +12,6 @@ class MappingAccount {
         rawData[TAccount.iconCode],
         fontFamily: rawData[TAccount.iconFamily],
       ),
-      ownedTasks: ownedTasks.isNotEmpty ? ownedTasks : null,
-      doneTasks: doneTasks.isNotEmpty ? doneTasks : null,
       fromDB: true,
     );
   }

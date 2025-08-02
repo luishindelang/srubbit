@@ -47,7 +47,8 @@ class DaoTask extends MappingTask {
     return fromList(rawData);
   }
 
-  Future<DsTask?> get(String id) async {
+  Future<DsTask?> get(String? id) async {
+    if (id == null) return null;
     final List<Map<String, dynamic>> rawData = await db.query(
       TTask.tableName,
       where: '${TTask.id} = ?',
@@ -58,7 +59,7 @@ class DaoTask extends MappingTask {
     return fromMap(rawData.first);
   }
 
-  Future<List<DsTask>> getTaskOwned(String accountId) async {
+  Future<List<DsTask>> getTaskOwned(String? accountId) async {
     final List<Map<String, dynamic>> rawData = await db.query(
       TTask.tableName,
       where: "${TTask.taskOwnerId} = ?",
@@ -72,7 +73,7 @@ class DaoTask extends MappingTask {
     SELECT * FROM ${TTask.tableName} a
     LEFT JOUN ${TTaskDoneByAccount.tableName} t
     ON a.${TTask.id} = t.${TTaskDoneByAccount.taskId}
-    WHERE t.${TTaskDoneByAccount.accountId} = $accountId;
+    WHERE t.${TTaskDoneByAccount.accountId} = '$accountId';
     """);
     return fromList(rawData);
   }

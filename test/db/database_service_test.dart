@@ -6,16 +6,18 @@ import 'package:scrubbit/Backend/DB/SQLite/sql_connection.dart';
 
 void main() {
   sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
+  late Database db;
+
+  setUp(() async {
+    db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
+    await SqlConnection.resetDB(db);
+  });
 
   tearDown(() async {
-    final db = await SqlConnection.instance.database;
     await db.close();
   });
 
   test('init returns singleton', () async {
-    await SqlConnection.resetDB();
-
     final first = await DatabaseService.init();
     final second = await DatabaseService.init();
 
