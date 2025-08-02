@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scrubbit/Style/Constants/colors.dart';
+import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 
 const shadowTaskElement = BoxShadow(
   color: shadowColor,
