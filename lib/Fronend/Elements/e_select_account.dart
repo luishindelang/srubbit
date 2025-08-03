@@ -27,42 +27,46 @@ class ESelectAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            Icon(Icons.person, size: sizeIconDonePopup, color: buttonColor),
-            ESelectAccountButton(
-              onPressed: onSelectAll,
-              text: "Alle",
-              isSelected: selectAll,
-              selectedBackground: buttonColor,
+    return Row(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                Icon(Icons.person, size: sizeIconDonePopup, color: buttonColor),
+                ESelectAccountButton(
+                  onPressed: onSelectAll,
+                  text: "Alle",
+                  isSelected: selectAll,
+                  selectedBackground: buttonColor,
+                ),
+                Row(
+                  children:
+                      accounts.map((account) {
+                        return ESelectAccountButton(
+                          onPressed: () => onAccountToggle(account),
+                          text: account.name,
+                          isSelected: selectedAccounts.contains(account.id),
+                          selectedBackground: account.color,
+                        );
+                      }).toList(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(paddingButton),
+                  child: CButton(
+                    onPressed: () => onAddAccount(createAccount()),
+                    backgroundColor: buttonBackgroundColor,
+                    radius: borderRadiusButtons,
+                    paddingVert: 6,
+                    child: Icon(Icons.add_rounded, color: textColor, size: 25),
+                  ),
+                ),
+              ],
             ),
-            Row(
-              children:
-                  accounts.map((account) {
-                    return ESelectAccountButton(
-                      onPressed: () => onAccountToggle(account),
-                      text: account.name,
-                      isSelected: selectedAccounts.contains(account.id),
-                      selectedBackground: account.color,
-                    );
-                  }).toList(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(paddingButton),
-              child: CButton(
-                onPressed: () => onAddAccount(createAccount()),
-                backgroundColor: buttonBackgroundColor,
-                radius: borderRadiusButtons,
-                paddingVert: 6,
-                child: Icon(Icons.add_rounded, color: textColor, size: 25),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

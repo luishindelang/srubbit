@@ -7,7 +7,7 @@ const paddingTaskElement = 2.0;
 const borderRadiusTaskElement = 6.0;
 
 const paddingTaskPopup = 10.0;
-const marginTaskPopup = 200.0;
+const widthTaskPopup = 600.0;
 
 const imageImportantSize = 50.0;
 const paddingImageright = 5.0;

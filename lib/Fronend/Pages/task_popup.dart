@@ -66,7 +66,6 @@ class _TaskPopupState extends State<TaskPopup> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final maxWidth = screenWidth - marginTaskPopup - marginTaskPopup;
     return Dialog(
       insetPadding: EdgeInsets.all(paddingTaskPopup),
       shape: RoundedRectangleBorder(
@@ -74,7 +73,7 @@ class _TaskPopupState extends State<TaskPopup> {
       ),
       backgroundColor: scaffoldBackgroundColor,
       child: SizedBox(
-        width: maxWidth,
+        width: widthTaskPopup,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -83,17 +82,13 @@ class _TaskPopupState extends State<TaskPopup> {
               padding: const EdgeInsets.all(paddingBox),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      ESelectAccount(
-                        accounts: widget.accounts,
-                        selectAll: selectAll,
-                        selectedAccounts: selectedAccounts,
-                        onAccountToggle: onAccountSelect,
-                        onSelectAll: onAllSelect,
-                        onAddAccount: newAccount,
-                      ),
-                    ],
+                  ESelectAccount(
+                    accounts: widget.accounts,
+                    selectAll: selectAll,
+                    selectedAccounts: selectedAccounts,
+                    onAccountToggle: onAccountSelect,
+                    onSelectAll: onAllSelect,
+                    onAddAccount: newAccount,
                   ),
                   SizedBox(height: 70),
                   EDoneBottons(
