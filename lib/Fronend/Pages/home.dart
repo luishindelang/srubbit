@@ -4,6 +4,7 @@ import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_element_button.dart';
+import 'package:scrubbit/Fronend/Pages/add_task_popup.dart';
 import 'package:scrubbit/test_data.dart';
 
 class Home extends StatefulWidget {
@@ -15,11 +16,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final accounts = createAccounts(2);
+  void showNewTaskPopup() {
+    showDialog(context: context, builder: (context) => AddTaskPopup());
+  }
+
   @override
   Widget build(BuildContext context) {
     return EScaffold(
       weekday: "Monday",
       date: "23.07.2025",
+      onAddPressed: showNewTaskPopup,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

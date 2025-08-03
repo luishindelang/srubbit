@@ -83,13 +83,17 @@ class _TaskPopupState extends State<TaskPopup> {
               padding: const EdgeInsets.all(paddingBox),
               child: Column(
                 children: [
-                  ESelectAccount(
-                    accounts: widget.accounts,
-                    selectAll: selectAll,
-                    selectedAccounts: selectedAccounts,
-                    onAccountToggle: onAccountSelect,
-                    onSelectAll: onAllSelect,
-                    onAddAccount: newAccount,
+                  Row(
+                    children: [
+                      ESelectAccount(
+                        accounts: widget.accounts,
+                        selectAll: selectAll,
+                        selectedAccounts: selectedAccounts,
+                        onAccountToggle: onAccountSelect,
+                        onSelectAll: onAllSelect,
+                        onAddAccount: newAccount,
+                      ),
+                    ],
                   ),
                   SizedBox(height: 70),
                   EDoneBottons(

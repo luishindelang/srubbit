@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Fronend/Elements/e_action_floating_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
@@ -8,11 +9,13 @@ class EScaffold extends StatelessWidget {
     super.key,
     required this.weekday,
     required this.date,
+    required this.onAddPressed,
     required this.body,
   });
 
   final String weekday;
   final String date;
+  final VoidCallback onAddPressed;
   final Widget body;
 
   @override
@@ -45,6 +48,7 @@ class EScaffold extends StatelessWidget {
         padding: const EdgeInsets.all(paddingScaffold),
         child: body,
       ),
+      floatingActionButton: EActionFloatingButton(onAddPressed: onAddPressed),
     );
   }
 }

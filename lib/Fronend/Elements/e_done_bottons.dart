@@ -30,8 +30,8 @@ class EDoneBottons extends StatelessWidget {
               onTap: onEdit,
               borderRadius: BorderRadius.circular(100),
               child: SizedBox(
-                width: sizeDoneBottonsOutside,
-                height: sizeDoneBottonsOutside,
+                width: sizeDoneButtonsOutside,
+                height: sizeDoneButtonsOutside,
                 child: Icon(
                   Icons.mode_edit_outline_rounded,
                   color: buttonColor,
@@ -45,8 +45,8 @@ class EDoneBottons extends StatelessWidget {
               onTap: onDone,
               borderRadius: BorderRadius.circular(100),
               child: SizedBox(
-                width: sizeDoneBottonMiddle,
-                height: sizeDoneBottonMiddle,
+                width: sizeDoneButtonMiddle,
+                height: sizeDoneButtonMiddle,
                 child:
                     canBeDone
                         ? FAssets.completeActive
@@ -58,8 +58,8 @@ class EDoneBottons extends StatelessWidget {
               onTap: onNext,
               borderRadius: BorderRadius.circular(100),
               child: SizedBox(
-                width: sizeDoneBottonsOutside,
-                height: sizeDoneBottonsOutside,
+                width: sizeDoneButtonsOutside,
+                height: sizeDoneButtonsOutside,
                 child: Icon(
                   Icons.double_arrow_rounded,
                   color: buttonColor,
@@ -76,14 +76,14 @@ class EDoneBottons extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             SizedBox(
-              width: sizeDoneBottonsOutside,
+              width: sizeDoneButtonsOutside,
               child: Center(
                 child: Text("Bearbeiten", style: taskPopupDescription),
               ),
             ),
             SizedBox(width: spaceBetweenButtons),
             SizedBox(
-              width: sizeDoneBottonMiddle,
+              width: sizeDoneButtonMiddle,
               child: Center(
                 child: Text(
                   "Geschafft!",
@@ -96,7 +96,7 @@ class EDoneBottons extends StatelessWidget {
             ),
             SizedBox(width: spaceBetweenButtons),
             SizedBox(
-              width: sizeDoneBottonsOutside,
+              width: sizeDoneButtonsOutside,
               child: Center(
                 child: Text("Verschieben", style: taskPopupDescription),
               ),
