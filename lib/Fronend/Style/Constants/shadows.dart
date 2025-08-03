@@ -7,3 +7,9 @@ const shadowTaskElement = BoxShadow(
   offset: Offset(0, 4),
   spreadRadius: -0.5,
 );
+
+const shadowIconDoneButtons = Shadow(
+  color: shadowColor,
+  blurRadius: 3,
+  offset: Offset(0, 3),
+);

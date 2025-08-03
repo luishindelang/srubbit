@@ -13,6 +13,9 @@ class CTextButtonSelected extends StatelessWidget {
     this.backgroundSelected = Colors.black,
     this.textColor = Colors.black,
     this.textColorSelected = Colors.white,
+    this.radius = 10,
+    this.paddingHor = 14,
+    this.paddingVert = 6,
   });
 
   final VoidCallback onPressed;
@@ -24,6 +27,9 @@ class CTextButtonSelected extends StatelessWidget {
   final Color backgroundSelected;
   final Color textColor;
   final Color textColorSelected;
+  final double radius;
+  final double paddingHor;
+  final double paddingVert;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +41,9 @@ class CTextButtonSelected extends StatelessWidget {
           isSelected
               ? backgroundSelected.withAlpha(120)
               : background.withAlpha(120),
-      paddingHor: 14,
-      paddingVert: 5,
+      paddingHor: paddingHor,
+      paddingVert: paddingVert,
+      radius: radius,
       child: Text(
         text,
         style: TextStyle(fontSize: fontSize, fontWeight: frontWeight),

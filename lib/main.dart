@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scrubbit/Fronend/Pages/home.dart';
-import 'package:scrubbit/Style/app_theme.dart';
+import 'package:scrubbit/Fronend/Style/app_theme.dart';
 
 void main() {
   debugPaintSizeEnabled = false;

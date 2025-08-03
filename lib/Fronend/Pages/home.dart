@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/DB/database_service.dart';
+import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_element.dart';
+import 'package:scrubbit/Fronend/Elements/e_task_element_button.dart';
+import 'package:scrubbit/test_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,19 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  @override
-  void initState() {
-    loadData();
-    super.initState();
-  }
-
-  Future<void> loadData() async {
-    var ds = await DatabaseService.init();
-    ds.accounts = [
-      DsAccount(name: "User", color: Colors.blue, icon: Icons.abc),
-    ];
-  }
-
+  final accounts = createAccounts(2);
   @override
   Widget build(BuildContext context) {
     return EScaffold(
@@ -38,7 +26,8 @@ class _HomeState extends State<Home> {
           ETaskBoxTitle(
             title: "Heute",
             children: [
-              ETaskElement(
+              ETaskElementButton(
+                accounts: accounts,
                 task: DsTask(
                   name: "Putzen ist ein ganz langer name der nicht drauf passt",
                   emoji: "😄",
@@ -48,9 +37,9 @@ class _HomeState extends State<Home> {
                   timeFrom: DateTime(2023, 1, 1, 12, 20),
                   timeUntil: DateTime(2023, 1, 1, 13, 10),
                 ),
-                isTodayImportant: true,
               ),
-              ETaskElement(
+              ETaskElementButton(
+                accounts: accounts,
                 task: DsTask(
                   name: "Putzen ist ein ganz langer name der nicht drauf passt",
                   emoji: "😄",
@@ -59,7 +48,6 @@ class _HomeState extends State<Home> {
                   isImportant: false,
                   timeFrom: DateTime(2023, 1, 1, 8, 40),
                 ),
-                isTodayImportant: false,
               ),
             ],
           ),
@@ -67,7 +55,8 @@ class _HomeState extends State<Home> {
           ETaskBoxTitle(
             title: "Diese Woche",
             children: [
-              ETaskElement(
+              ETaskElementButton(
+                accounts: accounts,
                 task: DsTask(
                   name: "Putzen ist ein ganz langer name der nicht drauf passt",
                   emoji: "😄",
@@ -77,18 +66,17 @@ class _HomeState extends State<Home> {
                   timeFrom: DateTime(2023, 1, 1, 12, 20),
                   timeUntil: DateTime(2023, 1, 1, 13, 10),
                 ),
-                isTodayImportant: false,
               ),
-              ETaskElement(
+              ETaskElementButton(
+                accounts: accounts,
                 task: DsTask(
-                  name: "Putzen ist ein ganz langer name der nicht drauf passt",
+                  name: "Putzen",
                   emoji: "😄",
                   onEveryDate: true,
                   taskDates: [],
                   isImportant: true,
                   timeFrom: DateTime(2023, 1, 1, 8, 40),
                 ),
-                isTodayImportant: false,
               ),
             ],
           ),
@@ -99,6 +87,14 @@ class _HomeState extends State<Home> {
               Text("hallo das ist ein test"),
               Text("hallo das ist ein test"),
               Text("hallo das ist ein test"),
+              FAssets.completeActive,
+              FAssets.completeInactive,
+              FAssets.doneActive,
+              FAssets.doneInactive,
+              FAssets.importantActive,
+              FAssets.importantInactive,
+              FAssets.xActive,
+              FAssets.xInactive,
             ],
           ),
         ],

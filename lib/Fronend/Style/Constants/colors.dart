@@ -5,14 +5,16 @@ const scaffoldTopBarGradient1 = Color.fromARGB(204, 159, 219, 244);
 const scaffoldTopBarGradient2 = Color.fromARGB(255, 159, 219, 244);
 const scaffoldTopBarGradient3 = Color.fromARGB(255, 124, 201, 233);
 
-const taskListBackgroundColor = Color.fromARGB(255, 244, 246, 249);
+const taskListBackgroundColor = Color.fromARGB(255, 244, 246, 255);
 
 const textColor = Color.fromARGB(255, 0, 0, 0);
 const textNegativeColor = Color.fromARGB(255, 255, 255, 255);
 const textTitleColor = Color.fromARGB(255, 11, 86, 108);
 const textPassiveColor = Color.fromARGB(255, 118, 115, 115);
+const textInactiveColor = Color.fromARGB(255, 180, 180, 180);
 
 const buttonColor = Color.fromARGB(255, 80, 140, 163);
+const buttonBackgroundColor = Color.fromARGB(255, 246, 246, 246);
 
 const importantTaskColor = Color.fromARGB(255, 249, 248, 113);
 

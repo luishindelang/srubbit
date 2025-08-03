@@ -38,3 +38,21 @@ const taskElementDate = TextStyle(
   fontWeight: FontWeight.w400,
   color: textPassiveColor,
 );
+
+const taskPopupDescription = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+  color: textTitleColor,
+);
+
+const taskPopupDoneDescriptionActive = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+  color: textTitleColor,
+);
+
+const taskPopupDoneDescriptionInactive = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+  color: textInactiveColor,
+);
