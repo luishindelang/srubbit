@@ -54,6 +54,19 @@ class DaoAccount extends MappingAccount {
     return fromList(rawData);
   }
 
+  Future<List<DsAccount>> getMostDoneBy(int amount) async {
+    final rawData = await db.rawQuery("""
+    SELECT a.*, COUNT(${TTaskDoneByAccount.taskId}) AS tc 
+    FROM ${TAccount.tableName} a
+    LEFT JOIN ${TTaskDoneByAccount.tableName} t
+    ON a.${TAccount.id} = t.${TTaskDoneByAccount.accountId}
+    GROUP BY a.${TAccount.id}
+    ORDER BY tc DESC
+    LIMIT $amount;
+    """);
+    return fromList(rawData);
+  }
+
   Future<void> delete(String id) async {
     await db.delete(
       TAccount.tableName,
