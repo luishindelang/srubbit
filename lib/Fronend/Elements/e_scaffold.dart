@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Fronend/Elements/e_action_floating_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
+import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 
@@ -41,6 +42,7 @@ class EScaffold extends StatelessWidget {
                 scaffoldTopBarGradient3,
               ],
             ),
+            boxShadow: [shadowScaffoldAppbar],
           ),
         ),
       ),
