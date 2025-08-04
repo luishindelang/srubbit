@@ -17,7 +17,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final accounts = createAccounts(2);
   void showNewTaskPopup() {
-    showDialog(context: context, builder: (context) => AddTaskPopup());
+    showDialog(
+      context: context,
+      builder: (context) => AddTaskPopup(isRepeating: false),
+    );
   }
 
   @override

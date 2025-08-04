@@ -65,7 +65,6 @@ class _TaskPopupState extends State<TaskPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     return Dialog(
       insetPadding: EdgeInsets.all(paddingTaskPopup),
       shape: RoundedRectangleBorder(

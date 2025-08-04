@@ -56,3 +56,15 @@ const taskPopupDoneDescriptionInactive = TextStyle(
   fontWeight: FontWeight.w600,
   color: textInactiveColor,
 );
+
+const newTaskEmoji = TextStyle(
+  fontSize: 36,
+  fontWeight: FontWeight.w400,
+  color: textColor,
+);
+
+const inputText = TextStyle(
+  fontSize: 28,
+  fontWeight: FontWeight.w400,
+  color: textColor,
+);

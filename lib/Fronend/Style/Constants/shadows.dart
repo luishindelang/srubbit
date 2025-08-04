@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 
+const shadowScaffoldAppbar = BoxShadow(
+  color: shadowColor,
+  blurRadius: 2,
+  offset: Offset(0, 3),
+  spreadRadius: 1,
+);
+
 const shadowTaskElement = BoxShadow(
   color: shadowColor,
   blurRadius: 4,

@@ -31,4 +31,4 @@ const userColors = [
   Color.fromARGB(255, 151, 175, 185),
 ];
 
-const shadowColor = Color.fromARGB(25, 0, 0, 0);
+const shadowColor = Color.fromARGB(35, 0, 0, 0);
