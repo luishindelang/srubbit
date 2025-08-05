@@ -4,6 +4,7 @@ import 'package:scrubbit/Backend/DB/DAOs/dao_task_date.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_done_by_account.dart';
+import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_owner.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Mappings/mapping_task.dart';
 
@@ -60,11 +61,12 @@ class DaoTask extends MappingTask {
   }
 
   Future<List<DsTask>> getTaskOwned(String? accountId) async {
-    final List<Map<String, dynamic>> rawData = await db.query(
-      TTask.tableName,
-      where: "${TTask.taskOwnerId} = ?",
-      whereArgs: [accountId],
-    );
+    final List<Map<String, dynamic>> rawData = await db.rawQuery("""
+    SELECT * FROM ${TTask.tableName} t
+    LEFT JOIN ${TTaskOwner.tableName} o
+    ON t.${TTask.id} = o.${TTaskOwner.taskId}
+    WHERE o.${TTaskOwner.accountId} = '$accountId';
+    """);
     return fromList(rawData);
   }
 

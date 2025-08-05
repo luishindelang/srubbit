@@ -15,7 +15,7 @@ class DsTask {
   final DateTime? timeFrom;
   final DateTime? timeUntil;
   final DsRepeatingTemplates? repeatingTemplate;
-  final DsAccount? taskOwned;
+  final List<DsAccount>? taskOwners;
   final DateTime? doneDate;
   final List<DsAccount>? doneBy;
 
@@ -32,7 +32,7 @@ class DsTask {
     this.timeFrom,
     this.timeUntil,
     this.repeatingTemplate,
-    this.taskOwned,
+    this.taskOwners,
     this.doneDate,
     this.doneBy,
     this.fromDB = false,
@@ -48,7 +48,7 @@ class DsTask {
     DateTime? newTimeFrom,
     DateTime? newTimeUntil,
     DsRepeatingTemplates? newRepeatingTemplate,
-    DsAccount? newTaskOwned,
+    List<DsAccount>? newTaskOwners,
     DateTime? newDoneDate,
     List<DsAccount>? newDoneBy,
   }) {
@@ -63,7 +63,7 @@ class DsTask {
       timeFrom: newTimeFrom ?? timeFrom,
       timeUntil: newTimeUntil ?? timeUntil,
       repeatingTemplate: newRepeatingTemplate ?? repeatingTemplate,
-      taskOwned: newTaskOwned ?? taskOwned,
+      taskOwners: newTaskOwners ?? taskOwners,
       doneDate: newDoneDate ?? doneDate,
       doneBy: newDoneBy ?? doneBy,
     );
@@ -118,6 +118,7 @@ class DsTask {
       isImportant: isImportant,
       timeFrom: timeFrom,
       timeUntil: timeUntil,
+      taskOwners: taskOwners,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_account.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_done_by_account.dart';
+import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_owner.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Mappings/mapping_account.dart';
 
@@ -63,6 +64,16 @@ class DaoAccount extends MappingAccount {
     GROUP BY a.${TAccount.id}
     ORDER BY tc DESC
     LIMIT $amount;
+    """);
+    return fromList(rawData);
+  }
+
+  Future<List<DsAccount>> getOwners(String taskId) async {
+    final rawData = await db.rawQuery("""
+    SELECT * FROM ${TAccount.tableName} a
+    LEFT JOIN ${TTaskOwner.tableName} o
+    ON a.${TAccount.id} = o.${TTaskOwner.accountId}
+    WHERE o.${TTaskOwner.taskId} = '$taskId';
     """);
     return fromList(rawData);
   }

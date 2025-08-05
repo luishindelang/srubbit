@@ -52,7 +52,6 @@ void main() {
       timeFrom: null,
       timeUntil: null,
       repeatingTemplate: buildTemplate(),
-      taskOwned: null,
       doneDate: null,
       doneBy: null,
     );

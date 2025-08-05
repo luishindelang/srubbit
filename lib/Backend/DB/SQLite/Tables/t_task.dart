@@ -1,4 +1,3 @@
-import 'package:scrubbit/Backend/DB/SQLite/Tables/t_account.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
 
 class TTask {
@@ -11,7 +10,6 @@ class TTask {
   static const String isImportant = "is_important";
   static const String timeFrom = "time_from";
   static const String timeUntil = "time_until";
-  static const String taskOwnerId = "task_owner_id";
   static const String repeatingTemplateId = "repeating_template_id";
   static const String doneDate = "done_date";
 
@@ -27,9 +25,7 @@ class TTask {
       $timeFrom INTEGER,
       $timeUntil INTEGER,
       $repeatingTemplateId TEXT,
-      $taskOwnerId TEXT,
       $doneDate INTEGER,
-      FOREIGN KEY ($taskOwnerId) REFERENCES ${TAccount.tableName}(${TAccount.id}) ON DELETE SET NULL,
       FOREIGN KEY ($repeatingTemplateId) REFERENCES ${TRepeatingTemplates.tableName}(${TRepeatingTemplates.id}) ON DELETE SET NULL
     );
     """;
