@@ -7,9 +7,16 @@ import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 
 class ESelectTimeFromUntil extends StatefulWidget {
-  const ESelectTimeFromUntil({super.key, required this.onIsRepeating});
+  const ESelectTimeFromUntil({
+    super.key,
+    required this.isRepeating,
+    required this.onIsRepeating,
+    required this.onTimeSelect,
+  });
 
+  final bool isRepeating;
   final void Function(bool) onIsRepeating;
+  final void Function(TimeOfDay?, TimeOfDay?) onTimeSelect;
 
   @override
   State<ESelectTimeFromUntil> createState() => _ESelectTimeFromUntilState();
@@ -19,7 +26,7 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
   bool isRepeating = false;
   bool showTime = false;
   TimeOfDay? timeFrom;
-  TimeOfDay? tiemUntil;
+  TimeOfDay? timeUntil;
 
   String showTimeString(TimeOfDay? time) {
     if (time != null) {
@@ -42,22 +49,44 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
   }
 
   void openTimeUntilPicker() {
-    tiemUntil ??= TimeOfDay.now();
+    if (timeFrom != null) {
+      timeUntil ??= TimeOfDay.now();
 
-    showDialog<TimeOfDay>(
-      context: context,
-      builder: (context) => ETimePicker(time: tiemUntil!),
-    ).then(
-      (newTime) => setState(() {
-        tiemUntil = newTime;
-      }),
-    );
+      showDialog<TimeOfDay>(
+        context: context,
+        builder: (context) => ETimePicker(time: timeUntil!),
+      ).then(
+        (newTime) => setState(() {
+          timeUntil = newTime;
+        }),
+      );
+    }
+  }
+
+  void onShowTime() {
+    setState(() {
+      if (showTime) {
+        timeFrom = null;
+        timeUntil = null;
+      }
+      showTime = !showTime;
+      widget.onTimeSelect(timeFrom, timeUntil);
+    });
+  }
+
+  @override
+  void initState() {
+    isRepeating = widget.isRepeating;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: newTaskBodySedePadding,
+        vertical: 10.0,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -89,11 +118,9 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
           Row(
             children: [
               CButton(
-                onPressed:
-                    () => setState(() {
-                      showTime = !showTime;
-                    }),
+                onPressed: onShowTime,
                 backgroundColor: buttonBackgroundColor,
+                splashColor: buttonSplashColor,
                 radius: borderRadiusButtons,
                 paddingVert: 6,
                 paddingHor: 14,
@@ -141,7 +168,7 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
                       child: Row(
                         children: [
                           Text(
-                            "bis ${showTimeString(tiemUntil)}",
+                            "bis ${showTimeString(timeUntil)}",
                             style: buttonSelect,
                           ),
                         ],

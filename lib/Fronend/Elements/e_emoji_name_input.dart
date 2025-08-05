@@ -70,6 +70,7 @@ class _EEmojiNameInputState extends State<EEmojiNameInput> {
                   onPressed: () {
                     _emojiFocus.requestFocus();
                   },
+                  splashColor: buttonSplashColor,
                   radius: borderRadiusBox,
                   child:
                       emoji.isEmpty

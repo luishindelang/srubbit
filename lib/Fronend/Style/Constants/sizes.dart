@@ -24,3 +24,5 @@ const spaceBetweenButtons = 40.0;
 
 const newTaskEmojiSizeButton = 50.0;
 const sizeDoneButtonNewTask = 70.0;
+
+const newTaskBodySedePadding = 10.0;

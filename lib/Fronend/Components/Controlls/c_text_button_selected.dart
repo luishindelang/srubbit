@@ -13,6 +13,7 @@ class CTextButtonSelected extends StatelessWidget {
     this.backgroundSelected = Colors.black,
     this.textColor = Colors.black,
     this.textColorSelected = Colors.white,
+    this.splashColor = Colors.transparent,
     this.radius = 10,
     this.paddingHor = 14,
     this.paddingVert = 6,
@@ -27,6 +28,7 @@ class CTextButtonSelected extends StatelessWidget {
   final Color backgroundSelected;
   final Color textColor;
   final Color textColorSelected;
+  final Color splashColor;
   final double radius;
   final double paddingHor;
   final double paddingVert;

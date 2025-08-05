@@ -15,6 +15,7 @@ const textInactiveColor = Color.fromARGB(255, 180, 180, 180);
 
 const buttonColor = Color.fromARGB(255, 80, 140, 163);
 const buttonBackgroundColor = Color.fromARGB(255, 246, 246, 246);
+const buttonSplashColor = Color.fromARGB(255, 167, 197, 209);
 
 const importantTaskColor = Color.fromARGB(255, 249, 248, 113);
 
