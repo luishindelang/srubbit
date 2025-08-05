@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
@@ -12,8 +13,8 @@ class DsTask {
   final List<DsTaskDate> taskDates;
   final int? offset;
   final bool isImportant;
-  final DateTime? timeFrom;
-  final DateTime? timeUntil;
+  final TimeOfDay? timeFrom;
+  final TimeOfDay? timeUntil;
   final DsRepeatingTemplates? repeatingTemplate;
   final List<DsAccount>? taskOwners;
   final DateTime? doneDate;
@@ -45,8 +46,8 @@ class DsTask {
     List<DsTaskDate>? newTaskDates,
     int? newOffset,
     bool? newIsImportant,
-    DateTime? newTimeFrom,
-    DateTime? newTimeUntil,
+    TimeOfDay? newTimeFrom,
+    TimeOfDay? newTimeUntil,
     DsRepeatingTemplates? newRepeatingTemplate,
     List<DsAccount>? newTaskOwners,
     DateTime? newDoneDate,

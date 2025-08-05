@@ -3,6 +3,7 @@ import 'package:scrubbit/Backend/DB/DAOs/dao_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DAOs/dao_task_date.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task.dart';
+import 'package:scrubbit/Backend/Functions/f_time.dart';
 
 class MappingTask {
   final DaoTaskDate daoTaskDate;
@@ -29,14 +30,8 @@ class MappingTask {
       taskDates: taskDates,
       offset: rawData[TTask.offset],
       isImportant: rawData[TTask.isImportant] == 1,
-      timeFrom:
-          rawData[TTask.timeFrom] != null
-              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeFrom])
-              : null,
-      timeUntil:
-          rawData[TTask.timeUntil] != null
-              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeUntil])
-              : null,
+      timeFrom: intToTimeOfDay(rawData[TTask.timeFrom]),
+      timeUntil: intToTimeOfDay(rawData[TTask.timeUntil]),
       repeatingTemplate: repeatingTemplate,
       taskOwners: taskOwners,
       doneDate:
@@ -64,8 +59,8 @@ class MappingTask {
       TTask.onEveryDate: task.onEveryDate ? 1 : 0,
       TTask.offset: task.offset,
       TTask.isImportant: task.isImportant ? 1 : 0,
-      TTask.timeFrom: task.timeFrom?.millisecondsSinceEpoch,
-      TTask.timeUntil: task.timeUntil?.millisecondsSinceEpoch,
+      TTask.timeFrom: timeOfDayToInt(task.timeFrom),
+      TTask.timeUntil: timeOfDayToInt(task.timeUntil),
       TTask.repeatingTemplateId: task.repeatingTemplate?.id,
       TTask.doneDate: task.doneDate?.millisecondsSinceEpoch,
     };
