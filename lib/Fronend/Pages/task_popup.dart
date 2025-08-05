@@ -21,29 +21,15 @@ class _TaskPopupState extends State<TaskPopup> {
   List<String> selectedAccounts = [];
   bool selectAll = false;
 
-  void onAccountSelect(DsAccount account) {
+  void onSelectedAccount(List<String>? newSelectedAccounts) {
     setState(() {
-      if (selectedAccounts.contains(account.id)) {
-        selectedAccounts.remove(account.id);
+      if (newSelectedAccounts != null) {
+        selectedAccounts = newSelectedAccounts;
+        selectAll = false;
       } else {
-        selectedAccounts.add(account.id);
-      }
-      selectAll = false;
-    });
-  }
-
-  void onAllSelect() {
-    setState(() {
-      if (!selectAll) {
         selectedAccounts = [];
+        selectAll = !selectAll;
       }
-      selectAll = !selectAll;
-    });
-  }
-
-  void newAccount(DsAccount newAccount) {
-    setState(() {
-      widget.accounts.add(newAccount);
     });
   }
 
@@ -83,11 +69,8 @@ class _TaskPopupState extends State<TaskPopup> {
                 children: [
                   ESelectAccount(
                     accounts: widget.accounts,
+                    onSelectedAccount: onSelectedAccount,
                     selectAll: selectAll,
-                    selectedAccounts: selectedAccounts,
-                    onAccountToggle: onAccountSelect,
-                    onSelectAll: onAllSelect,
-                    onAddAccount: newAccount,
                   ),
                   SizedBox(height: 70),
                   EDoneBottons(

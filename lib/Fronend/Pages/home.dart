@@ -16,10 +16,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final accounts = createAccounts(2);
+
   void showNewTaskPopup() {
     showDialog(
       context: context,
-      builder: (context) => AddTaskPopup(isRepeating: false),
+      builder:
+          (context) => AddTaskPopup(isRepeating: false, accounts: accounts),
     );
   }
 
@@ -43,8 +45,8 @@ class _HomeState extends State<Home> {
                   onEveryDate: true,
                   taskDates: [],
                   isImportant: true,
-                  timeFrom: DateTime(2023, 1, 1, 12, 20),
-                  timeUntil: DateTime(2023, 1, 1, 13, 10),
+                  timeFrom: TimeOfDay(hour: 13, minute: 10),
+                  timeUntil: TimeOfDay(hour: 14, minute: 50),
                 ),
               ),
               ETaskElementButton(
@@ -55,7 +57,7 @@ class _HomeState extends State<Home> {
                   onEveryDate: true,
                   taskDates: [],
                   isImportant: false,
-                  timeFrom: DateTime(2023, 1, 1, 8, 40),
+                  timeFrom: TimeOfDay(hour: 13, minute: 10),
                 ),
               ),
             ],
@@ -72,8 +74,8 @@ class _HomeState extends State<Home> {
                   onEveryDate: true,
                   taskDates: [],
                   isImportant: false,
-                  timeFrom: DateTime(2023, 1, 1, 12, 20),
-                  timeUntil: DateTime(2023, 1, 1, 13, 10),
+                  timeFrom: TimeOfDay(hour: 13, minute: 10),
+                  timeUntil: TimeOfDay(hour: 14, minute: 50),
                 ),
               ),
               ETaskElementButton(
@@ -84,7 +86,7 @@ class _HomeState extends State<Home> {
                   onEveryDate: true,
                   taskDates: [],
                   isImportant: true,
-                  timeFrom: DateTime(2023, 1, 1, 8, 40),
+                  timeFrom: TimeOfDay(hour: 13, minute: 10),
                 ),
               ),
             ],

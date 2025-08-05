@@ -8,7 +8,7 @@ class CTextButtonSelected extends StatelessWidget {
     required this.text,
     required this.isSelected,
     this.fontSize = 18,
-    this.frontWeight = FontWeight.w400,
+    this.fontWeight = FontWeight.w400,
     this.background = Colors.white,
     this.backgroundSelected = Colors.black,
     this.textColor = Colors.black,
@@ -22,7 +22,7 @@ class CTextButtonSelected extends StatelessWidget {
   final String text;
   final bool isSelected;
   final double fontSize;
-  final FontWeight frontWeight;
+  final FontWeight fontWeight;
   final Color background;
   final Color backgroundSelected;
   final Color textColor;
@@ -46,7 +46,7 @@ class CTextButtonSelected extends StatelessWidget {
       radius: radius,
       child: Text(
         text,
-        style: TextStyle(fontSize: fontSize, fontWeight: frontWeight),
+        style: TextStyle(fontSize: fontSize, fontWeight: fontWeight),
       ),
     );
   }

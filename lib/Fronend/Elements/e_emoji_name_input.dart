@@ -10,11 +10,13 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 class EEmojiNameInput extends StatefulWidget {
   const EEmojiNameInput({
     super.key,
+    required this.isImportant,
     required this.onChangeName,
     required this.onChangeEmoji,
     required this.onChangeImportant,
   });
 
+  final bool isImportant;
   final void Function(String) onChangeName;
   final void Function(String) onChangeEmoji;
   final void Function(bool) onChangeImportant;
@@ -28,7 +30,13 @@ class _EEmojiNameInputState extends State<EEmojiNameInput> {
   final _nameController = TextEditingController();
   final _emojiController = TextEditingController();
   final _emojiFocus = FocusNode();
-  bool isImportant = false;
+  late bool isImportant;
+
+  @override
+  void initState() {
+    isImportant = widget.isImportant;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -41,7 +49,7 @@ class _EEmojiNameInputState extends State<EEmojiNameInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      padding: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: isImportant ? importantTaskColor : scaffoldBackgroundColor,
         borderRadius: BorderRadius.only(

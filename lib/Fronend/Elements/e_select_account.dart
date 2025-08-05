@@ -6,24 +6,59 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/test_data.dart';
 
-class ESelectAccount extends StatelessWidget {
+class ESelectAccount extends StatefulWidget {
   const ESelectAccount({
     super.key,
     required this.accounts,
-    required this.selectedAccounts,
-    required this.selectAll,
-    required this.onSelectAll,
-    required this.onAccountToggle,
-    required this.onAddAccount,
+    required this.onSelectedAccount,
+    this.selectAll = false,
   });
 
   final List<DsAccount> accounts;
-  final List<String> selectedAccounts;
+  final void Function(List<String>?) onSelectedAccount;
   final bool selectAll;
 
-  final VoidCallback onSelectAll;
-  final void Function(DsAccount account) onAccountToggle;
-  final void Function(DsAccount newAccount) onAddAccount;
+  @override
+  State<ESelectAccount> createState() => _ESelectAccountState();
+}
+
+class _ESelectAccountState extends State<ESelectAccount> {
+  List<String> selectedAccounts = [];
+  late bool selectAll;
+
+  @override
+  void initState() {
+    selectAll = widget.selectAll;
+    super.initState();
+  }
+
+  void onAccountSelect(DsAccount account) {
+    setState(() {
+      if (selectedAccounts.contains(account.id)) {
+        selectedAccounts.remove(account.id);
+      } else {
+        selectedAccounts.add(account.id);
+      }
+      selectAll = false;
+      widget.onSelectedAccount(selectedAccounts);
+    });
+  }
+
+  void onAllSelect() {
+    setState(() {
+      if (!selectAll) {
+        selectedAccounts = [];
+      }
+      selectAll = !selectAll;
+      widget.onSelectedAccount(null);
+    });
+  }
+
+  void newAccount(DsAccount newAccount) {
+    setState(() {
+      widget.accounts.add(newAccount);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +71,16 @@ class ESelectAccount extends StatelessWidget {
               children: [
                 Icon(Icons.person, size: sizeIconDonePopup, color: buttonColor),
                 ESelectAccountButton(
-                  onPressed: onSelectAll,
+                  onPressed: onAllSelect,
                   text: "Alle",
                   isSelected: selectAll,
                   selectedBackground: buttonColor,
                 ),
                 Row(
                   children:
-                      accounts.map((account) {
+                      widget.accounts.map((account) {
                         return ESelectAccountButton(
-                          onPressed: () => onAccountToggle(account),
+                          onPressed: () => onAccountSelect(account),
                           text: account.name,
                           isSelected: selectedAccounts.contains(account.id),
                           selectedBackground: account.color,
@@ -55,7 +90,7 @@ class ESelectAccount extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(paddingButton),
                   child: CButton(
-                    onPressed: () => onAddAccount(createAccount()),
+                    onPressed: () => newAccount(createAccount()),
                     backgroundColor: buttonBackgroundColor,
                     radius: borderRadiusButtons,
                     paddingVert: 6,

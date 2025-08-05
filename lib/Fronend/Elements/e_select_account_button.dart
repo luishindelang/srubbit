@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_text_button_selected.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
+import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 
 class ESelectAccountButton extends StatelessWidget {
   const ESelectAccountButton({
@@ -25,9 +26,9 @@ class ESelectAccountButton extends StatelessWidget {
         onPressed: onPressed,
         text: text,
         isSelected: isSelected,
-        fontSize: 18,
-        frontWeight: FontWeight.w400,
-        textColor: textColor,
+        fontSize: buttonSelect.fontSize!,
+        fontWeight: buttonSelect.fontWeight!,
+        textColor: buttonSelect.color!,
         textColorSelected: textNegativeColor,
         background: buttonBackgroundColor,
         backgroundSelected: selectedBackground,

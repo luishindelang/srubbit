@@ -20,8 +20,11 @@ class FAssets {
     _path + _completeInactive,
     fit: BoxFit.fill,
   );
-  static Image doneActive = Image.asset(_path + _doneActive);
-  static Image doneInactive = Image.asset(_path + _doneInactive);
+  static Image doneActive = Image.asset(_path + _doneActive, fit: BoxFit.fill);
+  static Image doneInactive = Image.asset(
+    _path + _doneInactive,
+    fit: BoxFit.fill,
+  );
   static Image importantActive = Image.asset(
     _path + _importantActive,
     height: imageImportantSize,

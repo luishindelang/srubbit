@@ -68,3 +68,21 @@ const inputText = TextStyle(
   fontWeight: FontWeight.w400,
   color: textColor,
 );
+
+const buttonSelect = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+  color: textColor,
+);
+
+const buttonSelected = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+  color: textNegativeColor,
+);
+
+const buttonNormal = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w500,
+  color: textTitleColor,
+);

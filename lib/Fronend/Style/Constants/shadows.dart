@@ -10,7 +10,7 @@ const shadowScaffoldAppbar = BoxShadow(
 
 const shadowTaskElement = BoxShadow(
   color: shadowColor,
-  blurRadius: 4,
+  blurRadius: 5,
   offset: Offset(0, 4),
   spreadRadius: -0.5,
 );

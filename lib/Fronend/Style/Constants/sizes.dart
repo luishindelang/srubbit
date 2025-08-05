@@ -23,3 +23,4 @@ const sizeDoneButtonMiddle = 130.0;
 const spaceBetweenButtons = 40.0;
 
 const newTaskEmojiSizeButton = 50.0;
+const sizeDoneButtonNewTask = 70.0;
