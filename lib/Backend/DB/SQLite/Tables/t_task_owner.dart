@@ -10,7 +10,7 @@ class TTaskOwner {
   static String createTable() {
     return """
     CREATE TABLE IF NOT EXISTS $tableName (
-      $id PRIMARY KEY,
+      $id TEXT PRIMARY KEY,
       $accountId TEXT,
       $taskId TEXT,
       FOREIGN KEY ($accountId) REFERENCES ${TAccount.tableName}(${TAccount.id}),
