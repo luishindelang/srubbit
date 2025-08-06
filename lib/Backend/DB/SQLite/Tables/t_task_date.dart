@@ -5,6 +5,7 @@ class TTaskDate {
   static const String id = "task_date_id";
   static const String plannedDate = "planned_date";
   static const String completionWindow = "completion_window";
+  static const String doneDate = "done_date";
   static const String taskId = "task_id";
 
   static String createTable() {
@@ -13,6 +14,7 @@ class TTaskDate {
       $id TEXT PRIMARY KEY,
       $plannedDate INTEGER NOT NULL,
       $completionWindow INTEGER NOT NULL DEFAULT 0,
+      $doneDate INTEGER,
       $taskId TEXT,
       FOREIGN KEY ($taskId) REFERENCES ${TTask.tableName}(${TTask.id}) ON DELETE SET NULL
     );

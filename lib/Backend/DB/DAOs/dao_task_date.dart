@@ -1,3 +1,4 @@
+import 'package:scrubbit/Backend/DB/DAOs/dao_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_date.dart';
 import 'package:sqflite/sqflite.dart';
@@ -5,7 +6,7 @@ import 'Mappings/mapping_task_date.dart';
 
 class DaoTaskDate extends MappingTaskDate {
   final Database db;
-  DaoTaskDate(this.db);
+  DaoTaskDate(this.db) : super(DaoAccount(db));
 
   Future<void> insert(DsTaskDate taskDate, String taskId) async {
     await db.insert(

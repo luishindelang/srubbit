@@ -11,7 +11,6 @@ class TTask {
   static const String timeFrom = "time_from";
   static const String timeUntil = "time_until";
   static const String repeatingTemplateId = "repeating_template_id";
-  static const String doneDate = "done_date";
 
   static String createTable() {
     return """
@@ -25,7 +24,6 @@ class TTask {
       $timeFrom INTEGER,
       $timeUntil INTEGER,
       $repeatingTemplateId TEXT,
-      $doneDate INTEGER,
       FOREIGN KEY ($repeatingTemplateId) REFERENCES ${TRepeatingTemplates.tableName}(${TRepeatingTemplates.id}) ON DELETE SET NULL
     );
     """;

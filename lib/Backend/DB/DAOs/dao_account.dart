@@ -50,14 +50,14 @@ class DaoAccount extends MappingAccount {
     SELECT * FROM ${TAccount.tableName} a
     LEFT JOIN ${TTaskDoneByAccount.tableName} t
     ON a.${TAccount.id} = t.${TTaskDoneByAccount.accountId}
-    WHERE t.${TTaskDoneByAccount.taskId} = '$taskId';
+    WHERE t.${TTaskDoneByAccount.taskDateId} = '$taskId';
     """);
     return fromList(rawData);
   }
 
   Future<List<DsAccount>> getMostDoneBy(int amount) async {
     final rawData = await db.rawQuery("""
-    SELECT a.*, COUNT(${TTaskDoneByAccount.taskId}) AS tc 
+    SELECT a.*, COUNT(${TTaskDoneByAccount.taskDateId}) AS tc 
     FROM ${TAccount.tableName} a
     LEFT JOIN ${TTaskDoneByAccount.tableName} t
     ON a.${TAccount.id} = t.${TTaskDoneByAccount.accountId}

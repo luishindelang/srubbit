@@ -52,8 +52,6 @@ void main() {
       timeFrom: null,
       timeUntil: null,
       repeatingTemplate: buildTemplate(),
-      doneDate: null,
-      doneBy: null,
     );
   }
 

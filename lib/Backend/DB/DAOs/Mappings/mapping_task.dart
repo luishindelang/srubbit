@@ -20,7 +20,6 @@ class MappingTask {
             : null;
     final taskDates = await daoTaskDate.getByTaskId(rawData[TTask.id]);
     final taskOwners = await daoAccount.getOwners(rawData[TTask.id]);
-    final doneBy = await daoAccount.getDoneBy(rawData[TTask.id]);
 
     return DsTask(
       id: rawData[TTask.id] as String,
@@ -34,11 +33,6 @@ class MappingTask {
       timeUntil: intToTimeOfDay(rawData[TTask.timeUntil]),
       repeatingTemplate: repeatingTemplate,
       taskOwners: taskOwners,
-      doneDate:
-          rawData[TTask.doneDate] != null
-              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTask.timeFrom])
-              : null,
-      doneBy: doneBy.isNotEmpty ? doneBy : null,
       fromDB: true,
     );
   }
@@ -62,7 +56,6 @@ class MappingTask {
       TTask.timeFrom: timeOfDayToInt(task.timeFrom),
       TTask.timeUntil: timeOfDayToInt(task.timeUntil),
       TTask.repeatingTemplateId: task.repeatingTemplate?.id,
-      TTask.doneDate: task.doneDate?.millisecondsSinceEpoch,
     };
   }
 }

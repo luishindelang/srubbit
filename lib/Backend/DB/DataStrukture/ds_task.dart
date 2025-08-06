@@ -17,8 +17,6 @@ class DsTask {
   final TimeOfDay? timeUntil;
   final DsRepeatingTemplates? repeatingTemplate;
   final List<DsAccount>? taskOwners;
-  final DateTime? doneDate;
-  final List<DsAccount>? doneBy;
 
   final bool fromDB;
 
@@ -34,8 +32,6 @@ class DsTask {
     this.timeUntil,
     this.repeatingTemplate,
     this.taskOwners,
-    this.doneDate,
-    this.doneBy,
     this.fromDB = false,
   }) : id = id ?? uuid();
 
@@ -50,8 +46,6 @@ class DsTask {
     TimeOfDay? newTimeUntil,
     DsRepeatingTemplates? newRepeatingTemplate,
     List<DsAccount>? newTaskOwners,
-    DateTime? newDoneDate,
-    List<DsAccount>? newDoneBy,
   }) {
     return DsTask(
       id: id,
@@ -65,8 +59,6 @@ class DsTask {
       timeUntil: newTimeUntil ?? timeUntil,
       repeatingTemplate: newRepeatingTemplate ?? repeatingTemplate,
       taskOwners: newTaskOwners ?? taskOwners,
-      doneDate: newDoneDate ?? doneDate,
-      doneBy: newDoneBy ?? doneBy,
     );
   }
 

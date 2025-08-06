@@ -3,6 +3,7 @@ import 'package:scrubbit/Backend/DB/DAOs/dao_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DAOs/dao_task_date.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task.dart';
+import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_date.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_done_by_account.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_owner.dart';
 import 'package:sqflite/sqflite.dart';
@@ -73,8 +74,10 @@ class DaoTask extends MappingTask {
   Future<List<DsTask>> getDoneBy(String accountId) async {
     final List<Map<String, dynamic>> rawData = await db.rawQuery("""
     SELECT * FROM ${TTask.tableName} a
-    LEFT JOUN ${TTaskDoneByAccount.tableName} t
-    ON a.${TTask.id} = t.${TTaskDoneByAccount.taskId}
+    LEFT JOIN ${TTaskDate.tableName} d
+    ON a.${TTask.id} = d.${TTaskDate.taskId}
+    LEFT JOIN ${TTaskDoneByAccount.tableName} t
+    ON d.${TTaskDate.id} = t.${TTaskDoneByAccount.taskDateId}
     WHERE t.${TTaskDoneByAccount.accountId} = '$accountId';
     """);
     return fromList(rawData);
