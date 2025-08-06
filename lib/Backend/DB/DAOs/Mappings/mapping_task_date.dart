@@ -33,16 +33,12 @@ class MappingTaskDate {
   }
 
   Map<String, dynamic> toMap(DsTaskDate taskDate, String? taskId) {
-    Map<String, dynamic> finalData = {
+    return {
       TTaskDate.id: taskDate.id,
       TTaskDate.plannedDate: taskDate.plannedDate.millisecondsSinceEpoch,
       TTaskDate.completionWindow: taskDate.completionWindow,
       TTaskDate.taskId: taskId,
-      TTaskDate.doneDate: taskDate,
+      TTaskDate.doneDate: taskDate.doneDate?.millisecondsSinceEpoch,
     };
-    if (taskId != null) {
-      finalData.addAll({TTaskDate.taskId: taskId});
-    }
-    return finalData;
   }
 }
