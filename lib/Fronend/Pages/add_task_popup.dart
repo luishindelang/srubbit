@@ -72,7 +72,8 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
                 onIsRepeating: onIsRepeating,
                 onTimeSelect: getTimes,
               ),
-              isRepeating ? ENewTaskRepeating() : ENewTaskNormal(),
+              Visibility(visible: !isRepeating, child: ENewTaskNormal()),
+              Visibility(visible: isRepeating, child: ENewTaskRepeating()),
               ENewTaskBottomButton(
                 accounts: widget.accounts,
                 canBeDone: canBeDone,

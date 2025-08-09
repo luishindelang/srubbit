@@ -43,7 +43,8 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
       builder: (context) => ETimePicker(time: timeFrom!),
     ).then(
       (newTime) => setState(() {
-        timeFrom = newTime;
+        timeFrom = newTime ?? timeFrom;
+        widget.onTimeSelect(timeFrom, timeUntil);
       }),
     );
   }
@@ -57,7 +58,8 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
         builder: (context) => ETimePicker(time: timeUntil!),
       ).then(
         (newTime) => setState(() {
-          timeUntil = newTime;
+          timeUntil = newTime ?? timeUntil;
+          widget.onTimeSelect(timeFrom, timeUntil);
         }),
       );
     }
@@ -70,7 +72,6 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
         timeUntil = null;
       }
       showTime = !showTime;
-      widget.onTimeSelect(timeFrom, timeUntil);
     });
   }
 
