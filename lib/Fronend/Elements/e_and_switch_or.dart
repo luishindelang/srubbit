@@ -21,7 +21,6 @@ class EAndSwitchOr extends StatelessWidget {
           splashColor: Colors.transparent,
           child: Text("Und", style: !isOr ? switchSelected : switchUnselected),
         ),
-
         CSwitch(
           value: isOr,
           onchanged: onChange,
@@ -29,12 +28,14 @@ class EAndSwitchOr extends StatelessWidget {
           inactiveColor: scaffoldBackgroundColor,
           acitveTrackColor: buttonColor,
           inactiveTrackColor: buttonColor,
+          scale: 40,
         ),
         CButton(
           onPressed: () => onChange(true),
           backgroundColor: Colors.transparent,
           forgroundColor: Colors.transparent,
           splashColor: Colors.transparent,
+          paddingVert: 0,
           child: Text("Oder", style: isOr ? switchSelected : switchUnselected),
         ),
       ],

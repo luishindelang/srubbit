@@ -53,9 +53,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
           } else if (selectedWeekDays.length == 1) {
             int to = weekDays.indexOf(day);
             int from = weekDays.indexOf(selectedWeekDays.last);
-            for (var day in timeSpann(weekDays, from, to)) {
-              selectedWeekDays.add(day);
-            }
+            selectedWeekDays.addAll(timeSpann(weekDays, from, to));
           } else {
             selectedWeekDays = [];
             selectedWeekDays.add(day);
@@ -75,7 +73,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         children: [
           Container(

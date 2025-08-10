@@ -57,10 +57,13 @@ class ENewTaskNormalPresetButtons extends StatelessWidget {
                 Icon(
                   Icons.calendar_month_rounded,
                   size: 22,
-                  color: type == 4 ? textColor : buttonColor,
+                  color: type == 4 ? textNegativeColor : buttonColor,
                 ),
                 SizedBox(width: 5),
-                Text("Anderes Datum", style: buttonSelect),
+                Text(
+                  "Anderes Datum",
+                  style: type == 4 ? buttonSelected : buttonSelect,
+                ),
               ],
             ),
           ),

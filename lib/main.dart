@@ -4,7 +4,7 @@ import 'package:scrubbit/Fronend/Pages/home.dart';
 import 'package:scrubbit/Fronend/Style/app_theme.dart';
 
 void main() {
-  debugPaintSizeEnabled = true;
+  debugPaintSizeEnabled = false;
   runApp(
     MaterialApp(
       theme: AppTheme.lightTheme,

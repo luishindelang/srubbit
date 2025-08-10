@@ -10,6 +10,7 @@ class CSwitch extends StatelessWidget {
     this.inactiveColor = Colors.white,
     this.inactiveTrackColor = Colors.black,
     this.borderColor = Colors.transparent,
+    this.scale = 1,
   });
 
   final bool value;
@@ -19,18 +20,26 @@ class CSwitch extends StatelessWidget {
   final Color inactiveColor;
   final Color inactiveTrackColor;
   final Color borderColor;
+  final double scale;
 
   @override
   Widget build(BuildContext context) {
-    return Switch(
-      activeColor: acitveColor,
-      activeTrackColor: acitveTrackColor,
-      inactiveThumbColor: inactiveColor,
-      inactiveTrackColor: inactiveTrackColor,
-      trackOutlineColor: WidgetStateProperty.all(borderColor),
-      thumbIcon: WidgetStateProperty.all(Icon(null)),
-      value: value,
-      onChanged: onchanged,
+    return SizedBox(
+      width: scale,
+      height: scale / 1.3,
+      child: FittedBox(
+        fit: BoxFit.fill,
+        child: Switch(
+          activeColor: acitveColor,
+          activeTrackColor: acitveTrackColor,
+          inactiveThumbColor: inactiveColor,
+          inactiveTrackColor: inactiveTrackColor,
+          trackOutlineColor: WidgetStateProperty.all(borderColor),
+          thumbIcon: WidgetStateProperty.all(Icon(null)),
+          value: value,
+          onChanged: onchanged,
+        ),
+      ),
     );
   }
 }

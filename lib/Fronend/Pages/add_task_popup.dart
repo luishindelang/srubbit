@@ -53,6 +53,7 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
+        width: 800,
         decoration: BoxDecoration(
           color: scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(borderRadiusBox),

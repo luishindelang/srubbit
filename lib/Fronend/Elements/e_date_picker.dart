@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
+import 'package:scrubbit/Backend/Functions/f_lists.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_date_picker_calendar.dart';
 import 'package:scrubbit/Fronend/Elements/e_and_switch_or.dart';
@@ -11,7 +12,16 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
 class EDatePicker extends StatefulWidget {
-  const EDatePicker({super.key});
+  const EDatePicker({
+    super.key,
+    required this.selectedDates,
+    this.isTimeSpan,
+    this.isOr,
+  });
+
+  final List<DateTime> selectedDates;
+  final bool? isTimeSpan;
+  final bool? isOr;
 
   @override
   State<EDatePicker> createState() => _EDatePickerState();
@@ -24,6 +34,62 @@ class _EDatePickerState extends State<EDatePicker> {
 
   bool canBeDone = false;
 
+  void onDone() {
+    if (canBeDone) {
+      Navigator.pop(context, {
+        "dates": selectedDates,
+        "isTimeSpan": isTimeSpan,
+        "isOr": isOr,
+      });
+    }
+  }
+
+  List<DateTime> onSelectMonthDay(DateTime date) {
+    if (!isTimeSpan) {
+      if (selectedDates.contains(date)) {
+        selectedDates.remove(date);
+      } else {
+        selectedDates.add(date);
+      }
+    } else {
+      if (selectedDates.contains(date)) {
+        selectedDates = [];
+      } else {
+        if (selectedDates.isEmpty) {
+          selectedDates.add(date);
+        } else if (selectedDates.length == 1) {
+          DateTime from = selectedDates.first;
+          DateTime to = date;
+          selectedDates = dateTimeSpann(from, to);
+        } else {
+          selectedDates = [];
+          selectedDates.add(date);
+        }
+      }
+    }
+    setState(() {
+      if (selectedDates.isNotEmpty) {
+        canBeDone = true;
+      } else {
+        canBeDone = false;
+      }
+    });
+    return selectedDates;
+  }
+
+  @override
+  void initState() {
+    selectedDates = widget.selectedDates;
+    if (widget.isTimeSpan != null) isTimeSpan = widget.isTimeSpan!;
+    if (widget.isOr != null) isOr = widget.isOr!;
+    if (selectedDates.isNotEmpty) {
+      canBeDone = true;
+    } else {
+      canBeDone = false;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -31,40 +97,32 @@ class _EDatePickerState extends State<EDatePicker> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: CDatePickerCalendar(
-              currentMonth: DateTime(DateTime.now().year, DateTime.now().month),
-              selectedDates: selectedDates,
-              onDatePressed: (date) {
-                if (selectedDates.contains(date)) {
-                  selectedDates.remove(date);
-                } else {
-                  selectedDates.add(date);
-                }
-                return selectedDates;
-              },
-              weekDays: weekDays,
-              monthNames: monthNames,
-              backgroundColor: scaffoldBackgroundColor,
-              topBackgroundColor: taskListBackgroundColor,
-              borderRadius: borderRadiusBox,
-              borderColor: buttonColor,
-              borderWidth: 1.5,
-              calendarBoxSize: calendarBoxSize,
-
-              thisMonthStyle: calendarThisMonth,
-              iconColor: buttonColor,
-              weekDayStyle: calendarWeekDays,
-              dateButtonStyleSelected: calendarSelected,
-              dateButtonStyleThisMonth: calendarThisMonth,
-              dateButtonStyleOtherMonth: calendarOtherMonth,
-              dateIsSelected: buttonColor,
-              dateIsToday: scaffoldTopBarGradient1,
-            ),
+          SizedBox(height: 30),
+          CDatePickerCalendar(
+            currentMonth: DateTime(DateTime.now().year, DateTime.now().month),
+            selectedDates: selectedDates,
+            onDatePressed: onSelectMonthDay,
+            weekDays: weekDays,
+            monthNames: monthNames,
+            backgroundColor: scaffoldBackgroundColor,
+            topBackgroundColor: taskListBackgroundColor,
+            borderRadius: borderRadiusBox,
+            borderColor: buttonColor,
+            borderWidth: 1.5,
+            calendarBoxSize: calendarBoxSize,
+            thisMonthStyle: calendarThisMonth,
+            iconColor: buttonColor,
+            weekDayStyle: calendarWeekDays,
+            dateButtonStyleSelected: calendarSelected,
+            dateButtonStyleThisMonth: calendarThisMonth,
+            dateButtonStyleOtherMonth: calendarOtherMonth,
+            dateIsSelected: buttonColor,
+            dateIsToday: scaffoldTopBarGradient1,
           ),
+          SizedBox(height: 15),
           Row(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.all(paddingButton),
@@ -82,8 +140,17 @@ class _EDatePickerState extends State<EDatePicker> {
                   ),
                 ),
               ),
-              EAndSwitchOr(isOr: isOr, onChange: (newIsOr) {}),
-              SizedBox(width: 30),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: EAndSwitchOr(
+                  isOr: isOr,
+                  onChange:
+                      (newIsOr) => setState(() {
+                        isOr = newIsOr;
+                      }),
+                ),
+              ),
+              SizedBox(width: 10),
               ETimeSpanButton(
                 isTimeSpan: isTimeSpan,
                 onPressed:
@@ -91,10 +158,11 @@ class _EDatePickerState extends State<EDatePicker> {
                       isTimeSpan = !isTimeSpan;
                     }),
               ),
+              SizedBox(width: 10),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: onDone,
                   borderRadius: BorderRadius.circular(100),
                   child: Container(
                     width: sizeDoneButtonNewTask,

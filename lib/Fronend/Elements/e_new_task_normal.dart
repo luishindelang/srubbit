@@ -47,6 +47,7 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
         horizontal: newTaskBodySedePadding - 5,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ENewTaskNormalPresetButtons(type: type, onChange: onChangeType),
           SizedBox(height: 20),

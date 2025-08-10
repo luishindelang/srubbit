@@ -86,3 +86,57 @@ const buttonNormal = TextStyle(
   fontWeight: FontWeight.w500,
   color: textTitleColor,
 );
+
+const switchSelected = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w600,
+  color: textTitleColor,
+);
+
+const switchUnselected = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+  color: textPassiveColor,
+);
+
+const calendarThisMonth = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w400,
+  color: textColor,
+);
+
+const calendarOtherMonth = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w400,
+  color: textPassiveColor,
+);
+
+const calendarSelected = TextStyle(
+  fontSize: 22,
+  fontWeight: FontWeight.w500,
+  color: textNegativeColor,
+);
+
+const calendarWeekDays = TextStyle(
+  fontSize: 22,
+  fontWeight: FontWeight.w500,
+  color: textColor,
+);
+
+const selectedCalendarTitle = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w600,
+  color: textTitleColor,
+);
+
+const selectedCalendarDays = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+  color: textColor,
+);
+
+const selectedCalendarMonths = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w800,
+  color: buttonColor,
+);
