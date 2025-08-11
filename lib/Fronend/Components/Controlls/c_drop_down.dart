@@ -14,6 +14,9 @@ class CDropDown<T> extends StatefulWidget {
     this.textStyle = const TextStyle(),
     this.selectedIconColor = Colors.black,
     this.dropdownIconSize = 10,
+    this.paddingHor = 6,
+    this.paddingVert = 2,
+    this.dropdownOffset = 36,
   });
 
   final List<T> options;
@@ -28,6 +31,9 @@ class CDropDown<T> extends StatefulWidget {
   final TextStyle textStyle;
   final Color selectedIconColor;
   final double dropdownIconSize;
+  final double paddingHor;
+  final double paddingVert;
+  final double dropdownOffset;
 
   @override
   State<CDropDown<T>> createState() => _CDropDownState<T>();
@@ -74,57 +80,55 @@ class _CDropDownState<T> extends State<CDropDown<T>> {
 
     return OverlayEntry(
       builder:
-          (context) => Positioned.fill(
-            left: position.dx,
-            top: position.dy + renderBox.size.height + 4,
-            child: Stack(
-              children: [
-                GestureDetector(
+          (context) => Stack(
+            children: [
+              Positioned.fill(
+                child: GestureDetector(
                   onTap: _closeDropdown,
                   behavior: HitTestBehavior.opaque,
                 ),
-                Positioned(
-                  child: CompositedTransformFollower(
-                    link: _layerLink,
-                    offset: const Offset(0, 36),
-                    child: Material(
-                      elevation: 14.0,
-                      borderRadius: BorderRadius.circular(
-                        widget.dropdownRadius,
+              ),
+              Positioned(
+                left: position.dx,
+                top: position.dy + renderBox.size.height + 4,
+                child: CompositedTransformFollower(
+                  link: _layerLink,
+                  offset: Offset(0, widget.dropdownOffset),
+                  child: Material(
+                    elevation: 14.0,
+                    borderRadius: BorderRadius.circular(widget.dropdownRadius),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight:
+                            availableHeight > 300 ? 300 : availableHeight,
                       ),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight:
-                              availableHeight > 300 ? 300 : availableHeight,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: widget.background,
-                            border: Border.all(
-                              color: widget.boxBorderColor,
-                              width: widget.boxBorderWidth,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              widget.dropdownRadius,
-                            ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: widget.background,
+                          border: Border.all(
+                            color: widget.boxBorderColor,
+                            width: widget.boxBorderWidth,
                           ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children:
-                                  widget.options
-                                      .map((option) => _buildMenuItem(option))
-                                      .toList(),
-                            ),
+                          borderRadius: BorderRadius.circular(
+                            widget.dropdownRadius,
+                          ),
+                        ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                                widget.options
+                                    .map((option) => _buildMenuItem(option))
+                                    .toList(),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
     );
   }
@@ -152,8 +156,12 @@ class _CDropDownState<T> extends State<CDropDown<T>> {
       child: GestureDetector(
         onTap: _toggleDropdown,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          padding: EdgeInsets.symmetric(
+            horizontal: widget.paddingHor,
+            vertical: widget.paddingVert,
+          ),
           decoration: BoxDecoration(
+            color: widget.background,
             border: Border.all(
               color: widget.boxBorderColor,
               width: widget.boxBorderWidth,

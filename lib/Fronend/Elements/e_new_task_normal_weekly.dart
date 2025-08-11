@@ -16,10 +16,12 @@ class ENewTaskNormalWeekly extends StatefulWidget {
     super.key,
     required this.onChangeSelected,
     required this.onChangeOrAnd,
+    this.withShowSelect = true,
   });
 
   final void Function(List<DateTime>) onChangeSelected;
   final void Function(bool) onChangeOrAnd;
+  final bool withShowSelect;
 
   @override
   State<ENewTaskNormalWeekly> createState() => _ENewTaskNormalWeeklyState();
@@ -81,18 +83,20 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ESelectAccountButton(
-          onPressed:
-              () => setState(() {
-                showSelection = !showSelection;
-              }),
-          text: "Select weekdays",
-          isSelected: showSelection,
-          selectedBackground: buttonColor,
-        ),
-
         Visibility(
-          visible: showSelection,
+          visible: widget.withShowSelect,
+          child: ESelectAccountButton(
+            onPressed:
+                () => setState(() {
+                  showSelection = !showSelection;
+                }),
+            text: "Select weekdays",
+            isSelected: showSelection,
+            selectedBackground: buttonColor,
+          ),
+        ),
+        Visibility(
+          visible: showSelection || !widget.withShowSelect,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(

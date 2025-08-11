@@ -14,3 +14,5 @@ const monthNames = [
   'November',
   'Dezember',
 ];
+
+const repeatingTypes = ["Tage", "Wochen", "Monate", "Jahre"];

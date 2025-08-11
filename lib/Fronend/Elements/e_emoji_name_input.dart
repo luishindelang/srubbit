@@ -109,7 +109,7 @@ class _EEmojiNameInputState extends State<EEmojiNameInput> {
                     fontWeight: inputText.fontWeight!,
                     hintText: "name eingeben",
                     textColor: inputText.color!,
-                    onSubmitted: (newName) => widget.onChangeName(newName),
+                    onChanged: (newName) => widget.onChangeName(newName),
                   ),
                 ),
               ],

@@ -140,3 +140,9 @@ const selectedCalendarMonths = TextStyle(
   fontWeight: FontWeight.w800,
   color: buttonColor,
 );
+
+const repeatingCategoryTitle = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w300,
+  color: textColor,
+);
