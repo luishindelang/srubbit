@@ -8,24 +8,25 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
 class ENewTaskNormalWeekly extends StatefulWidget {
   const ENewTaskNormalWeekly({
     super.key,
+    required this.onChangeSelected,
     required this.onChangeOrAnd,
-    required this.onSelectedWeekDays,
   });
 
+  final void Function(List<DateTime>) onChangeSelected;
   final void Function(bool) onChangeOrAnd;
-  final void Function(List<String>) onSelectedWeekDays;
 
   @override
   State<ENewTaskNormalWeekly> createState() => _ENewTaskNormalWeeklyState();
 }
 
 class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
-  late final List<String> weekDays;
-  List<String> selectedWeekDays = [];
+  late final List<DateTime> weekDaysDate;
+  List<DateTime> selectedWeekDays = [];
   bool isTimeSpan = false;
   bool isOr = false;
 
@@ -36,7 +37,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
     });
   }
 
-  void onSelectWeekDay(String day) {
+  void onSelectWeekDay(DateTime day) {
     setState(() {
       if (!isTimeSpan) {
         if (selectedWeekDays.contains(day)) {
@@ -51,22 +52,24 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
           if (selectedWeekDays.isEmpty) {
             selectedWeekDays.add(day);
           } else if (selectedWeekDays.length == 1) {
-            int to = weekDays.indexOf(day);
-            int from = weekDays.indexOf(selectedWeekDays.last);
-            selectedWeekDays.addAll(timeSpann(weekDays, from, to));
+            int to = weekDaysDate.indexOf(day);
+            int from = weekDaysDate.indexOf(selectedWeekDays.last);
+            selectedWeekDays = [];
+            selectedWeekDays.addAll(timeSpann(weekDaysDate, from, to));
           } else {
             selectedWeekDays = [];
             selectedWeekDays.add(day);
           }
         }
       }
-      widget.onSelectedWeekDays(selectedWeekDays);
+      selectedWeekDays.sort((a, b) => a.compareTo(b));
+      widget.onChangeSelected(selectedWeekDays);
     });
   }
 
   @override
   void initState() {
-    weekDays = getNext7Weekdays();
+    weekDaysDate = getNext7Weekdays();
     super.initState();
   }
 
@@ -120,7 +123,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                   children: [
                     Row(
                       children:
-                          weekDays.map((day) {
+                          weekDaysDate.map((day) {
                             return Container(
                               margin: const EdgeInsets.all(paddingButton),
                               decoration: BoxDecoration(
@@ -140,7 +143,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                                 paddingHor: 20,
                                 paddingVert: 6,
                                 child: Text(
-                                  day,
+                                  weekDays[day.weekday - 1],
                                   style:
                                       selectedWeekDays.contains(day)
                                           ? buttonSelected

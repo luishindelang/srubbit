@@ -5,7 +5,16 @@ import 'package:scrubbit/Fronend/Elements/e_new_task_normal_weekly.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
 class ENewTaskNormal extends StatefulWidget {
-  const ENewTaskNormal({super.key});
+  const ENewTaskNormal({
+    super.key,
+    required this.onChangeType,
+    required this.onChangeSelected,
+    required this.onChangeOrAnd,
+  });
+
+  final void Function(int) onChangeType;
+  final void Function(List<DateTime>) onChangeSelected;
+  final void Function(bool) onChangeOrAnd;
 
   @override
   State<ENewTaskNormal> createState() => _ENewTaskNormalState();
@@ -17,6 +26,7 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
   void onChangeType(int newType) {
     setState(() {
       type = newType;
+      widget.onChangeType(type);
     });
   }
 
@@ -24,17 +34,19 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
     switch (type) {
       case 2:
         return ENewTaskNormalWeekly(
-          onChangeOrAnd: (isOr) {
-            print(isOr);
-          },
-          onSelectedWeekDays: (newSelectedList) {
-            print(newSelectedList);
-          },
+          onChangeOrAnd: widget.onChangeOrAnd,
+          onChangeSelected: widget.onChangeSelected,
         );
       case 3:
-        return ENewTaskNormalMonthly();
+        return ENewTaskNormalMonthly(
+          onChangeSelected: widget.onChangeSelected,
+          onChangeOrAnd: widget.onChangeOrAnd,
+        );
       case 4:
-        return const SizedBox.shrink();
+        return ENewTaskNormalMonthly(
+          onChangeSelected: widget.onChangeSelected,
+          onChangeOrAnd: widget.onChangeOrAnd,
+        );
       default:
         return const SizedBox(height: 20);
     }

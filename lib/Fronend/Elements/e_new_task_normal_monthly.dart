@@ -7,7 +7,14 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
 class ENewTaskNormalMonthly extends StatefulWidget {
-  const ENewTaskNormalMonthly({super.key});
+  const ENewTaskNormalMonthly({
+    super.key,
+    required this.onChangeSelected,
+    required this.onChangeOrAnd,
+  });
+
+  final void Function(List<DateTime>) onChangeSelected;
+  final void Function(bool) onChangeOrAnd;
 
   @override
   State<ENewTaskNormalMonthly> createState() => _ENewTaskNormalMonthlyState();
@@ -34,8 +41,9 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
           isTimeSpann = data["isTimeSpan"];
           isOr = data["isOr"];
           selectedDates.sort((a, b) => a.compareTo(b));
+          widget.onChangeSelected(selectedDates);
+          widget.onChangeOrAnd(isOr!);
         }
-        print(groupByMonth(selectedDates));
       }),
     );
   }

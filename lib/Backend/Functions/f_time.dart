@@ -37,9 +37,14 @@ TimeOfDay? intToTimeOfDay(int? value) {
   return TimeOfDay(hour: hour, minute: min);
 }
 
-List<String> getNext7Weekdays() {
-  final todayIndex = DateTime.now().weekday - 1;
-  return List.generate(7, (i) => weekDays[(todayIndex + i) % 7]);
+List<DateTime> getNext7Weekdays() {
+  // final todayIndex = DateTime.now().weekday - 1;
+  // return List.generate(7, (i) => weekDays[(todayIndex + i) % 7]);
+  DateTime today = DateTime.now();
+  return List.generate(
+    7,
+    (index) => DateTime(today.year, today.month, today.day + index),
+  );
 }
 
 List<List<DateTime>> groupByMonth(List<DateTime> dates) {
