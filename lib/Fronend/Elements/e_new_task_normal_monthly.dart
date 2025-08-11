@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Elements/e_date_picker.dart';
+import 'package:scrubbit/Fronend/Elements/e_select_account_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
@@ -11,10 +12,12 @@ class ENewTaskNormalMonthly extends StatefulWidget {
     super.key,
     required this.onChangeSelected,
     required this.onChangeOrAnd,
+    this.withShowSelect = false,
   });
 
   final void Function(List<DateTime>) onChangeSelected;
   final void Function(bool) onChangeOrAnd;
+  final bool withShowSelect;
 
   @override
   State<ENewTaskNormalMonthly> createState() => _ENewTaskNormalMonthlyState();
@@ -24,6 +27,8 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
   List<DateTime> selectedDates = [];
   bool? isTimeSpann;
   bool? isOr;
+
+  bool showSelection = false;
 
   void openDatePicker() {
     showDialog(
@@ -83,95 +88,113 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: InkWell(
-        onTap: openDatePicker,
-        child: Container(
-          width: selectedDates.isEmpty ? 180 : 660,
-          decoration: BoxDecoration(
-            color: taskListBackgroundColor,
-            borderRadius: BorderRadius.circular(borderRadiusBox),
-            border: Border.all(width: 1.5, color: buttonColor),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Visibility(
+          visible: widget.withShowSelect,
+          child: ESelectAccountButton(
+            onPressed:
+                () => setState(() {
+                  showSelection = !showSelection;
+                }),
+            text: "Select specific days",
+            isSelected: showSelection,
+            selectedBackground: buttonColor,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(borderRadiusBox),
-                    topRight: Radius.circular(borderRadiusBox),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5.0,
-                    horizontal: 10.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        spacing: 5.0,
+        ),
+        Visibility(
+          visible: showSelection || !widget.withShowSelect,
+          child: InkWell(
+            onTap: openDatePicker,
+            child: Container(
+              margin: EdgeInsets.only(top: 10.0),
+              width: selectedDates.isEmpty ? 180 : 660,
+              decoration: BoxDecoration(
+                color: taskListBackgroundColor,
+                borderRadius: BorderRadius.circular(borderRadiusBox),
+                border: Border.all(width: 1.5, color: buttonColor),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(borderRadiusBox),
+                        topRight: Radius.circular(borderRadiusBox),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 5.0,
+                        horizontal: 10.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.calendar_month_rounded,
-                            color: buttonColor,
-                            size: 20,
+                          Row(
+                            spacing: 5.0,
+                            children: [
+                              Icon(
+                                Icons.calendar_month_rounded,
+                                color: buttonColor,
+                                size: 20,
+                              ),
+                              Text(
+                                showSelectedTime(),
+                                style: selectedCalendarTitle,
+                              ),
+                            ],
                           ),
                           Text(
-                            showSelectedTime(),
+                            isOr == null
+                                ? ""
+                                : isOr!
+                                ? "ODER"
+                                : "UND",
                             style: selectedCalendarTitle,
                           ),
                         ],
                       ),
-                      Text(
-                        isOr == null
-                            ? ""
-                            : isOr!
-                            ? "ODER"
-                            : "UND",
-                        style: selectedCalendarTitle,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 15,
-                ),
-                child: Column(
-                  spacing: 5,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:
-                      groupByMonth(selectedDates).map((dates) {
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              Text(
-                                allSelectedMonthDates(dates),
-                                style: selectedCalendarDays,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 15,
+                    ),
+                    child: Column(
+                      spacing: 5,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                          groupByMonth(selectedDates).map((dates) {
+                            return SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    allSelectedMonthDates(dates),
+                                    style: selectedCalendarDays,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    monthNames[dates.first.month - 1],
+                                    style: selectedCalendarMonths,
+                                  ),
+                                ],
                               ),
-                              SizedBox(width: 5),
-                              Text(
-                                monthNames[dates.first.month - 1],
-                                style: selectedCalendarMonths,
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                ),
+                            );
+                          }).toList(),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

@@ -41,6 +41,7 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
         return ENewTaskNormalMonthly(
           onChangeSelected: widget.onChangeSelected,
           onChangeOrAnd: widget.onChangeOrAnd,
+          withShowSelect: true,
         );
       case 4:
         return ENewTaskNormalMonthly(

@@ -38,8 +38,6 @@ TimeOfDay? intToTimeOfDay(int? value) {
 }
 
 List<DateTime> getNext7Weekdays() {
-  // final todayIndex = DateTime.now().weekday - 1;
-  // return List.generate(7, (i) => weekDays[(todayIndex + i) % 7]);
   DateTime today = DateTime.now();
   return List.generate(
     7,
