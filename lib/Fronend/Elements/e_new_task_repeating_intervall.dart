@@ -10,7 +10,20 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
 class ENewTaskRepeatingIntervall extends StatefulWidget {
-  const ENewTaskRepeatingIntervall({super.key});
+  const ENewTaskRepeatingIntervall({
+    super.key,
+    required this.onIntervallChanged,
+    required this.repeatingIntervall,
+    required this.onTypeChanged,
+    required this.repeatingType,
+    this.showTitle = true,
+  });
+
+  final void Function(int) onIntervallChanged;
+  final int repeatingIntervall;
+  final void Function(int) onTypeChanged;
+  final int repeatingType;
+  final bool showTitle;
 
   @override
   State<ENewTaskRepeatingIntervall> createState() =>
@@ -19,16 +32,28 @@ class ENewTaskRepeatingIntervall extends StatefulWidget {
 
 class _ENewTaskRepeatingIntervallState
     extends State<ENewTaskRepeatingIntervall> {
-  int repeatingIntervall = 1;
+  late int repeatingIntervall;
+  late int repeatingType;
   final _emojiController = TextEditingController();
   final _emojiFocus = FocusNode();
+
+  @override
+  void initState() {
+    repeatingIntervall = widget.repeatingIntervall;
+    repeatingType = widget.repeatingType;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Wiederholt sich alle:", style: repeatingCategoryTitle),
+        Visibility(
+          visible: widget.showTitle,
+          child: Text("Wiederholt sich alle:", style: repeatingCategoryTitle),
+        ),
+
         Row(
           children: [
             CButton(
@@ -72,17 +97,21 @@ class _ENewTaskRepeatingIntervallState
                         } else {
                           repeatingIntervall = 1;
                         }
+                        widget.onIntervallChanged(repeatingIntervall);
                       }),
                 ),
               ),
             ),
             SizedBox(width: 20),
             CDropDown(
-              changedItem: (value) {
+              itemName: (value) {
                 return value;
               },
+              onChangedItem: (value) {
+                widget.onTypeChanged(repeatingTypes.indexOf(value));
+              },
               options: repeatingTypes,
-              selectedItemName: repeatingTypes.first,
+              selectedItemName: repeatingTypes[repeatingType],
               dropdownRadius: borderRadiusBox,
               background: buttonBackgroundColor,
               boxBorderWidth: 0,

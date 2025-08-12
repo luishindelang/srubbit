@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Backend/Functions/f_time.dart';
+import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_after_complete.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_intervall.dart';
+import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_select_date.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
 class ENewTaskRepeating extends StatefulWidget {
@@ -10,6 +13,12 @@ class ENewTaskRepeating extends StatefulWidget {
 }
 
 class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
+  int repeatingType = 0;
+  int repeatingIntervall = 1;
+  bool afterComplete = false;
+  DateTime startDate = getNowWithoutTime();
+  DateTime? endDate;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,7 +28,57 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [ENewTaskRepeatingIntervall()],
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ENewTaskRepeatingIntervall(
+                onIntervallChanged: (newRepeatingIntervall) {
+                  repeatingIntervall = newRepeatingIntervall;
+                },
+                repeatingIntervall: repeatingIntervall,
+                onTypeChanged: (newRepeatingType) {
+                  repeatingType = newRepeatingType;
+                  print(newRepeatingType);
+                },
+                repeatingType: repeatingType,
+              ),
+              SizedBox(width: 30),
+              ENewTaskRepeatingAfterComplete(
+                value: afterComplete,
+                onChanged:
+                    (newValue) => setState(() {
+                      afterComplete = newValue;
+                    }),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          ENewTaskRepeatingSelectDate(
+            title: "Begin:",
+            selectedDate: startDate,
+            onDatePressed:
+                (newDate) => setState(() {
+                  if (newDate == null) {
+                    startDate = getNowWithoutTime();
+                  } else {
+                    startDate = newDate;
+                  }
+                  print(startDate);
+                }),
+          ),
+          SizedBox(height: 20),
+          ENewTaskRepeatingSelectDate(
+            title: "End:",
+            selectedDate: endDate,
+            onDatePressed: (newDate) {
+              endDate = newDate;
+              print(endDate);
+            },
+            isEnd: true,
+            startDate: startDate,
+          ),
+        ],
       ),
     );
   }

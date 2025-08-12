@@ -65,3 +65,38 @@ List<List<DateTime>> groupByMonth(List<DateTime> dates) {
   if (newMonthList.isNotEmpty) finalList.add(newMonthList);
   return finalList;
 }
+
+bool isSameDay(DateTime a, DateTime? b) =>
+    a.year == b?.year && a.month == b?.month && a.day == b?.day;
+
+DateTime getNowWithoutTime() {
+  return DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+}
+
+DateTime addToDate(DateTime? date, int type, int intervall) {
+  DateTime startDate = date ?? getNowWithoutTime();
+  switch (type) {
+    case 0:
+      return startDate.add(Duration(days: intervall));
+    case 1:
+      return startDate.add(Duration(days: intervall * 7));
+    case 2:
+      return DateTime(
+        startDate.year,
+        startDate.month + intervall,
+        startDate.day,
+      );
+    case 3:
+      return DateTime(
+        startDate.year + intervall,
+        startDate.month,
+        startDate.day,
+      );
+    default:
+      return getNowWithoutTime();
+  }
+}

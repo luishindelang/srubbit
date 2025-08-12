@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 class CDropDown<T> extends StatefulWidget {
   const CDropDown({
     super.key,
-    required this.changedItem,
+    required this.itemName,
     required this.options,
     this.selectedItemName = "Select an Option",
-    this.onChange,
+    this.onChangedItem,
+    // this.onChange,
     this.dropdownRadius = 1,
     this.background = Colors.white,
     this.boxBorderColor = Colors.black,
@@ -20,9 +21,10 @@ class CDropDown<T> extends StatefulWidget {
   });
 
   final List<T> options;
-  final String Function(T) changedItem;
+  final String Function(T) itemName;
+  final void Function(T)? onChangedItem;
   final String selectedItemName;
-  final Function? onChange;
+  // final Function? onChange;
 
   final double dropdownRadius;
   final Color background;
@@ -137,14 +139,14 @@ class _CDropDownState<T> extends State<CDropDown<T>> {
     return InkWell(
       onTap: () {
         setState(() {
-          _selectedItem = widget.changedItem(option);
+          _selectedItem = widget.itemName(option);
         });
-        if (widget.onChange != null) widget.onChange!();
+        if (widget.onChangedItem != null) widget.onChangedItem!(option);
         _closeDropdown();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Text(widget.changedItem(option), style: widget.textStyle),
+        child: Text(widget.itemName(option), style: widget.textStyle),
       ),
     );
   }

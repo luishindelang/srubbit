@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 
-class CDatePickerCalendar extends StatefulWidget {
-  const CDatePickerCalendar({
+class CRangedDatePickerCalendar extends StatefulWidget {
+  const CRangedDatePickerCalendar({
     super.key,
     required this.currentMonth,
-    required this.selectedDate,
+    required this.selectedDates,
     required this.onDatePressed,
     required this.weekDays,
     required this.monthNames,
@@ -26,8 +27,8 @@ class CDatePickerCalendar extends StatefulWidget {
   });
 
   final DateTime currentMonth;
-  final DateTime? selectedDate;
-  final void Function(DateTime) onDatePressed;
+  final List<DateTime> selectedDates;
+  final List<DateTime> Function(DateTime) onDatePressed;
   final List<String> weekDays;
   final List<String> monthNames;
   final Color backgroundColor;
@@ -46,13 +47,14 @@ class CDatePickerCalendar extends StatefulWidget {
   final Color dateIsToday;
 
   @override
-  State<CDatePickerCalendar> createState() => _CDatePickerCalendarState();
+  State<CRangedDatePickerCalendar> createState() =>
+      _CRangedDatePickerCalendarState();
 }
 
-class _CDatePickerCalendarState extends State<CDatePickerCalendar> {
+class _CRangedDatePickerCalendarState extends State<CRangedDatePickerCalendar> {
   var controller = PageController();
 
-  DateTime? _selectedDate;
+  late List<DateTime> _selectedDates;
   late DateTime _currentMonth;
 
   void setCurrentMonth(int index) {
@@ -98,12 +100,9 @@ class _CDatePickerCalendarState extends State<CDatePickerCalendar> {
     });
   }
 
-  bool isSameDay(DateTime a, DateTime? b) =>
-      a.year == b?.year && a.month == b?.month && a.day == b?.day;
-
   @override
   void initState() {
-    _selectedDate = widget.selectedDate;
+    _selectedDates = widget.selectedDates;
     _currentMonth = DateTime(
       widget.currentMonth.year,
       widget.currentMonth.month,
@@ -197,7 +196,7 @@ class _CDatePickerCalendarState extends State<CDatePickerCalendar> {
                   children:
                       days.map((date) {
                         final isToday = isSameDay(date, DateTime.now());
-                        final isSelected = isSameDay(date, _selectedDate);
+                        final isSelected = _selectedDates.contains(date);
                         final isInMonth = date.month == _currentMonth.month;
                         TextStyle styleDate() {
                           if (isSelected) return widget.dateButtonStyleSelected;
@@ -217,8 +216,7 @@ class _CDatePickerCalendarState extends State<CDatePickerCalendar> {
                                   : Colors.transparent,
                           onPressed:
                               () => setState(() {
-                                _selectedDate = date;
-                                widget.onDatePressed(date);
+                                _selectedDates = widget.onDatePressed(date);
                               }),
                           child: Center(
                             child: Text("${date.day}", style: styleDate()),

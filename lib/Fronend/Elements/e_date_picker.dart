@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Backend/Functions/f_lists.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
-import 'package:scrubbit/Fronend/Components/Controlls/c_date_picker_calendar.dart';
+import 'package:scrubbit/Fronend/Components/Controlls/c_ranged_date_picker_calendar.dart';
 import 'package:scrubbit/Fronend/Elements/e_and_switch_or.dart';
 import 'package:scrubbit/Fronend/Elements/e_time_span_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
@@ -98,7 +98,7 @@ class _EDatePickerState extends State<EDatePicker> {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: 30),
-          CDatePickerCalendar(
+          CRangedDatePickerCalendar(
             currentMonth: DateTime(DateTime.now().year, DateTime.now().month),
             selectedDates: selectedDates,
             onDatePressed: onSelectMonthDay,
