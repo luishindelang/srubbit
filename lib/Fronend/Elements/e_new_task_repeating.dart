@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
+import 'package:scrubbit/Fronend/Elements/e_new_task_normal_monthly.dart';
+import 'package:scrubbit/Fronend/Elements/e_new_task_normal_weekly.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_after_complete.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_intervall.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_select_date.dart';
@@ -38,7 +40,9 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
                 },
                 repeatingIntervall: repeatingIntervall,
                 onTypeChanged: (newRepeatingType) {
-                  repeatingType = newRepeatingType;
+                  setState(() {
+                    repeatingType = newRepeatingType;
+                  });
                   print(newRepeatingType);
                 },
                 repeatingType: repeatingType,
@@ -77,6 +81,22 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
             },
             isEnd: true,
             startDate: startDate,
+          ),
+          SizedBox(height: 20),
+          Visibility(
+            visible: repeatingType == 1,
+            child: ENewTaskNormalWeekly(
+              onChangeSelected: (newDates) {},
+              onChangeOrAnd: (newIsOr) {},
+              withShowSelect: false,
+            ),
+          ),
+          Visibility(
+            visible: repeatingType == 2 || repeatingType == 3,
+            child: ENewTaskNormalMonthly(
+              onChangeSelected: (newDates) {},
+              onChangeOrAnd: (newIsOr) {},
+            ),
           ),
         ],
       ),
