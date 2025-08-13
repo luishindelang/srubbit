@@ -10,12 +10,14 @@ class ESelectAccount extends StatefulWidget {
   const ESelectAccount({
     super.key,
     required this.accounts,
+    required this.selectedAccounts,
     required this.onSelectedAccount,
     this.selectAll = false,
   });
 
   final List<DsAccount> accounts;
-  final void Function(List<String>?) onSelectedAccount;
+  final List<DsAccount> selectedAccounts;
+  final void Function(List<DsAccount>) onSelectedAccount;
   final bool selectAll;
 
   @override
@@ -23,21 +25,15 @@ class ESelectAccount extends StatefulWidget {
 }
 
 class _ESelectAccountState extends State<ESelectAccount> {
-  List<String> selectedAccounts = [];
+  List<DsAccount> selectedAccounts = [];
   late bool selectAll;
-
-  @override
-  void initState() {
-    selectAll = widget.selectAll;
-    super.initState();
-  }
 
   void onAccountSelect(DsAccount account) {
     setState(() {
-      if (selectedAccounts.contains(account.id)) {
-        selectedAccounts.remove(account.id);
+      if (selectedAccounts.contains(account)) {
+        selectedAccounts.remove(account);
       } else {
-        selectedAccounts.add(account.id);
+        selectedAccounts.add(account);
       }
       selectAll = false;
       widget.onSelectedAccount(selectedAccounts);
@@ -50,7 +46,7 @@ class _ESelectAccountState extends State<ESelectAccount> {
         selectedAccounts = [];
       }
       selectAll = !selectAll;
-      widget.onSelectedAccount(null);
+      widget.onSelectedAccount(selectedAccounts);
     });
   }
 
@@ -58,6 +54,13 @@ class _ESelectAccountState extends State<ESelectAccount> {
     setState(() {
       widget.accounts.add(newAccount);
     });
+  }
+
+  @override
+  void initState() {
+    selectAll = widget.selectAll;
+    selectedAccounts = widget.selectedAccounts;
+    super.initState();
   }
 
   @override
@@ -82,7 +85,7 @@ class _ESelectAccountState extends State<ESelectAccount> {
                         return ESelectAccountButton(
                           onPressed: () => onAccountSelect(account),
                           text: account.name,
-                          isSelected: selectedAccounts.contains(account.id),
+                          isSelected: selectedAccounts.contains(account),
                           selectedBackground: account.color,
                         );
                       }).toList(),

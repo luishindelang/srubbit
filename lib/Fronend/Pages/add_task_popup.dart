@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
+import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Elements/e_emoji_name_input.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_bottom_button.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_normal.dart';
@@ -23,31 +24,25 @@ class AddTaskPopup extends StatefulWidget {
 }
 
 class _AddTaskPopupState extends State<AddTaskPopup> {
-  String? emoji;
-  String? name;
-  bool isImportant = false;
-  bool isRepeating = false;
-  bool get canBeDone => emoji != null && name != null;
+  SCreateTask taskService = SCreateTask();
 
-  void getNewEmoji(String newEmoji) {
+  void onChangeEmoji(String newEmoji) {
     setState(() {
-      emoji = newEmoji;
+      taskService.onChangeEmoji(newEmoji);
     });
   }
 
-  void getNewName(String newName) {
+  void onChangeName(String newName) {
     setState(() {
-      name = newName;
+      taskService.onChangeName(newName);
     });
   }
 
   void onIsRepeating(bool newIsRepeating) {
     setState(() {
-      isRepeating = newIsRepeating;
+      taskService.onIsRepeating(newIsRepeating);
     });
   }
-
-  void getTimes(TimeOfDay? timeFrom, TimeOfDay? timeUntil) {}
 
   @override
   Widget build(BuildContext context) {
@@ -63,36 +58,27 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
             mainAxisSize: MainAxisSize.min,
             children: [
               EEmojiNameInput(
-                isImportant: isImportant,
-                onChangeEmoji: getNewEmoji,
-                onChangeName: getNewName,
-                onChangeImportant: (i) => isImportant = i,
+                isImportant: taskService.isImportant,
+                onChangeEmoji: onChangeEmoji,
+                onChangeName: onChangeName,
+                onChangeImportant: (i) => taskService.isImportant = i,
               ),
               ESelectTimeFromUntil(
-                isRepeating: isRepeating,
+                isRepeating: taskService.isRepeating,
                 onIsRepeating: onIsRepeating,
-                onTimeSelect: getTimes,
+                onTimeSelect: taskService.onTimesSelect,
               ),
               Visibility(
-                visible: !isRepeating,
-                child: ENewTaskNormal(
-                  onChangeType: (newType) {
-                    print(newType);
-                  },
-                  onChangeSelected: (newSelectedList) {
-                    print(newSelectedList);
-                  },
-                  onChangeOrAnd: (newIsOr) {
-                    print(newIsOr);
-                  },
-                ),
+                visible: !taskService.isRepeating,
+                child: ENewTaskNormal(taskService: taskService),
               ),
-              Visibility(visible: isRepeating, child: ENewTaskRepeating()),
+              Visibility(
+                visible: taskService.isRepeating,
+                child: ENewTaskRepeating(taskService: taskService),
+              ),
               ENewTaskBottomButton(
                 accounts: widget.accounts,
-                canBeDone: canBeDone,
-                onSelectedAccount: (newAccounts) {},
-                onDone: () {},
+                taskService: taskService,
               ),
             ],
           ),

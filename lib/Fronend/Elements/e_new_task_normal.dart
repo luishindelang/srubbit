@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_normal_monthly.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_normal_preset_buttons.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_normal_weekly.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
 class ENewTaskNormal extends StatefulWidget {
-  const ENewTaskNormal({
-    super.key,
-    required this.onChangeType,
-    required this.onChangeSelected,
-    required this.onChangeOrAnd,
-  });
+  const ENewTaskNormal({super.key, required this.taskService});
 
-  final void Function(int) onChangeType;
-  final void Function(List<DateTime>) onChangeSelected;
-  final void Function(bool) onChangeOrAnd;
+  final SCreateTask taskService;
 
   @override
   State<ENewTaskNormal> createState() => _ENewTaskNormalState();
 }
 
 class _ENewTaskNormalState extends State<ENewTaskNormal> {
-  int type = 0;
+  late int type;
 
   void onChangeType(int newType) {
     setState(() {
       type = newType;
-      widget.onChangeType(type);
+      widget.taskService.onChangeType(type);
     });
   }
 
@@ -34,23 +28,32 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
     switch (type) {
       case 2:
         return ENewTaskNormalWeekly(
-          onChangeOrAnd: widget.onChangeOrAnd,
-          onChangeSelected: widget.onChangeSelected,
+          onChangeOrAnd: widget.taskService.onChangeOrAnd,
+          onChangeSelected: widget.taskService.onSelectedDates,
+          isOr: widget.taskService.isOr,
         );
       case 3:
         return ENewTaskNormalMonthly(
-          onChangeSelected: widget.onChangeSelected,
-          onChangeOrAnd: widget.onChangeOrAnd,
+          onChangeSelected: widget.taskService.onSelectedDates,
+          onChangeOrAnd: widget.taskService.onChangeOrAnd,
           withShowSelect: true,
+          isOr: widget.taskService.isOr,
         );
       case 4:
         return ENewTaskNormalMonthly(
-          onChangeSelected: widget.onChangeSelected,
-          onChangeOrAnd: widget.onChangeOrAnd,
+          onChangeSelected: widget.taskService.onSelectedDates,
+          onChangeOrAnd: widget.taskService.onChangeOrAnd,
+          isOr: widget.taskService.isOr,
         );
       default:
         return const SizedBox(height: 20);
     }
+  }
+
+  @override
+  void initState() {
+    type = widget.taskService.type;
+    super.initState();
   }
 
   @override

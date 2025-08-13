@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
+import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
@@ -10,15 +11,11 @@ class ENewTaskBottomButton extends StatelessWidget {
   const ENewTaskBottomButton({
     super.key,
     required this.accounts,
-    required this.canBeDone,
-    required this.onSelectedAccount,
-    required this.onDone,
+    required this.taskService,
   });
 
   final List<DsAccount> accounts;
-  final bool canBeDone;
-  final void Function(List<String>?) onSelectedAccount;
-  final VoidCallback onDone;
+  final SCreateTask taskService;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +33,8 @@ class ENewTaskBottomButton extends StatelessWidget {
             ),
             child: ESelectAccount(
               accounts: accounts,
-              onSelectedAccount: onSelectedAccount,
+              selectedAccounts: taskService.selecedAccounts,
+              onSelectedAccount: taskService.onSelectAccount,
               selectAll: true,
             ),
           ),
@@ -44,7 +42,7 @@ class ENewTaskBottomButton extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: InkWell(
-            onTap: onDone,
+            onTap: taskService.onDone,
             borderRadius: BorderRadius.circular(100),
             child: Container(
               width: sizeDoneButtonNewTask,
@@ -54,7 +52,10 @@ class ENewTaskBottomButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100),
                 boxShadow: [shadowTaskElement],
               ),
-              child: canBeDone ? FAssets.doneActive : FAssets.doneInactive,
+              child:
+                  taskService.canBeDone
+                      ? FAssets.doneActive
+                      : FAssets.doneInactive,
             ),
           ),
         ),

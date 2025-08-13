@@ -17,11 +17,13 @@ class ENewTaskNormalWeekly extends StatefulWidget {
     required this.onChangeSelected,
     required this.onChangeOrAnd,
     this.withShowSelect = true,
+    this.isOr = false,
   });
 
   final void Function(List<DateTime>) onChangeSelected;
   final void Function(bool) onChangeOrAnd;
   final bool withShowSelect;
+  final bool isOr;
 
   @override
   State<ENewTaskNormalWeekly> createState() => _ENewTaskNormalWeeklyState();
@@ -75,6 +77,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
   @override
   void initState() {
     weekDaysDate = getNext7Weekdays();
+    isOr = widget.isOr;
     super.initState();
   }
 

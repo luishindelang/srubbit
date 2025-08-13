@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
       context: context,
       builder:
           (context) => AddTaskPopup(isRepeating: false, accounts: accounts),
-    );
+    ).then((value) {});
   }
 
   @override

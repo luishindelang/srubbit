@@ -13,11 +13,13 @@ class ENewTaskNormalMonthly extends StatefulWidget {
     required this.onChangeSelected,
     required this.onChangeOrAnd,
     this.withShowSelect = false,
+    this.isOr = false,
   });
 
   final void Function(List<DateTime>) onChangeSelected;
   final void Function(bool) onChangeOrAnd;
   final bool withShowSelect;
+  final bool isOr;
 
   @override
   State<ENewTaskNormalMonthly> createState() => _ENewTaskNormalMonthlyState();
@@ -84,6 +86,12 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
       finalData += "${date.day}.";
     }
     return finalData;
+  }
+
+  @override
+  void initState() {
+    isOr = widget.isOr;
+    super.initState();
   }
 
   @override

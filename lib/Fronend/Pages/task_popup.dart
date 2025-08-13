@@ -18,10 +18,10 @@ class TaskPopup extends StatefulWidget {
 }
 
 class _TaskPopupState extends State<TaskPopup> {
-  List<String> selectedAccounts = [];
+  List<DsAccount> selectedAccounts = [];
   bool selectAll = false;
 
-  void onSelectedAccount(List<String>? newSelectedAccounts) {
+  void onSelectedAccount(List<DsAccount>? newSelectedAccounts) {
     setState(() {
       if (newSelectedAccounts != null) {
         selectedAccounts = newSelectedAccounts;
@@ -69,6 +69,7 @@ class _TaskPopupState extends State<TaskPopup> {
                 children: [
                   ESelectAccount(
                     accounts: widget.accounts,
+                    selectedAccounts: selectedAccounts,
                     onSelectedAccount: onSelectedAccount,
                     selectAll: selectAll,
                   ),
