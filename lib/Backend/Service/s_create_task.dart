@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 
 class SCreateTask {
@@ -19,6 +22,7 @@ class SCreateTask {
 
   int repeatingType = 0;
   int repeatingIntervall = 1;
+  int? repeatingCount;
   bool afterComplete = false;
   DateTime startDate = getNowWithoutTime();
   DateTime? endDate;
@@ -66,6 +70,10 @@ class SCreateTask {
     repeatingIntervall = newRepeatingIntervall;
   }
 
+  void onRepeatingCount(int? newRepeatingCount) {
+    repeatingCount = newRepeatingCount;
+  }
+
   void onAfterComplete(bool newAfterComplete) {
     afterComplete = newAfterComplete;
   }
@@ -78,5 +86,31 @@ class SCreateTask {
     endDate = newEndDate;
   }
 
-  void onDone() {}
+  Future<void> onDone(BuildContext context) async {
+    if (canBeDone) {
+      DsTask newTask = DsTask(
+        name: name!,
+        emoji: emoji!,
+        onEveryDate: !isOr,
+        taskDates: [],
+        isImportant: isImportant,
+        timeFrom: timeFrom,
+        timeUntil: timeUntil,
+        taskOwners: selecedAccounts,
+        repeatingTemplate:
+            isRepeating
+                ? DsRepeatingTemplates(
+                  repeatingType: repeatingType,
+                  repeatingIntervall: repeatingIntervall,
+                  repeatAfterDone: afterComplete,
+                  repeatingCount: repeatingCount,
+                  startDate: startDate,
+                  endDate: endDate,
+                )
+                : null,
+      );
+
+      Navigator.pop(context);
+    }
+  }
 }
