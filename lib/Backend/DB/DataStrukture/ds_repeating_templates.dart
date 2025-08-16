@@ -2,12 +2,12 @@ import 'package:scrubbit/Backend/Functions/f_uuid.dart';
 
 class DsRepeatingTemplates {
   final String id;
-  final String repeatingType;
+  final int repeatingType;
   final int repeatingIntervall;
   final int? repeatingCount;
   final bool repeatAfterDone;
-  final DateTime startDateInt;
-  final DateTime? endDateInt;
+  final DateTime startDate;
+  final DateTime? endDate;
 
   DsRepeatingTemplates({
     String? id,
@@ -15,12 +15,12 @@ class DsRepeatingTemplates {
     required this.repeatingIntervall,
     this.repeatingCount,
     required this.repeatAfterDone,
-    required this.startDateInt,
-    this.endDateInt,
+    required this.startDate,
+    this.endDate,
   }) : id = id ?? uuid();
 
   DsRepeatingTemplates copyWith({
-    String? newRepeatingType,
+    int? newRepeatingType,
     int? newRepeatingIntervall,
     int? newRepeatingCount,
     bool? newRepeatAfterDone,
@@ -33,8 +33,8 @@ class DsRepeatingTemplates {
       repeatingIntervall: newRepeatingIntervall ?? repeatingIntervall,
       repeatingCount: newRepeatingCount ?? repeatingCount,
       repeatAfterDone: newRepeatAfterDone ?? repeatAfterDone,
-      startDateInt: newStartDate ?? startDateInt,
-      endDateInt: newEndDate ?? endDateInt,
+      startDate: newStartDate ?? startDate,
+      endDate: newEndDate ?? endDate,
     );
   }
 }

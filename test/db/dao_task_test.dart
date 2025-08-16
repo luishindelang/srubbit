@@ -5,7 +5,6 @@ import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Backend/DB/SQLite/sql_connection.dart';
-import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
 
 void main() {
   sqfliteFfiInit();
@@ -26,11 +25,11 @@ void main() {
 
   DsRepeatingTemplates buildTemplate() {
     return DsRepeatingTemplates(
-      repeatingType: TRepeatingTemplates.daily,
+      repeatingType: 1,
       repeatingIntervall: 1,
       repeatAfterDone: true,
-      startDateInt: DateTime.utc(2024, 1, 1),
-      endDateInt: null,
+      startDate: DateTime.utc(2024, 1, 1),
+      endDate: null,
     );
   }
 

@@ -25,11 +25,11 @@ void main() {
 
   DsRepeatingTemplates buildTemplate() {
     return DsRepeatingTemplates(
-      repeatingType: TRepeatingTemplates.weekly,
+      repeatingType: 1,
       repeatingIntervall: 1,
       repeatAfterDone: true,
-      startDateInt: DateTime.utc(2024, 1, 1),
-      endDateInt: null,
+      startDate: DateTime.utc(2024, 1, 1),
+      endDate: null,
     );
   }
 

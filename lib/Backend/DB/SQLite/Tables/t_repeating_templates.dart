@@ -12,9 +12,7 @@ class TRepeatingTemplates {
     return """
     CREATE TABLE IF NOT EXISTS $tableName (
       $id TEXT PRIMARY KEY,
-      $repeatingType TEXT NOT NULL CHECK (
-        $repeatingType IN ('$daily','$weekly', '$monthly', '$yearly')
-      ),
+      $repeatingType INTEGER NOT NULL,
       $repeatingIntervall INTEGER NOT NULL,
       $repeatingCount INTEGER,
       $repeatAfterDone INTEGER NOT NULL,

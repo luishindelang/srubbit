@@ -6,6 +6,7 @@ class DsAccount {
   final String name;
   final Color color;
   final IconData icon;
+  final int score;
 
   final bool fromDB;
 
@@ -14,15 +15,22 @@ class DsAccount {
     required this.name,
     required this.color,
     required this.icon,
+    this.score = 0,
     this.fromDB = false,
   }) : id = id ?? uuid();
 
-  DsAccount copyWith({String? newName, Color? newColor, IconData? newIcon}) {
+  DsAccount copyWith({
+    String? newName,
+    Color? newColor,
+    IconData? newIcon,
+    int? newScore,
+  }) {
     return DsAccount(
       id: id,
       name: newName ?? name,
       color: newColor ?? color,
       icon: newIcon ?? icon,
+      score: newScore ?? score,
     );
   }
 }
