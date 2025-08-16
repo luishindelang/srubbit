@@ -42,7 +42,7 @@ class ENewTaskBottomButton extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: InkWell(
-            onTap: taskService.onDone,
+            onTap: () => taskService.onDone(context),
             borderRadius: BorderRadius.circular(100),
             child: Container(
               width: sizeDoneButtonNewTask,

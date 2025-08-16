@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
+import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_date_picker_calendar.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_drop_down.dart';
+import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_count.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_intervall.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
@@ -14,6 +16,7 @@ class ENewTaskRepeatingSelectDate extends StatefulWidget {
     required this.title,
     required this.selectedDate,
     required this.onDatePressed,
+    this.onRepeatingCount,
     this.isEnd = false,
     this.startDate,
   });
@@ -21,6 +24,7 @@ class ENewTaskRepeatingSelectDate extends StatefulWidget {
   final String title;
   final DateTime? selectedDate;
   final void Function(DateTime?) onDatePressed;
+  final void Function(int?)? onRepeatingCount;
   final bool isEnd;
   final DateTime? startDate;
 
@@ -36,8 +40,10 @@ class _ENewTaskRepeatingSelectDateState
   DateTime? startDate;
 
   bool showAfter = false;
+  bool showRepeatingCount = false;
   int afterType = 0;
   int afterIntervall = 1;
+  int repeatingCount = 1;
 
   String showDate() {
     if (widget.selectedDate == null) {
@@ -106,7 +112,7 @@ class _ENewTaskRepeatingSelectDateState
       selectedDate = widget.selectedDate;
     }
     if (widget.isEnd) {
-      options = ["Never", "After", "Other date"];
+      options = ["Never", "After", "Other date", "Repeating"];
     } else {
       options = ["Now", "Other date"];
     }
@@ -127,9 +133,10 @@ class _ENewTaskRepeatingSelectDateState
                 return itemValue;
               },
               onChangedItem: (value) {
-                if (value == options.last) {
+                if (value == "Other date") {
                   setState(() {
                     showAfter = false;
+                    showRepeatingCount = true;
                   });
                   selectDate();
                 }
@@ -138,13 +145,26 @@ class _ENewTaskRepeatingSelectDateState
                     selectedDate = null;
                     widget.onDatePressed(selectedDate);
                     showAfter = false;
+                    showRepeatingCount = true;
                   });
                 }
                 if (value == "After") {
                   setState(() {
                     updateEndDate();
                     showAfter = true;
+                    showRepeatingCount = true;
                   });
+                }
+                if (value == "Repeating") {
+                  setState(() {
+                    selectedDate = null;
+                    showAfter = false;
+                    showRepeatingCount = true;
+                  });
+                } else {
+                  if (widget.onRepeatingCount != null) {
+                    widget.onRepeatingCount!(null);
+                  }
                 }
               },
               options: options,
@@ -164,10 +184,14 @@ class _ENewTaskRepeatingSelectDateState
               visible: selectedDate != null && !showAfter,
               child: Row(
                 children: [
-                  Icon(
-                    Icons.calendar_month_rounded,
-                    size: 30,
-                    color: buttonColor,
+                  CButton(
+                    radius: borderRadiusButtons,
+                    onPressed: selectDate,
+                    child: Icon(
+                      Icons.calendar_month_rounded,
+                      size: 30,
+                      color: buttonColor,
+                    ),
                   ),
                   SizedBox(width: 10),
                   Text(showDate(), style: buttonNormal),
@@ -193,6 +217,17 @@ class _ENewTaskRepeatingSelectDateState
                 },
                 repeatingType: afterType,
                 showTitle: false,
+              ),
+            ),
+            Visibility(
+              visible: showRepeatingCount,
+              child: ENewTaskRepeatingCount(
+                onIntervallChanged: (newRepeating) {
+                  if (widget.onRepeatingCount != null) {
+                    widget.onRepeatingCount!(newRepeating);
+                  }
+                },
+                repeatingIntervall: repeatingCount,
               ),
             ),
           ],

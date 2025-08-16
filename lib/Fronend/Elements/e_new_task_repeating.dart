@@ -73,6 +73,7 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
             onDatePressed: widget.taskService.onEndDate,
             isEnd: true,
             startDate: widget.taskService.startDate,
+            onRepeatingCount: widget.taskService.onRepeatingCount,
           ),
           SizedBox(height: 20),
           Visibility(
