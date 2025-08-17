@@ -1,4 +1,13 @@
 const weekDays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+const weekDaysFull = [
+  "Montag",
+  "Dienstag",
+  "Mittwoch",
+  "Donnerstag",
+  "Freitag",
+  "Samstag",
+  "Sonntag",
+];
 
 const monthNames = [
   'Januar',

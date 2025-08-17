@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Elements/e_action_floating_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
@@ -11,12 +12,16 @@ class EScaffold extends StatelessWidget {
     required this.weekday,
     required this.date,
     required this.onAddPressed,
+    required this.onSettingsPressed,
+    required this.settingsIcon,
     required this.body,
   });
 
   final String weekday;
   final String date;
   final VoidCallback onAddPressed;
+  final VoidCallback onSettingsPressed;
+  final IconData settingsIcon;
   final Widget body;
 
   @override
@@ -25,9 +30,26 @@ class EScaffold extends StatelessWidget {
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(weekday, style: scaffoldAppBarTitleBold),
-            Text(", $date", style: scaffoldAppBarTitleNormal),
+            Row(
+              children: [
+                Text(weekday, style: scaffoldAppBarTitleBold),
+                Text(", $date", style: scaffoldAppBarTitleNormal),
+              ],
+            ),
+            Row(
+              children: [
+                CButton(
+                  onPressed: onSettingsPressed,
+                  backgroundColor: scaffoldBackgroundColor,
+                  radius: 100,
+                  paddingHor: 1,
+                  paddingVert: 1,
+                  child: Icon(settingsIcon, size: 38, color: buttonColor),
+                ),
+              ],
+            ),
           ],
         ),
         flexibleSpace: Container(
