@@ -10,19 +10,25 @@ class ETaskElementButton extends StatelessWidget {
     super.key,
     required this.task,
     required this.accounts,
+    this.onPressed,
   });
 
   final DsTask task;
   final List<DsAccount> accounts;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     void showDialogPopup() {
-      showDialog(
-        context: context,
-        builder:
-            (context) => TaskPopup(task: task, accounts: createAccounts(2)),
-      );
+      if (onPressed == null) {
+        showDialog(
+          context: context,
+          builder:
+              (context) => TaskPopup(task: task, accounts: createAccounts(2)),
+        );
+      } else {
+        onPressed!();
+      }
     }
 
     return Padding(

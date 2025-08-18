@@ -11,15 +11,15 @@ class EScaffold extends StatelessWidget {
     super.key,
     required this.weekday,
     required this.date,
-    required this.onAddPressed,
     required this.onSettingsPressed,
     required this.settingsIcon,
     required this.body,
+    this.onAddPressed,
   });
 
   final String weekday;
   final String date;
-  final VoidCallback onAddPressed;
+  final VoidCallback? onAddPressed;
   final VoidCallback onSettingsPressed;
   final IconData settingsIcon;
   final Widget body;
@@ -29,6 +29,7 @@ class EScaffold extends StatelessWidget {
     return Scaffold(
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -72,7 +73,10 @@ class EScaffold extends StatelessWidget {
         padding: const EdgeInsets.all(paddingScaffold),
         child: body,
       ),
-      floatingActionButton: EActionFloatingButton(onAddPressed: onAddPressed),
+      floatingActionButton:
+          onAddPressed != null
+              ? EActionFloatingButton(onAddPressed: onAddPressed!)
+              : null,
     );
   }
 }

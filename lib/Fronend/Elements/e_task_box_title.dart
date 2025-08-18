@@ -4,10 +4,16 @@ import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 
 class ETaskBoxTitle extends StatelessWidget {
-  const ETaskBoxTitle({super.key, this.title, required this.children});
+  const ETaskBoxTitle({
+    super.key,
+    required this.title,
+    required this.children,
+    this.behindTitle,
+  });
 
-  final String? title;
+  final String title;
   final List<Widget> children;
+  final Widget? behindTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,13 @@ class ETaskBoxTitle extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title!, style: taskBoxTitle),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(title, style: taskBoxTitle),
+                if (behindTitle != null) behindTitle!,
+              ],
+            ),
             SizedBox(height: 30),
             Expanded(
               child: SingleChildScrollView(child: Column(children: children)),
