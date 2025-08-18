@@ -9,7 +9,7 @@ String formatDate(DateTime dateTime, bool withMonth, bool withYear) {
   String month = "";
   String year = "";
   if (withYear) year = " ${dateTime.year}";
-  if (withMonth) month = monthNames[dateTime.month - 1];
+  if (withMonth) month = monthNames[dateTime.month - 1].padLeft(2, "0");
   return "$month$year";
 }
 
@@ -17,7 +17,7 @@ String formatDateDay(DateTime dateTime, bool withMonth, bool withYear) {
   String month = "";
   String year = "";
   if (withYear) year = ".${dateTime.year}";
-  if (withMonth) month = ".${dateTime.month}";
+  if (withMonth) month = ".${dateTime.month.toString().padLeft(2, "0")}";
   return "${dateTime.day.toString().padLeft(2, "0")}$month$year";
 }
 
