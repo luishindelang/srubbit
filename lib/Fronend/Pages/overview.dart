@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
+import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_element_button.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
@@ -17,6 +19,7 @@ class Overview extends StatefulWidget {
 class _OverviewState extends State<Overview> {
   final accounts = createAccounts(2);
   List<DsTask> repeatingTasks = [];
+  List<DsAccount> selectedAccounts = [];
 
   void routePop() {
     Navigator.pop(context);
@@ -31,21 +34,35 @@ class _OverviewState extends State<Overview> {
       settingsIcon: Icons.home_rounded,
       body: Row(
         children: [
-          SizedBox(
-            width: 460,
-            child: ETaskBoxTitle(
-              title: "Repeating Tasks",
-              children:
-                  repeatingTasks
-                      .map(
-                        (task) =>
-                            ETaskElementButton(task: task, accounts: accounts),
-                      )
-                      .toList(),
-            ),
+          ETaskBoxTitle(
+            flex: 1,
+            title: "Repeating Tasks",
+            children:
+                repeatingTasks
+                    .map(
+                      (task) =>
+                          ETaskElementButton(task: task, accounts: accounts),
+                    )
+                    .toList(),
           ),
           SizedBox(width: 10),
-          ETaskBoxTitle(title: "Score Overview", children: []),
+          ETaskBoxTitle(
+            flex: 2,
+            title: "Score Overview",
+            behindTitle: Expanded(
+              child: ESelectAccount(
+                reverse: true,
+                accounts: accounts,
+                selectedAccounts: selectedAccounts,
+                onSelectedAccount: (newSelectedAccounts) {
+                  selectedAccounts = newSelectedAccounts;
+                },
+                onExtraPressed: () {},
+                withShadow: true,
+              ),
+            ),
+            children: [],
+          ),
         ],
       ),
     );
