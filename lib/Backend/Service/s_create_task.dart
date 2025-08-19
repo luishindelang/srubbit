@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
