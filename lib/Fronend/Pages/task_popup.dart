@@ -71,6 +71,7 @@ class _TaskPopupState extends State<TaskPopup> {
                     accounts: widget.accounts,
                     selectedAccounts: selectedAccounts,
                     onSelectedAccount: onSelectedAccount,
+                    onExtraPressed: () {},
                     selectAll: selectAll,
                   ),
                   SizedBox(height: 70),

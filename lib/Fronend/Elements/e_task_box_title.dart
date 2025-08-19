@@ -9,15 +9,18 @@ class ETaskBoxTitle extends StatelessWidget {
     required this.title,
     required this.children,
     this.behindTitle,
+    this.flex = 1,
   });
 
   final String title;
   final List<Widget> children;
   final Widget? behindTitle;
+  final int flex;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: flex,
       child: Container(
         padding: EdgeInsets.all(paddingBox),
         decoration: BoxDecoration(
@@ -28,6 +31,7 @@ class ETaskBoxTitle extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              spacing: 20,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(title, style: taskBoxTitle),
