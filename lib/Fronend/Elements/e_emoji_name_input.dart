@@ -14,12 +14,16 @@ class EEmojiNameInput extends StatefulWidget {
     required this.onChangeName,
     required this.onChangeEmoji,
     required this.onChangeImportant,
+    this.name,
+    this.emojy,
   });
 
   final bool isImportant;
   final void Function(String) onChangeName;
   final void Function(String) onChangeEmoji;
   final void Function(bool) onChangeImportant;
+  final String? name;
+  final String? emojy;
 
   @override
   State<EEmojiNameInput> createState() => _EEmojiNameInputState();
@@ -35,6 +39,8 @@ class _EEmojiNameInputState extends State<EEmojiNameInput> {
   @override
   void initState() {
     isImportant = widget.isImportant;
+    if (widget.name != null) _nameController.text = widget.name!;
+    if (widget.emojy != null) emoji = widget.emojy!;
     super.initState();
   }
 

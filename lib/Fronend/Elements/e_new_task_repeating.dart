@@ -45,15 +45,21 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
                 onIntervallChanged: widget.taskService.onRepeatingIntervall,
                 repeatingIntervall: repeatingIntervall,
                 onTypeChanged: (newType) {
-                  repeatingType == newType;
-                  widget.taskService.onRepeatingType(newType);
+                  setState(() {
+                    repeatingType = newType;
+                    widget.taskService.onRepeatingType(newType);
+                  });
                 },
                 repeatingType: repeatingType,
               ),
               SizedBox(width: 30),
               ENewTaskRepeatingAfterComplete(
                 value: widget.taskService.afterComplete,
-                onChanged: widget.taskService.onAfterComplete,
+                onChanged: (newAfterComplete) {
+                  setState(() {
+                    widget.taskService.onAfterComplete(newAfterComplete);
+                  });
+                },
               ),
             ],
           ),

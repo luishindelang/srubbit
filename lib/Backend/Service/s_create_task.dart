@@ -112,4 +112,26 @@ class SCreateTask {
       Navigator.pop(context);
     }
   }
+
+  void loadDataFromTask(DsTask task) {
+    name = task.name;
+    emoji = task.emoji;
+    isOr = !task.onEveryDate;
+    isImportant = task.isImportant;
+    timeFrom = task.timeFrom;
+    timeUntil = task.timeUntil;
+    selecedAccounts = task.taskOwners ?? [];
+    isRepeating = task.repeatingTemplate != null;
+    if (isRepeating) {
+      repeatingType = task.repeatingTemplate!.repeatingType;
+      repeatingIntervall = task.repeatingTemplate!.repeatingIntervall;
+      afterComplete = task.repeatingTemplate!.repeatAfterDone;
+      repeatingCount = task.repeatingTemplate!.repeatingCount;
+      startDate = task.repeatingTemplate!.startDate;
+      endDate = task.repeatingTemplate!.endDate;
+    }
+    for (var taskDate in task.taskDates) {
+      selectedDates.add(taskDate.plannedDate);
+    }
+  }
 }

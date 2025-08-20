@@ -157,7 +157,7 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
                             ],
                           ),
                           Text(
-                            isOr == null
+                            isOr == null || selectedDates.isEmpty
                                 ? ""
                                 : isOr!
                                 ? "ODER"

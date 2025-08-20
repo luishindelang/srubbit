@@ -9,14 +9,18 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 class ESelectTimeFromUntil extends StatefulWidget {
   const ESelectTimeFromUntil({
     super.key,
-    required this.isRepeating,
-    required this.onIsRepeating,
     required this.onTimeSelect,
+    this.isRepeating,
+    this.onIsRepeating,
+    this.timeFrom,
+    this.timeUntil,
   });
 
-  final bool isRepeating;
-  final void Function(bool) onIsRepeating;
   final void Function(TimeOfDay?, TimeOfDay?) onTimeSelect;
+  final bool? isRepeating;
+  final void Function(bool)? onIsRepeating;
+  final TimeOfDay? timeFrom;
+  final TimeOfDay? timeUntil;
 
   @override
   State<ESelectTimeFromUntil> createState() => _ESelectTimeFromUntilState();
@@ -77,7 +81,12 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
 
   @override
   void initState() {
-    isRepeating = widget.isRepeating;
+    if (widget.isRepeating != null) isRepeating = widget.isRepeating!;
+    timeFrom = widget.timeFrom;
+    timeUntil = widget.timeUntil;
+    if (timeFrom != null) {
+      showTime = true;
+    }
     super.initState();
   }
 
@@ -89,31 +98,40 @@ class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
         vertical: 10.0,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment:
+            widget.onIsRepeating != null
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.start,
         children: [
-          CButton(
-            onPressed:
-                () => setState(() {
-                  isRepeating = !isRepeating;
-                  widget.onIsRepeating(isRepeating);
-                }),
-            backgroundColor: isRepeating ? buttonColor : buttonBackgroundColor,
-            radius: borderRadiusButtons,
-            paddingHor: 14,
-            paddingVert: 6,
-            child: Row(
-              children: [
-                Icon(
-                  Icons.autorenew_rounded,
-                  color: isRepeating ? textNegativeColor : buttonColor,
-                  size: 20,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "Repeating",
-                  style: isRepeating ? buttonSelected : buttonSelect,
-                ),
-              ],
+          Visibility(
+            visible: widget.onIsRepeating != null,
+            child: CButton(
+              onPressed:
+                  () => setState(() {
+                    isRepeating = !isRepeating;
+                    if (widget.onIsRepeating != null) {
+                      widget.onIsRepeating!(isRepeating);
+                    }
+                  }),
+              backgroundColor:
+                  isRepeating ? buttonColor : buttonBackgroundColor,
+              radius: borderRadiusButtons,
+              paddingHor: 14,
+              paddingVert: 6,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.autorenew_rounded,
+                    color: isRepeating ? textNegativeColor : buttonColor,
+                    size: 20,
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    "Repeating",
+                    style: isRepeating ? buttonSelected : buttonSelect,
+                  ),
+                ],
+              ),
             ),
           ),
           Row(
