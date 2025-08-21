@@ -63,18 +63,53 @@ List<List<DateTime>> groupByMonth(List<DateTime> dates) {
     }
   }
   if (newMonthList.isNotEmpty) finalList.add(newMonthList);
+
   return finalList;
 }
 
 bool isSameDay(DateTime a, DateTime? b) =>
     a.year == b?.year && a.month == b?.month && a.day == b?.day;
 
-DateTime getNowWithoutTime() {
+bool isToday(DateTime date) {
+  final today = getNowWithoutTime();
+  return isSameDay(date, today);
+}
+
+bool isInCurrentWeek(DateTime date) {
+  final today = getNowWithoutTime();
+  final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
+  final endOfWeek = startOfWeek.add(const Duration(days: 7));
+
+  return !date.isBefore(startOfWeek) && date.isBefore(endOfWeek);
+}
+
+bool isInCurrentMonth(DateTime date) {
+  final now = getNowWithoutTime();
+
+  return date.year == now.year && date.month == now.month;
+}
+
+DateTime getNowWithoutTime({
+  int addYear = 0,
+  int addMonth = 0,
+  int addDay = 0,
+}) {
   return DateTime(
-    DateTime.now().year,
-    DateTime.now().month,
-    DateTime.now().day,
+    DateTime.now().year + addYear,
+    DateTime.now().month + addMonth,
+    DateTime.now().day + addDay,
   );
+}
+
+int daysUntilEndOfWeek(DateTime date) {
+  int weekday = date.weekday;
+  int daysLeft = DateTime.daysPerWeek - weekday;
+  return daysLeft;
+}
+
+int daysUntilEndOfMonth(DateTime date) {
+  final lastDayOfMonth = DateTime(date.year, date.month + 1, 0);
+  return lastDayOfMonth.difference(date).inDays;
 }
 
 DateTime addToDate(DateTime? date, int type, int intervall) {
