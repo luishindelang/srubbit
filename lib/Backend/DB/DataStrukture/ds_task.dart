@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
-import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
 import 'package:scrubbit/Backend/Functions/f_uuid.dart';
 
 class DsTask {
@@ -10,6 +9,7 @@ class DsTask {
   final String name;
   final String emoji;
   final bool onEveryDate;
+  final int type;
   final List<DsTaskDate> taskDates;
   final int? offset;
   final bool isImportant;
@@ -25,6 +25,7 @@ class DsTask {
     required this.name,
     required this.emoji,
     required this.onEveryDate,
+    this.type = 0,
     required this.taskDates,
     this.offset,
     required this.isImportant,
@@ -39,6 +40,7 @@ class DsTask {
     String? newName,
     String? newEmoji,
     bool? newOnEveryDate,
+    int? newType,
     List<DsTaskDate>? newTaskDates,
     int? newOffset,
     bool? newIsImportant,
@@ -52,6 +54,7 @@ class DsTask {
       name: newName ?? name,
       emoji: newEmoji ?? emoji,
       onEveryDate: newOnEveryDate ?? onEveryDate,
+      type: newType ?? type,
       taskDates: newTaskDates ?? taskDates,
       offset: newOffset ?? offset,
       isImportant: newIsImportant ?? isImportant,
@@ -70,21 +73,19 @@ class DsTask {
     for (var date in taskDates) {
       DateTime newPlannedDate;
 
-      if (repeatingTemplate!.repeatingType == TRepeatingTemplates.daily) {
+      if (repeatingTemplate!.repeatingType == 0) {
         newPlannedDate = DateTime(
           date.plannedDate.year,
           date.plannedDate.month,
           date.plannedDate.day + repeatingTemplate!.repeatingIntervall,
         );
-      } else if (repeatingTemplate!.repeatingType ==
-          TRepeatingTemplates.weekly) {
+      } else if (repeatingTemplate!.repeatingType == 1) {
         newPlannedDate = DateTime(
           date.plannedDate.year,
           date.plannedDate.month,
           date.plannedDate.day + (7 * repeatingTemplate!.repeatingIntervall),
         );
-      } else if (repeatingTemplate!.repeatingType ==
-          TRepeatingTemplates.monthly) {
+      } else if (repeatingTemplate!.repeatingType == 2) {
         newPlannedDate = DateTime(
           date.plannedDate.year,
           date.plannedDate.month + repeatingTemplate!.repeatingIntervall,
@@ -101,17 +102,6 @@ class DsTask {
       DsTaskDate newDate = date.copyWith(newPlannedDate: newPlannedDate);
       newTaskDates.add(newDate);
     }
-    return DsTask(
-      id: id,
-      name: name,
-      emoji: emoji,
-      onEveryDate: onEveryDate,
-      taskDates: newTaskDates,
-      offset: offset,
-      isImportant: isImportant,
-      timeFrom: timeFrom,
-      timeUntil: timeUntil,
-      taskOwners: taskOwners,
-    );
+    return copyWith(newTaskDates: newTaskDates);
   }
 }
