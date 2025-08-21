@@ -26,11 +26,23 @@ class EditRepeatingTaskPopup extends StatefulWidget {
 class _EditRepeatingTaskPopupState extends State<EditRepeatingTaskPopup> {
   SCreateTask taskService = SCreateTask();
 
-  void onChangeEmoji(String newEmoji) {}
+  void onChangeEmoji(String newEmoji) {
+    setState(() {
+      taskService.emoji = newEmoji;
+    });
+  }
 
-  void onChangeName(String newName) {}
+  void onChangeName(String newName) {
+    setState(() {
+      taskService.name = newName;
+    });
+  }
 
-  void onChangeImportant(bool newIsImportant) {}
+  void onChangeImportant(bool newIsImportant) {
+    setState(() {
+      taskService.isImportant = newIsImportant;
+    });
+  }
 
   @override
   void initState() {

@@ -109,7 +109,7 @@ class SCreateTask {
                 : null,
       );
 
-      Navigator.pop(context);
+      Navigator.pop(context, newTask);
     }
   }
 

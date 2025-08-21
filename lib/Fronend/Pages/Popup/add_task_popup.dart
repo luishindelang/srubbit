@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Elements/e_emoji_name_input.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_bottom_button.dart';
@@ -14,10 +15,12 @@ class AddTaskPopup extends StatefulWidget {
     super.key,
     required this.isRepeating,
     required this.accounts,
+    this.task,
   });
 
   final bool isRepeating;
   final List<DsAccount> accounts;
+  final DsTask? task;
 
   @override
   State<AddTaskPopup> createState() => _AddTaskPopupState();
@@ -45,6 +48,13 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
   }
 
   @override
+  void initState() {
+    if (widget.task != null) taskService.loadDataFromTask(widget.task!);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
@@ -58,9 +68,11 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
             mainAxisSize: MainAxisSize.min,
             children: [
               EEmojiNameInput(
-                isImportant: taskService.isImportant,
+                emojy: taskService.emoji,
                 onChangeEmoji: onChangeEmoji,
+                name: taskService.name,
                 onChangeName: onChangeName,
+                isImportant: taskService.isImportant,
                 onChangeImportant: (i) => taskService.isImportant = i,
               ),
               ESelectTimeFromUntil(

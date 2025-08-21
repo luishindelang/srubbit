@@ -7,7 +7,7 @@ import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_element_button.dart';
-import 'package:scrubbit/Fronend/Pages/edit_repeating_task_popup.dart';
+import 'package:scrubbit/Fronend/Pages/Popup/edit_repeating_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 import 'package:scrubbit/test_data.dart';
 
@@ -43,12 +43,12 @@ class _OverviewState extends State<Overview> {
   }
 
   void onRepeatingTaskPressed(DsTask task) {
-    showDialog(
+    showDialog<DsTask>(
       context: context,
       builder:
           (context) => EditRepeatingTaskPopup(task: task, accounts: accounts),
     ).then((value) {
-      print("test");
+      print("after repeating edit");
     });
   }
 

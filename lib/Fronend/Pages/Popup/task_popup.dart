@@ -4,6 +4,7 @@ import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Fronend/Elements/e_done_bottons.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_element.dart';
+import 'package:scrubbit/Fronend/Pages/Popup/edit_repeating_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
@@ -38,7 +39,16 @@ class _TaskPopupState extends State<TaskPopup> {
   }
 
   void onEdit() {
-    print("Edit");
+    showDialog<DsTask>(
+      context: context,
+      builder:
+          (context) => EditRepeatingTaskPopup(
+            task: widget.task,
+            accounts: widget.accounts,
+          ),
+    ).then((value) {
+      print("after Edit");
+    });
   }
 
   void onDone() {
