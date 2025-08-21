@@ -11,14 +11,8 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
 class AddTaskPopup extends StatefulWidget {
-  const AddTaskPopup({
-    super.key,
-    required this.isRepeating,
-    required this.accounts,
-    this.task,
-  });
+  const AddTaskPopup({super.key, required this.accounts, this.task});
 
-  final bool isRepeating;
   final List<DsAccount> accounts;
   final DsTask? task;
 
@@ -50,7 +44,7 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
   @override
   void initState() {
     if (widget.task != null) taskService.loadDataFromTask(widget.task!);
-
+    if (widget.accounts.isNotEmpty) taskService.selecedAccounts = [];
     super.initState();
   }
 
@@ -73,7 +67,7 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
                 name: taskService.name,
                 onChangeName: onChangeName,
                 isImportant: taskService.isImportant,
-                onChangeImportant: (i) => taskService.isImportant = i,
+                onChangeImportant: taskService.onChangeImportant,
               ),
               ESelectTimeFromUntil(
                 isRepeating: taskService.isRepeating,

@@ -3,10 +3,11 @@ import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
+import 'package:scrubbit/Fronend/Elements/e_repeating_task_element_button.dart';
 import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_element_button.dart';
+import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_repeating_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 import 'package:scrubbit/test_data.dart';
@@ -47,8 +48,23 @@ class _OverviewState extends State<Overview> {
       context: context,
       builder:
           (context) => EditRepeatingTaskPopup(task: task, accounts: accounts),
-    ).then((value) {
+    ).then((newTask) {
+      if (newTask != null) {
+        setState(() {
+          repeatingTasks.remove(task);
+          repeatingTasks.add(newTask);
+        });
+      }
       print("after repeating edit");
+    });
+  }
+
+  void onEditAccouts() {
+    showDialog<List<DsAccount>>(
+      context: context,
+      builder: (context) => EditAccountPopup(),
+    ).then((value) {
+      print("after account edit");
     });
   }
 
@@ -67,9 +83,8 @@ class _OverviewState extends State<Overview> {
             children:
                 repeatingTasks
                     .map(
-                      (task) => ETaskElementButton(
+                      (task) => ERepeatingTaskElementButton(
                         task: task,
-                        accounts: accounts,
                         onPressed: () => onRepeatingTaskPressed(task),
                       ),
                     )

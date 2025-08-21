@@ -26,24 +26,6 @@ class EditRepeatingTaskPopup extends StatefulWidget {
 class _EditRepeatingTaskPopupState extends State<EditRepeatingTaskPopup> {
   SCreateTask taskService = SCreateTask();
 
-  void onChangeEmoji(String newEmoji) {
-    setState(() {
-      taskService.emoji = newEmoji;
-    });
-  }
-
-  void onChangeName(String newName) {
-    setState(() {
-      taskService.name = newName;
-    });
-  }
-
-  void onChangeImportant(bool newIsImportant) {
-    setState(() {
-      taskService.isImportant = newIsImportant;
-    });
-  }
-
   @override
   void initState() {
     taskService.loadDataFromTask(widget.task);
@@ -65,11 +47,11 @@ class _EditRepeatingTaskPopupState extends State<EditRepeatingTaskPopup> {
             children: [
               EEmojiNameInput(
                 name: taskService.name,
-                onChangeName: onChangeName,
+                onChangeName: taskService.onChangeName,
                 emojy: taskService.emoji,
-                onChangeEmoji: onChangeEmoji,
+                onChangeEmoji: taskService.onChangeEmoji,
                 isImportant: taskService.isImportant,
-                onChangeImportant: onChangeImportant,
+                onChangeImportant: taskService.onChangeImportant,
               ),
               ESelectTimeFromUntil(
                 onTimeSelect: taskService.onTimesSelect,

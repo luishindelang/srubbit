@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
+import 'package:scrubbit/Backend/Service/s_load_home_tasks.dart';
 import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_element_button.dart';
@@ -17,37 +18,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final SLoadHomeTasks homeTaskService = SLoadHomeTasks();
   final accounts = createAccounts(2);
-
-  List<DsTask> todayTasks = [
-    DsTask(
-      name: "Putzen ist ein ganz langer name der nicht drauf passt",
-      emoji: "😄",
-      onEveryDate: true,
-      taskDates: [],
-      isImportant: true,
-      timeFrom: TimeOfDay(hour: 13, minute: 10),
-      timeUntil: TimeOfDay(hour: 14, minute: 50),
-    ),
-    DsTask(
-      name: "Putzen ist ein ganz langer name der nicht drauf passt",
-      emoji: "😄",
-      onEveryDate: true,
-      taskDates: [],
-      isImportant: false,
-      timeFrom: TimeOfDay(hour: 13, minute: 10),
-    ),
-  ];
-  List<DsTask> weekTasks = [];
-  List<DsTask> monthTasks = [];
+  bool isLoaded = false;
 
   void showNewTaskPopup() {
-    showDialog(
+    showDialog<DsTask>(
       context: context,
-      builder:
-          (context) => AddTaskPopup(isRepeating: false, accounts: accounts),
-    ).then((value) {
-      print("test");
+      builder: (context) => AddTaskPopup(accounts: accounts),
+    ).then((newTask) {
+      if (newTask != null) {
+        setState(() {
+          homeTaskService.addNewTask(newTask);
+        });
+      }
     });
   }
 
@@ -56,6 +40,27 @@ class _HomeState extends State<Home> {
       context,
       MaterialPageRoute(builder: (context) => Overview()),
     );
+  }
+
+  void afterTaskIneraktion(bool? isDone) {
+    setState(() {
+      if (isDone != null && isDone) {
+        //play animation
+      }
+    });
+  }
+
+  void loadData() async {
+    await homeTaskService.loadData();
+    setState(() {
+      isLoaded = homeTaskService.isLoaded;
+    });
+  }
+
+  @override
+  void initState() {
+    homeTaskService.loadData();
+    super.initState();
   }
 
   @override
@@ -72,10 +77,14 @@ class _HomeState extends State<Home> {
           ETaskBoxTitle(
             title: "Heute",
             children:
-                todayTasks
+                homeTaskService.todayTasks
                     .map(
-                      (task) =>
-                          ETaskElementButton(task: task, accounts: accounts),
+                      (task) => ETaskElementButton(
+                        task: task,
+                        accounts: accounts,
+                        homeTaskService: homeTaskService,
+                        then: afterTaskIneraktion,
+                      ),
                     )
                     .toList(),
           ),
@@ -83,10 +92,14 @@ class _HomeState extends State<Home> {
           ETaskBoxTitle(
             title: "Diese Woche",
             children:
-                weekTasks
+                homeTaskService.weekTasks
                     .map(
-                      (task) =>
-                          ETaskElementButton(task: task, accounts: accounts),
+                      (task) => ETaskElementButton(
+                        task: task,
+                        accounts: accounts,
+                        homeTaskService: homeTaskService,
+                        then: afterTaskIneraktion,
+                      ),
                     )
                     .toList(),
           ),
@@ -94,10 +107,14 @@ class _HomeState extends State<Home> {
           ETaskBoxTitle(
             title: "Diesen Monat",
             children:
-                monthTasks
+                homeTaskService.monthTasks
                     .map(
-                      (task) =>
-                          ETaskElementButton(task: task, accounts: accounts),
+                      (task) => ETaskElementButton(
+                        task: task,
+                        accounts: accounts,
+                        homeTaskService: homeTaskService,
+                        then: afterTaskIneraktion,
+                      ),
                     )
                     .toList(),
           ),

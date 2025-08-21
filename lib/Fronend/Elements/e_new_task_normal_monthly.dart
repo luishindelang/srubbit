@@ -105,6 +105,10 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
             onPressed:
                 () => setState(() {
                   showSelection = !showSelection;
+                  if (showSelection) {
+                    widget.onChangeSelected([]);
+                    widget.onChangeOrAnd(false);
+                  }
                 }),
             text: "Select specific days",
             isSelected: showSelection,

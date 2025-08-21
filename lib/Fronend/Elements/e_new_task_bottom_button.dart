@@ -33,7 +33,7 @@ class ENewTaskBottomButton extends StatelessWidget {
             ),
             child: ESelectAccount(
               accounts: accounts,
-              selectedAccounts: taskService.selecedAccounts,
+              selectedAccounts: taskService.selecedAccounts ?? [],
               onSelectedAccount: taskService.onSelectAccount,
               onExtraPressed: () {},
               selectAll: true,
