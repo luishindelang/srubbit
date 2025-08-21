@@ -13,7 +13,7 @@ class DsTaskDate {
   DsTaskDate({
     String? id,
     required this.plannedDate,
-    required this.completionWindow,
+    this.completionWindow = 0,
     this.doneDate,
     this.doneBy,
     this.fromDB = false,
