@@ -46,7 +46,7 @@ void main() {
       emoji: 'test emojy',
       onEveryDate: false,
       taskDates: [buildDate()],
-      offset: null,
+      offset: 0,
       isImportant: true,
       timeFrom: null,
       timeUntil: null,

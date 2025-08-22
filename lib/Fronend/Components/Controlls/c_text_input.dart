@@ -6,6 +6,7 @@ class CTextInput extends StatelessWidget {
     super.key,
     required this.controller,
     required this.hintText,
+    this.selectionColor = Colors.black45,
     this.textColor = Colors.black,
     this.fontSize = 24,
     this.fontWeight = FontWeight.w500,
@@ -20,6 +21,7 @@ class CTextInput extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final Color textColor;
+  final Color selectionColor;
   final double fontSize;
   final FontWeight fontWeight;
   final double cursorHeight;
@@ -35,7 +37,7 @@ class CTextInput extends StatelessWidget {
       data: Theme.of(context).copyWith(
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: textColor,
-          selectionColor: textColor,
+          selectionColor: selectionColor,
           selectionHandleColor: textColor,
         ),
       ),

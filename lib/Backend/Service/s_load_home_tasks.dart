@@ -22,14 +22,14 @@ class SLoadHomeTasks {
 
       for (var date in newTask.taskDates) {
         if (date.completionWindow == 0 && date.doneDate == null) {
-          today = isToday(date.plannedDate);
+          today = isToday(date.plannedDate.add(Duration(days: newTask.offset)));
           if (today) {
             _todayTasks.add(newTask);
             return;
           }
         }
       }
-      if (!today) {
+      if (!today && newTask.type != 2) {
         for (var date in newTask.taskDates) {
           if (date.doneDate == null) {
             week = isInCurrentWeek(date.plannedDate);

@@ -11,7 +11,7 @@ class DsTask {
   final bool onEveryDate;
   final int type;
   final List<DsTaskDate> taskDates;
-  final int? offset;
+  final int offset;
   final bool isImportant;
   final TimeOfDay? timeFrom;
   final TimeOfDay? timeUntil;
@@ -27,7 +27,7 @@ class DsTask {
     required this.onEveryDate,
     this.type = 0,
     required this.taskDates,
-    this.offset,
+    this.offset = 0,
     required this.isImportant,
     this.timeFrom,
     this.timeUntil,
