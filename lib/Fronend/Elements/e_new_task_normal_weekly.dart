@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_lists.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
+import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Elements/e_and_switch_or.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account_button.dart';
@@ -14,16 +15,12 @@ import 'package:scrubbit/Fronend/Style/Language/de.dart';
 class ENewTaskNormalWeekly extends StatefulWidget {
   const ENewTaskNormalWeekly({
     super.key,
-    required this.onChangeSelected,
-    required this.onChangeOrAnd,
+    required this.taskService,
     this.withShowSelect = true,
-    this.isOr = false,
   });
 
-  final void Function(List<DateTime>) onChangeSelected;
-  final void Function(bool) onChangeOrAnd;
+  final SCreateTask taskService;
   final bool withShowSelect;
-  final bool isOr;
 
   @override
   State<ENewTaskNormalWeekly> createState() => _ENewTaskNormalWeeklyState();
@@ -40,7 +37,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
   void onOrAndChange(bool newIs) {
     setState(() {
       isOr = newIs;
-      widget.onChangeOrAnd(isOr);
+      widget.taskService.onChangeOrAnd(isOr);
     });
   }
 
@@ -70,14 +67,16 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
         }
       }
       selectedWeekDays.sort((a, b) => a.compareTo(b));
-      widget.onChangeSelected(selectedWeekDays);
+      widget.taskService.onSelectedDates(selectedWeekDays);
     });
   }
 
   @override
   void initState() {
+    selectedWeekDays = widget.taskService.selectedDates;
     weekDaysDate = getNext7Weekdays();
-    isOr = widget.isOr;
+    isOr = widget.taskService.isOr;
+    showSelection = selectedWeekDays.isNotEmpty;
     super.initState();
   }
 
@@ -93,8 +92,8 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                 () => setState(() {
                   showSelection = !showSelection;
                   if (showSelection) {
-                    widget.onChangeSelected([]);
-                    widget.onChangeOrAnd(false);
+                    widget.taskService.onSelectedDates([]);
+                    widget.taskService.onChangeOrAnd(false);
                   }
                 }),
             text: "Select weekdays",

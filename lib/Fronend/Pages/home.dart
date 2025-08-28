@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
+import 'package:scrubbit/Backend/DB/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_load_home_tasks.dart';
 import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
@@ -8,7 +10,6 @@ import 'package:scrubbit/Fronend/Elements/e_task_element_button.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/overview.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
-import 'package:scrubbit/test_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,8 +19,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late DatabaseService dbService;
   final SLoadHomeTasks homeTaskService = SLoadHomeTasks();
-  final accounts = createAccounts(2);
+  List<DsAccount> accounts = [];
   bool isLoaded = false;
 
   void showNewTaskPopup() {
@@ -38,20 +40,20 @@ class _HomeState extends State<Home> {
   void routeOverview() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Overview()),
+      MaterialPageRoute(builder: (context) => Overview(dbService: dbService)),
     );
   }
 
-  void afterTaskIneraktion(bool? isDone) {
-    setState(() {
-      if (isDone != null && isDone) {
-        //play animation
-      }
-    });
+  void onDone(DsTask task) {
+    //play animation
   }
 
   void loadData() async {
     await homeTaskService.loadData();
+    dbService = await DatabaseService.init();
+    await dbService.loadAccounts();
+    accounts = dbService.getAccounts;
+
     setState(() {
       isLoaded = homeTaskService.isLoaded;
     });
@@ -59,7 +61,7 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    homeTaskService.loadData();
+    loadData();
     super.initState();
   }
 
@@ -81,9 +83,15 @@ class _HomeState extends State<Home> {
                     .map(
                       (task) => ETaskElementButton(
                         task: task,
-                        accounts: accounts,
+                        dbService: dbService,
                         homeTaskService: homeTaskService,
-                        then: afterTaskIneraktion,
+                        then: (isDone) {
+                          setState(() {
+                            if (isDone != null && isDone) {
+                              onDone(task);
+                            }
+                          });
+                        },
                       ),
                     )
                     .toList(),
@@ -96,9 +104,15 @@ class _HomeState extends State<Home> {
                     .map(
                       (task) => ETaskElementButton(
                         task: task,
-                        accounts: accounts,
+                        dbService: dbService,
                         homeTaskService: homeTaskService,
-                        then: afterTaskIneraktion,
+                        then: (isDone) {
+                          setState(() {
+                            if (isDone != null && isDone) {
+                              onDone(task);
+                            }
+                          });
+                        },
                       ),
                     )
                     .toList(),
@@ -111,9 +125,15 @@ class _HomeState extends State<Home> {
                     .map(
                       (task) => ETaskElementButton(
                         task: task,
-                        accounts: accounts,
+                        dbService: dbService,
                         homeTaskService: homeTaskService,
-                        then: afterTaskIneraktion,
+                        then: (isDone) {
+                          setState(() {
+                            if (isDone != null && isDone) {
+                              onDone(task);
+                            }
+                          });
+                        },
                       ),
                     )
                     .toList(),

@@ -46,7 +46,7 @@ class _ENewTaskRepeatingSelectDateState
   int repeatingCount = 1;
 
   String showDate() {
-    if (widget.selectedDate == null) {
+    if (selectedDate == null) {
       return "";
     }
     return formatDateDay(widget.selectedDate!, true, true);
@@ -67,7 +67,13 @@ class _ENewTaskRepeatingSelectDateState
               currentMonth: DateTime(DateTime.now().year, DateTime.now().month),
               selectedDate: widget.selectedDate,
               onDatePressed: (newDate) {
-                Navigator.pop(context, newDate);
+                if (startDate != null) {
+                  if (newDate.isAfter(startDate!)) {
+                    Navigator.pop(context, newDate);
+                  }
+                } else {
+                  Navigator.pop(context, newDate);
+                }
               },
               weekDays: weekDays,
               monthNames: monthNames,
@@ -101,16 +107,16 @@ class _ENewTaskRepeatingSelectDateState
   void didUpdateWidget(covariant ENewTaskRepeatingSelectDate oldWidget) {
     if (oldWidget.startDate != widget.startDate) {
       startDate = widget.startDate;
-      updateEndDate();
+      if (selectedDate != null) {
+        updateEndDate();
+      }
     }
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void initState() {
-    if (!isSameDay(DateTime.now(), widget.selectedDate)) {
-      selectedDate = widget.selectedDate;
-    }
+    selectedDate = widget.selectedDate;
     if (widget.isEnd) {
       options = ["Never", "After", "Other date", "Repeating"];
     } else {
@@ -136,7 +142,7 @@ class _ENewTaskRepeatingSelectDateState
                 if (value == "Other date") {
                   setState(() {
                     showAfter = false;
-                    showRepeatingCount = true;
+                    showRepeatingCount = false;
                   });
                   selectDate();
                 }
@@ -145,14 +151,14 @@ class _ENewTaskRepeatingSelectDateState
                     selectedDate = null;
                     widget.onDatePressed(selectedDate);
                     showAfter = false;
-                    showRepeatingCount = true;
+                    showRepeatingCount = false;
                   });
                 }
                 if (value == "After") {
                   setState(() {
                     updateEndDate();
                     showAfter = true;
-                    showRepeatingCount = true;
+                    showRepeatingCount = false;
                   });
                 }
                 if (value == "Repeating") {
@@ -181,7 +187,10 @@ class _ENewTaskRepeatingSelectDateState
             ),
             SizedBox(width: 10),
             Visibility(
-              visible: selectedDate != null && !showAfter,
+              visible:
+                  (selectedDate != null &&
+                      !isSameDay(DateTime.now(), widget.selectedDate)) &&
+                  !showAfter,
               child: Row(
                 children: [
                   CButton(

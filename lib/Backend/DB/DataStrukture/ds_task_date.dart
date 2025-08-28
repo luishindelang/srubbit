@@ -19,11 +19,18 @@ class DsTaskDate {
     this.fromDB = false,
   }) : id = id ?? uuid();
 
-  DsTaskDate copyWith({DateTime? newPlannedDate, int? newCompletionWindow}) {
+  DsTaskDate copyWith({
+    DateTime? newPlannedDate,
+    int? newCompletionWindow,
+    DateTime? newDoneDate,
+    List<DsAccount>? newDoneBy,
+  }) {
     return DsTaskDate(
       id: id,
       plannedDate: newPlannedDate ?? plannedDate,
       completionWindow: newCompletionWindow ?? completionWindow,
+      doneDate: newDoneDate ?? doneDate,
+      doneBy: newDoneBy ?? doneBy,
     );
   }
 }

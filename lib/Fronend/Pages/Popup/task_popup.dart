@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
+import 'package:scrubbit/Backend/DB/database_service.dart';
+import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_load_home_tasks.dart';
 import 'package:scrubbit/Fronend/Elements/e_done_bottons.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
@@ -13,12 +15,12 @@ class TaskPopup extends StatefulWidget {
   const TaskPopup({
     super.key,
     required this.task,
-    required this.accounts,
+    required this.dbService,
     required this.homeTaskService,
   });
 
   final DsTask task;
-  final List<DsAccount> accounts;
+  final DatabaseService dbService;
   final SLoadHomeTasks homeTaskService;
 
   @override
@@ -49,27 +51,50 @@ class _TaskPopupState extends State<TaskPopup> {
   void onEdit() {
     showDialog<DsTask>(
       context: context,
-      builder: (context) => AddTaskPopup(task: task, accounts: widget.accounts),
+      builder:
+          (context) =>
+              AddTaskPopup(task: task, accounts: widget.dbService.getAccounts),
     ).then((newTask) {
       if (newTask != null) {
-        setState(() {
+        setState(() async {
           widget.homeTaskService.updateTask(task, newTask);
+          await widget.dbService.daoTasks.update(newTask);
           task = newTask;
         });
       }
     });
   }
 
-  void onDone() {
+  void onDone() async {
     if (canDoDone()) {
+      if (isToday(task.taskDates.last.plannedDate)) {
+        DsTask? newRepeatingTask = task.nextRepeatingTask();
+        if (newRepeatingTask != null) {
+          await widget.dbService.daoTasks.insert(
+            newRepeatingTask,
+            isNewRepeatingTask: true,
+          );
+        }
+      }
+      for (var taskDate in task.taskDates) {
+        if (isToday(taskDate.plannedDate)) {
+          var newTaskDate = taskDate.copyWith(
+            newDoneDate: DateTime.now(),
+            newDoneBy: selectedAccounts,
+          );
+          await widget.dbService.daoTaskDates.update(newTaskDate);
+          break;
+        }
+      }
+
       Navigator.pop(context, true);
-      print("done");
     }
   }
 
-  void onNext() {
-    var newTask = task.copyWith(newOffset: 1);
+  void onNext() async {
+    var newTask = task.copyWith(newOffset: task.offset + 1);
     widget.homeTaskService.updateTask(task, newTask);
+    await widget.dbService.daoTasks.update(newTask);
     Navigator.pop(context);
   }
 
@@ -99,7 +124,7 @@ class _TaskPopupState extends State<TaskPopup> {
                 child: Column(
                   children: [
                     ESelectAccount(
-                      accounts: widget.accounts,
+                      accounts: widget.dbService.getAccounts,
                       selectedAccounts: selectedAccounts,
                       onSelectedAccount: onSelectedAccount,
                       onExtraPressed: () {},

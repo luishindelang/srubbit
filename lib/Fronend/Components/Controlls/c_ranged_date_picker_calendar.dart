@@ -204,22 +204,25 @@ class _CRangedDatePickerCalendarState extends State<CRangedDatePickerCalendar> {
                           return widget.dateButtonStyleOtherMonth;
                         }
 
-                        return CButton(
-                          paddingHor: 4,
-                          paddingVert: 4,
-                          radius: 100,
-                          backgroundColor:
-                              isSelected
-                                  ? widget.dateIsSelected
-                                  : isToday
-                                  ? widget.dateIsToday
-                                  : Colors.transparent,
-                          onPressed:
-                              () => setState(() {
-                                _selectedDates = widget.onDatePressed(date);
-                              }),
-                          child: Center(
-                            child: Text("${date.day}", style: styleDate()),
+                        return Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: CButton(
+                            paddingHor: 2,
+                            paddingVert: 2,
+                            radius: 100,
+                            backgroundColor:
+                                isSelected
+                                    ? widget.dateIsSelected
+                                    : isToday
+                                    ? widget.dateIsToday
+                                    : Colors.transparent,
+                            onPressed:
+                                () => setState(() {
+                                  _selectedDates = widget.onDatePressed(date);
+                                }),
+                            child: Center(
+                              child: Text("${date.day}", style: styleDate()),
+                            ),
                           ),
                         );
                       }).toList(),

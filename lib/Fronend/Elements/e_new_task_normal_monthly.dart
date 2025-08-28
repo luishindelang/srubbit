@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
+import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Elements/e_date_picker.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
@@ -10,16 +11,12 @@ import 'package:scrubbit/Fronend/Style/Language/de.dart';
 class ENewTaskNormalMonthly extends StatefulWidget {
   const ENewTaskNormalMonthly({
     super.key,
-    required this.onChangeSelected,
-    required this.onChangeOrAnd,
+    required this.taskService,
     this.withShowSelect = false,
-    this.isOr = false,
   });
 
-  final void Function(List<DateTime>) onChangeSelected;
-  final void Function(bool) onChangeOrAnd;
+  final SCreateTask taskService;
   final bool withShowSelect;
-  final bool isOr;
 
   @override
   State<ENewTaskNormalMonthly> createState() => _ENewTaskNormalMonthlyState();
@@ -35,22 +32,10 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
   void openDatePicker() {
     showDialog(
       context: context,
-      builder:
-          (context) => EDatePicker(
-            selectedDates: selectedDates,
-            isTimeSpan: isTimeSpann,
-            isOr: isOr,
-          ),
+      builder: (context) => EDatePicker(taskService: widget.taskService),
     ).then(
       (data) => setState(() {
-        if (data != null) {
-          selectedDates = data["dates"];
-          isTimeSpann = data["isTimeSpan"];
-          isOr = data["isOr"];
-          selectedDates.sort((a, b) => a.compareTo(b));
-          widget.onChangeSelected(selectedDates);
-          widget.onChangeOrAnd(isOr!);
-        }
+        selectedDates = widget.taskService.selectedDates;
       }),
     );
   }
@@ -90,7 +75,9 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
 
   @override
   void initState() {
-    isOr = widget.isOr;
+    selectedDates = widget.taskService.selectedDates;
+    isOr = widget.taskService.isOr;
+    showSelection = selectedDates.isNotEmpty;
     super.initState();
   }
 
@@ -106,8 +93,8 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
                 () => setState(() {
                   showSelection = !showSelection;
                   if (showSelection) {
-                    widget.onChangeSelected([]);
-                    widget.onChangeOrAnd(false);
+                    widget.taskService.selectedDates = [];
+                    widget.taskService.isOr = false;
                   }
                 }),
             text: "Select specific days",

@@ -73,6 +73,8 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
                 isRepeating: taskService.isRepeating,
                 onIsRepeating: onIsRepeating,
                 onTimeSelect: taskService.onTimesSelect,
+                timeFrom: taskService.timeFrom,
+                timeUntil: taskService.timeUntil,
               ),
               Visibility(
                 visible: !taskService.isRepeating,

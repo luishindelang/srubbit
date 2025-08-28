@@ -27,24 +27,14 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
   Widget showTypeElements() {
     switch (type) {
       case 2:
-        return ENewTaskNormalWeekly(
-          onChangeOrAnd: widget.taskService.onChangeOrAnd,
-          onChangeSelected: widget.taskService.onSelectedDates,
-          isOr: widget.taskService.isOr,
-        );
+        return ENewTaskNormalWeekly(taskService: widget.taskService);
       case 3:
         return ENewTaskNormalMonthly(
-          onChangeSelected: widget.taskService.onSelectedDates,
-          onChangeOrAnd: widget.taskService.onChangeOrAnd,
+          taskService: widget.taskService,
           withShowSelect: true,
-          isOr: widget.taskService.isOr,
         );
       case 4:
-        return ENewTaskNormalMonthly(
-          onChangeSelected: widget.taskService.onSelectedDates,
-          onChangeOrAnd: widget.taskService.onChangeOrAnd,
-          isOr: widget.taskService.isOr,
-        );
+        return ENewTaskNormalMonthly(taskService: widget.taskService);
       default:
         return const SizedBox(height: 20);
     }

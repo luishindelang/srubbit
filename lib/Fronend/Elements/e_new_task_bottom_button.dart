@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
@@ -19,6 +20,10 @@ class ENewTaskBottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void pop(DsTask? newTask) {
+      Navigator.pop(context, newTask);
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -33,7 +38,7 @@ class ENewTaskBottomButton extends StatelessWidget {
             ),
             child: ESelectAccount(
               accounts: accounts,
-              selectedAccounts: taskService.selecedAccounts ?? [],
+              selectedAccounts: taskService.selecedAccounts,
               onSelectedAccount: taskService.onSelectAccount,
               onExtraPressed: () {},
               selectAll: true,
@@ -43,7 +48,12 @@ class ENewTaskBottomButton extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: InkWell(
-            onTap: () => taskService.onDone(context),
+            onTap: () async {
+              if (taskService.canBeDone) {
+                var newTask = await taskService.onDone();
+                pop(newTask);
+              }
+            },
             borderRadius: BorderRadius.circular(100),
             child: Container(
               width: sizeDoneButtonNewTask,

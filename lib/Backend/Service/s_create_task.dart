@@ -3,6 +3,7 @@ import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
+import 'package:scrubbit/Backend/DB/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 
 class SCreateTask {
@@ -11,7 +12,7 @@ class SCreateTask {
   bool isImportant = false;
   bool isRepeating = false;
 
-  List<DsAccount>? selecedAccounts;
+  List<DsAccount> selecedAccounts = [];
 
   TimeOfDay? timeFrom;
   TimeOfDay? timeUntil;
@@ -19,16 +20,17 @@ class SCreateTask {
   int type = 0;
   bool isOr = false;
   List<DateTime> selectedDates = [];
+  DateTime? startDate;
+  DateTime? endDate;
 
   int repeatingType = 0;
   int repeatingIntervall = 1;
   int? repeatingCount;
   bool afterComplete = false;
-  DateTime startDate = getNowWithoutTime();
-  DateTime? endDate;
+  DateTime startDateRepeating = getNowWithoutTime();
+  DateTime? endDateRepeating;
 
-  bool get canBeDone =>
-      emoji != null && name != null && selecedAccounts != null;
+  bool get canBeDone => emoji != null && name != null;
 
   bool isChanged = false;
 
@@ -75,6 +77,7 @@ class SCreateTask {
 
   void onSelectedDates(List<DateTime> newDates) {
     selectedDates = newDates;
+    selectedDates.sort((a, b) => a.compareTo(b));
     isChanged = true;
   }
 
@@ -98,18 +101,18 @@ class SCreateTask {
     isChanged = true;
   }
 
-  void onStartDate(DateTime newStartDate) {
-    startDate = newStartDate;
+  void onStartDateRepeating(DateTime newStartDate) {
+    startDateRepeating = newStartDate;
     isChanged = true;
   }
 
-  void onEndDate(DateTime? newEndDate) {
-    endDate = newEndDate;
+  void onEndDateRepeating(DateTime? newEndDate) {
+    endDateRepeating = newEndDate;
     isChanged = true;
   }
 
-  Future<void> onDone(BuildContext context) async {
-    if (canBeDone && isChanged) {
+  Future<DsTask?> onDone() async {
+    if (isChanged) {
       var now = getNowWithoutTime();
       List<DsTaskDate> taskDates = [];
       if (type == 0) {
@@ -141,7 +144,6 @@ class SCreateTask {
         emoji: emoji!,
         onEveryDate: !isOr,
         taskDates: taskDates,
-        type: type,
         isImportant: isImportant,
         timeFrom: timeFrom,
         timeUntil: timeUntil,
@@ -153,16 +155,16 @@ class SCreateTask {
                   repeatingIntervall: repeatingIntervall,
                   repeatAfterDone: afterComplete,
                   repeatingCount: repeatingCount,
-                  startDate: startDate,
-                  endDate: endDate,
+                  startDate: startDateRepeating,
+                  endDate: endDateRepeating,
                 )
                 : null,
       );
-      // save in db
-      Navigator.pop(context, newTask);
-    } else if (canBeDone && !isChanged) {
-      Navigator.pop(context);
+      var dbService = await DatabaseService.init();
+      await dbService.daoTasks.insert(newTask);
+      return newTask;
     }
+    return null;
   }
 
   void loadDataFromTask(DsTask task) {
@@ -174,17 +176,17 @@ class SCreateTask {
     timeUntil = task.timeUntil;
     selecedAccounts = task.taskOwners ?? [];
     isRepeating = task.repeatingTemplate != null;
-    type = task.type;
     if (isRepeating) {
       repeatingType = task.repeatingTemplate!.repeatingType;
       repeatingIntervall = task.repeatingTemplate!.repeatingIntervall;
       afterComplete = task.repeatingTemplate!.repeatAfterDone;
       repeatingCount = task.repeatingTemplate!.repeatingCount;
-      startDate = task.repeatingTemplate!.startDate;
-      endDate = task.repeatingTemplate!.endDate;
+      startDateRepeating = task.repeatingTemplate!.startDate;
+      endDateRepeating = task.repeatingTemplate!.endDate;
     }
     for (var taskDate in task.taskDates) {
-      selectedDates.add(taskDate.plannedDate);
+      selectedDates.add(taskDate.plannedDate.add(Duration(days: task.offset)));
     }
+    type = task.getType();
   }
 }

@@ -75,6 +75,11 @@ bool isToday(DateTime date) {
   return isSameDay(date, today);
 }
 
+bool isTomorrow(DateTime date) {
+  final tomorrow = getNowWithoutTime().add(Duration(days: 1));
+  return isSameDay(date, tomorrow);
+}
+
 bool isInCurrentWeek(DateTime date) {
   final today = getNowWithoutTime();
   final startOfWeek = today.subtract(Duration(days: today.weekday - 1));

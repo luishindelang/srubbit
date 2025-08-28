@@ -14,13 +14,13 @@ class DaoTask extends MappingTask {
   DaoTask(this.db)
     : super(DaoTaskDate(db), DaoRepeatingTemplates(db), DaoAccount(db));
 
-  Future<void> insert(DsTask task) async {
+  Future<void> insert(DsTask task, {bool isNewRepeatingTask = false}) async {
     await db.insert(
       TTask.tableName,
       await toMap(task),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    if (task.repeatingTemplate != null) {
+    if (task.repeatingTemplate != null && !isNewRepeatingTask) {
       await daoRepeatingTemplates.insert(task.repeatingTemplate!);
     }
     for (final date in task.taskDates) {

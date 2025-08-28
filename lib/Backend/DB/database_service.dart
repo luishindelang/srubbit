@@ -8,7 +8,19 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
   static DatabaseService? _instance;
-  List<DsAccount> accounts = [];
+  List<DsAccount> _accounts = [];
+
+  List<DsAccount> get getAccounts => _accounts;
+
+  set setAccounts(List<DsAccount> newAccounts) => _accounts = newAccounts;
+
+  void addAccount(DsAccount newAccount) {
+    _accounts.add(newAccount);
+  }
+
+  void deleteAccount(DsAccount account) {
+    _accounts.remove(account);
+  }
 
   late final DaoAccount daoAccounts;
   late final DaoTask daoTasks;
@@ -29,11 +41,7 @@ class DatabaseService {
     return _instance!;
   }
 
-  void loadAccounts(List<DsAccount> accountList) {
-    accounts = accountList;
-  }
-
-  List<DsAccount> getAccounts() {
-    return accounts;
+  Future<void> loadAccounts() async {
+    _accounts = await daoAccounts.getAll();
   }
 }

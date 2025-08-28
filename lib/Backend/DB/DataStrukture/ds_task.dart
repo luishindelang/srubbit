@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
+import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Functions/f_uuid.dart';
 
 class DsTask {
@@ -9,7 +10,6 @@ class DsTask {
   final String name;
   final String emoji;
   final bool onEveryDate;
-  final int type;
   final List<DsTaskDate> taskDates;
   final int offset;
   final bool isImportant;
@@ -25,7 +25,6 @@ class DsTask {
     required this.name,
     required this.emoji,
     required this.onEveryDate,
-    this.type = 0,
     required this.taskDates,
     this.offset = 0,
     required this.isImportant,
@@ -54,7 +53,6 @@ class DsTask {
       name: newName ?? name,
       emoji: newEmoji ?? emoji,
       onEveryDate: newOnEveryDate ?? onEveryDate,
-      type: newType ?? type,
       taskDates: newTaskDates ?? taskDates,
       offset: newOffset ?? offset,
       isImportant: newIsImportant ?? isImportant,
@@ -63,6 +61,24 @@ class DsTask {
       repeatingTemplate: newRepeatingTemplate ?? repeatingTemplate,
       taskOwners: newTaskOwners ?? taskOwners,
     );
+  }
+
+  int getType() {
+    if (taskDates.isNotEmpty) {
+      var date = taskDates.last.plannedDate;
+      if (isToday(date.add(Duration(days: offset)))) {
+        return 0;
+      } else if (isTomorrow(date.add(Duration(days: offset)))) {
+        return 1;
+      } else if (isInCurrentWeek(date.add(Duration(days: offset)))) {
+        return 2;
+      } else if (isInCurrentWeek(date.add(Duration(days: offset)))) {
+        return 3;
+      } else {
+        return 4;
+      }
+    }
+    return 0;
   }
 
   DsTask? nextRepeatingTask() {

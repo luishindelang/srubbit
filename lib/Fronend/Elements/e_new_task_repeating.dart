@@ -66,36 +66,37 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
           SizedBox(height: 20),
           ENewTaskRepeatingSelectDate(
             title: "Begin:",
-            selectedDate: widget.taskService.startDate,
+            selectedDate: widget.taskService.startDateRepeating,
             onDatePressed:
-                (newDate) => widget.taskService.onStartDate(
-                  newDate ?? getNowWithoutTime(),
-                ),
+                (newDate) => setState(() {
+                  widget.taskService.onStartDateRepeating(
+                    newDate ?? getNowWithoutTime(),
+                  );
+                }),
           ),
           SizedBox(height: 20),
           ENewTaskRepeatingSelectDate(
             title: "End:",
-            selectedDate: widget.taskService.endDate,
-            onDatePressed: widget.taskService.onEndDate,
+            selectedDate: widget.taskService.endDateRepeating,
+            onDatePressed:
+                (newDate) => setState(() {
+                  widget.taskService.onEndDateRepeating(newDate);
+                }),
             isEnd: true,
-            startDate: widget.taskService.startDate,
+            startDate: widget.taskService.startDateRepeating,
             onRepeatingCount: widget.taskService.onRepeatingCount,
           ),
           SizedBox(height: 20),
           Visibility(
             visible: repeatingType == 1,
             child: ENewTaskNormalWeekly(
-              onChangeSelected: widget.taskService.onSelectedDates,
-              onChangeOrAnd: widget.taskService.onChangeOrAnd,
+              taskService: widget.taskService,
               withShowSelect: false,
             ),
           ),
           Visibility(
             visible: repeatingType == 2 || repeatingType == 3,
-            child: ENewTaskNormalMonthly(
-              onChangeSelected: widget.taskService.onSelectedDates,
-              onChangeOrAnd: widget.taskService.onChangeOrAnd,
-            ),
+            child: ENewTaskNormalMonthly(taskService: widget.taskService),
           ),
         ],
       ),

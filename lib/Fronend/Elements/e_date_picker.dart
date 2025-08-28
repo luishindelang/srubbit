@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Backend/Functions/f_lists.dart';
+import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_ranged_date_picker_calendar.dart';
 import 'package:scrubbit/Fronend/Elements/e_and_switch_or.dart';
@@ -12,16 +13,9 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
 class EDatePicker extends StatefulWidget {
-  const EDatePicker({
-    super.key,
-    required this.selectedDates,
-    this.isTimeSpan,
-    this.isOr,
-  });
+  const EDatePicker({super.key, required this.taskService});
 
-  final List<DateTime> selectedDates;
-  final bool? isTimeSpan;
-  final bool? isOr;
+  final SCreateTask taskService;
 
   @override
   State<EDatePicker> createState() => _EDatePickerState();
@@ -36,11 +30,7 @@ class _EDatePickerState extends State<EDatePicker> {
 
   void onDone() {
     if (canBeDone) {
-      Navigator.pop(context, {
-        "dates": selectedDates,
-        "isTimeSpan": isTimeSpan,
-        "isOr": isOr,
-      });
+      Navigator.pop(context);
     }
   }
 
@@ -60,6 +50,8 @@ class _EDatePickerState extends State<EDatePicker> {
         } else if (selectedDates.length == 1) {
           DateTime from = selectedDates.first;
           DateTime to = date;
+          widget.taskService.startDate = from;
+          widget.taskService.endDate;
           selectedDates = dateTimeSpann(from, to);
         } else {
           selectedDates = [];
@@ -74,18 +66,16 @@ class _EDatePickerState extends State<EDatePicker> {
         canBeDone = false;
       }
     });
+    widget.taskService.onSelectedDates(selectedDates);
     return selectedDates;
   }
 
   @override
   void initState() {
-    selectedDates = widget.selectedDates;
-    if (widget.isTimeSpan != null) isTimeSpan = widget.isTimeSpan!;
-    if (widget.isOr != null) isOr = widget.isOr!;
+    selectedDates = widget.taskService.selectedDates;
+    isOr = widget.taskService.isOr;
     if (selectedDates.isNotEmpty) {
       canBeDone = true;
-    } else {
-      canBeDone = false;
     }
     super.initState();
   }
@@ -147,6 +137,7 @@ class _EDatePickerState extends State<EDatePicker> {
                   onChange:
                       (newIsOr) => setState(() {
                         isOr = newIsOr;
+                        widget.taskService.onChangeOrAnd(newIsOr);
                       }),
                 ),
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
+import 'package:scrubbit/Backend/DB/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Elements/e_repeating_task_element_button.dart';
 import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
@@ -10,17 +11,17 @@ import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_repeating_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
-import 'package:scrubbit/test_data.dart';
 
 class Overview extends StatefulWidget {
-  const Overview({super.key});
+  const Overview({super.key, required this.dbService});
+
+  final DatabaseService dbService;
 
   @override
   State<Overview> createState() => _OverviewState();
 }
 
 class _OverviewState extends State<Overview> {
-  final accounts = createAccounts(2);
   List<DsTask> repeatingTasks = [
     DsTask(
       name: "name",
@@ -47,7 +48,10 @@ class _OverviewState extends State<Overview> {
     showDialog<DsTask>(
       context: context,
       builder:
-          (context) => EditRepeatingTaskPopup(task: task, accounts: accounts),
+          (context) => EditRepeatingTaskPopup(
+            task: task,
+            accounts: widget.dbService.getAccounts,
+          ),
     ).then((newTask) {
       if (newTask != null) {
         setState(() {
@@ -55,7 +59,6 @@ class _OverviewState extends State<Overview> {
           repeatingTasks.add(newTask);
         });
       }
-      print("after repeating edit");
     });
   }
 
@@ -97,7 +100,7 @@ class _OverviewState extends State<Overview> {
             behindTitle: Expanded(
               child: ESelectAccount(
                 reverse: true,
-                accounts: accounts,
+                accounts: widget.dbService.getAccounts,
                 selectedAccounts: selectedAccounts,
                 onSelectedAccount: (newSelectedAccounts) {
                   selectedAccounts = newSelectedAccounts;
