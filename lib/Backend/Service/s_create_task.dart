@@ -3,7 +3,6 @@ import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
-import 'package:scrubbit/Backend/DB/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 
 class SCreateTask {
@@ -111,7 +110,7 @@ class SCreateTask {
     isChanged = true;
   }
 
-  Future<DsTask?> onDone() async {
+  DsTask? onDone() {
     if (isChanged) {
       var now = getNowWithoutTime();
       List<DsTaskDate> taskDates = [];
@@ -160,8 +159,7 @@ class SCreateTask {
                 )
                 : null,
       );
-      var dbService = await DatabaseService.init();
-      await dbService.daoTasks.insert(newTask);
+
       return newTask;
     }
     return null;

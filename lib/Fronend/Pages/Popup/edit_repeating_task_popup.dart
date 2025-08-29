@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
+import 'package:scrubbit/Backend/DB/database_service.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Elements/e_emoji_name_input.dart';
 import 'package:scrubbit/Fronend/Elements/e_new_task_bottom_button.dart';
@@ -62,6 +63,11 @@ class _EditRepeatingTaskPopupState extends State<EditRepeatingTaskPopup> {
               ENewTaskBottomButton(
                 accounts: widget.accounts,
                 taskService: taskService,
+                isEdit: true,
+                onDelete: () async {
+                  var db = await DatabaseService.init();
+                  await db.daoTasks.delete(widget.task.id);
+                },
               ),
             ],
           ),

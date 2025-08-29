@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
+import 'package:scrubbit/Fronend/Components/Controlls/c_icon_button.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
+import 'package:scrubbit/Fronend/Pages/Popup/delete_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
@@ -13,17 +14,17 @@ class ENewTaskBottomButton extends StatelessWidget {
     super.key,
     required this.accounts,
     required this.taskService,
+    required this.onDelete,
+    this.isEdit = false,
   });
 
   final List<DsAccount> accounts;
   final SCreateTask taskService;
+  final VoidCallback onDelete;
+  final bool isEdit;
 
   @override
   Widget build(BuildContext context) {
-    void pop(DsTask? newTask) {
-      Navigator.pop(context, newTask);
-    }
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -41,34 +42,56 @@ class ENewTaskBottomButton extends StatelessWidget {
               selectedAccounts: taskService.selecedAccounts,
               onSelectedAccount: taskService.onSelectAccount,
               onExtraPressed: () {},
+              onSelectAll: (selectAll) {},
               selectAll: true,
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: InkWell(
-            onTap: () async {
-              if (taskService.canBeDone) {
-                var newTask = await taskService.onDone();
-                pop(newTask);
-              }
-            },
-            borderRadius: BorderRadius.circular(100),
-            child: Container(
-              width: sizeDoneButtonNewTask,
-              height: sizeDoneButtonNewTask,
-              decoration: BoxDecoration(
-                color: scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [shadowTaskElement],
+        Row(
+          children: [
+            Visibility(
+              visible: isEdit,
+              child: CIconButton(
+                paddingHor: 10,
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => DeletePopup(onDelete: onDelete),
+                  );
+                },
+                icon: Icon(
+                  Icons.delete_outline_outlined,
+                  color: buttonColor,
+                  size: 40,
+                ),
               ),
-              child:
-                  taskService.canBeDone
-                      ? FAssets.doneActive
-                      : FAssets.doneInactive,
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () {
+                  if (taskService.canBeDone) {
+                    var newTask = taskService.onDone();
+                    Navigator.pop(context, newTask);
+                  }
+                },
+                borderRadius: BorderRadius.circular(100),
+                child: Container(
+                  width: sizeDoneButtonNewTask,
+                  height: sizeDoneButtonNewTask,
+                  decoration: BoxDecoration(
+                    color: scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(100),
+                    boxShadow: [shadowTaskElement],
+                  ),
+                  child:
+                      taskService.canBeDone
+                          ? FAssets.doneActive
+                          : FAssets.doneInactive,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

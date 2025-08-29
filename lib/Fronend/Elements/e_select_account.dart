@@ -13,7 +13,8 @@ class ESelectAccount extends StatefulWidget {
     required this.selectedAccounts,
     required this.onSelectedAccount,
     required this.onExtraPressed,
-    this.selectAll = false,
+    required this.onSelectAll,
+    required this.selectAll,
     this.reverse = false,
     this.withShadow = false,
   });
@@ -22,6 +23,7 @@ class ESelectAccount extends StatefulWidget {
   final List<DsAccount> selectedAccounts;
   final void Function(List<DsAccount>) onSelectedAccount;
   final VoidCallback onExtraPressed;
+  final void Function(bool) onSelectAll;
   final bool selectAll;
   final bool reverse;
   final bool withShadow;
@@ -77,7 +79,10 @@ class _ESelectAccountState extends State<ESelectAccount> {
             child: Row(
               children: [
                 ESelectAccountButton(
-                  onPressed: onAllSelect,
+                  onPressed: () {
+                    onAllSelect();
+                    widget.onSelectAll(selectAll);
+                  },
                   text: "Alle",
                   isSelected: selectAll,
                   selectedBackground: buttonColor,

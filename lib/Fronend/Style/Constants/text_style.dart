@@ -146,3 +146,9 @@ const repeatingCategoryTitle = TextStyle(
   fontWeight: FontWeight.w300,
   color: textColor,
 );
+
+const deleteTitle = TextStyle(
+  fontSize: 40,
+  fontWeight: FontWeight.w700,
+  color: textNegativeColor,
+);

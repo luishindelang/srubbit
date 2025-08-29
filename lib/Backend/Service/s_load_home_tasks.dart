@@ -1,4 +1,5 @@
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Backend/DB/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 
@@ -16,28 +17,38 @@ class SLoadHomeTasks {
 
   void addNewTask(DsTask newTask) {
     if (newTask.taskDates.isNotEmpty) {
-      var date = newTask.taskDates.last;
-      if (isToday(date.plannedDate.add(Duration(days: newTask.offset)))) {
+      List<DsTaskDate> dates = [];
+      for (var taskDate in newTask.taskDates) {
+        if (taskDate.doneBy == null && taskDate.doneDate == null) {
+          dates.add(taskDate);
+        } else if (!newTask.onEveryDate) {
+          break;
+        }
+      }
+      var duration = Duration(days: newTask.offset);
+      var date = dates.last;
+      var first = dates.first;
+      if (isToday(date.plannedDate.add(duration))) {
         _todayTasks.add(newTask);
-      } else if (isInCurrentWeek(
-        date.plannedDate.add(Duration(days: newTask.offset)),
-      )) {
+      } else if (isInCurrentWeek(date.plannedDate.add(duration))) {
         _weekTasks.add(newTask);
-      } else {
+      } else if (isInCurrentMonth(first.plannedDate.add(duration)) ||
+          isInCurrentMonth(date.plannedDate.add(duration))) {
         _monthTasks.add(newTask);
       }
     }
   }
 
-  void removeTask(DsTask oldTask) {
-    _todayTasks.remove(oldTask);
-    _weekTasks.remove(oldTask);
-    _monthTasks.remove(oldTask);
+  bool removeTask(DsTask oldTask) {
+    return _todayTasks.remove(oldTask) ||
+        _weekTasks.remove(oldTask) ||
+        _monthTasks.remove(oldTask);
   }
 
   void updateTask(DsTask oldTask, DsTask newTask) {
-    removeTask(oldTask);
-    addNewTask(newTask);
+    if (removeTask(oldTask)) {
+      addNewTask(newTask);
+    }
   }
 
   Future<void> loadData() async {

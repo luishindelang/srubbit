@@ -11,10 +11,18 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
 class AddTaskPopup extends StatefulWidget {
-  const AddTaskPopup({super.key, required this.accounts, this.task});
+  const AddTaskPopup({
+    super.key,
+    required this.accounts,
+    this.task,
+    this.isEdit = false,
+    this.onDelete,
+  });
 
   final List<DsAccount> accounts;
   final DsTask? task;
+  final bool isEdit;
+  final VoidCallback? onDelete;
 
   @override
   State<AddTaskPopup> createState() => _AddTaskPopupState();
@@ -87,6 +95,12 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
               ENewTaskBottomButton(
                 accounts: widget.accounts,
                 taskService: taskService,
+                isEdit: widget.isEdit,
+                onDelete: () {
+                  if (widget.onDelete != null) {
+                    widget.onDelete!();
+                  }
+                },
               ),
             ],
           ),

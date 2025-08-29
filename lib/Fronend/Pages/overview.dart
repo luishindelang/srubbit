@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
@@ -22,26 +21,19 @@ class Overview extends StatefulWidget {
 }
 
 class _OverviewState extends State<Overview> {
-  List<DsTask> repeatingTasks = [
-    DsTask(
-      name: "name",
-      emoji: "e",
-      onEveryDate: false,
-      taskDates: [],
-      isImportant: false,
-      timeFrom: TimeOfDay(hour: 13, minute: 20),
-      repeatingTemplate: DsRepeatingTemplates(
-        repeatingType: 2,
-        repeatingIntervall: 5,
-        repeatAfterDone: true,
-        startDate: getNowWithoutTime(),
-      ),
-    ),
-  ];
+  List<DsTask> repeatingTasks = [];
   List<DsAccount> selectedAccounts = [];
+  bool selectAll = false;
 
   void routePop() {
     Navigator.pop(context);
+  }
+
+  bool onSelectAll(bool newSelectAll) {
+    setState(() {
+      selectAll = newSelectAll;
+    });
+    return selectAll;
   }
 
   void onRepeatingTaskPressed(DsTask task) {
@@ -52,7 +44,7 @@ class _OverviewState extends State<Overview> {
             task: task,
             accounts: widget.dbService.getAccounts,
           ),
-    ).then((newTask) {
+    ).then((newTask) async {
       if (newTask != null) {
         setState(() {
           repeatingTasks.remove(task);
@@ -69,6 +61,20 @@ class _OverviewState extends State<Overview> {
     ).then((value) {
       print("after account edit");
     });
+  }
+
+  void loadData() async {
+    var data = await widget.dbService.daoTasks.getAllRepeating();
+
+    setState(() {
+      repeatingTasks = data;
+    });
+  }
+
+  @override
+  void initState() {
+    loadData();
+    super.initState();
   }
 
   @override
@@ -106,6 +112,8 @@ class _OverviewState extends State<Overview> {
                   selectedAccounts = newSelectedAccounts;
                 },
                 onExtraPressed: () {},
+                onSelectAll: onSelectAll,
+                selectAll: selectAll,
                 withShadow: true,
               ),
             ),

@@ -6,8 +6,9 @@ import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_load_home_tasks.dart';
 import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_element_button.dart';
+import 'package:scrubbit/Fronend/Elements/e_task_element.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
+import 'package:scrubbit/Fronend/Pages/Popup/task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/overview.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
@@ -28,8 +29,9 @@ class _HomeState extends State<Home> {
     showDialog<DsTask>(
       context: context,
       builder: (context) => AddTaskPopup(accounts: accounts),
-    ).then((newTask) {
+    ).then((newTask) async {
       if (newTask != null) {
+        await dbService.daoTasks.insert(newTask);
         setState(() {
           homeTaskService.addNewTask(newTask);
         });
@@ -41,17 +43,29 @@ class _HomeState extends State<Home> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Overview(dbService: dbService)),
-    );
+    ).then((value) {
+      setState(() {});
+    });
   }
 
-  void onDone(DsTask task) {
-    //play animation
+  void onTaskTap(DsTask task) {
+    showDialog<bool>(
+      context: context,
+      builder:
+          (context) => TaskPopup(
+            task: task,
+            dbService: dbService,
+            homeTaskService: homeTaskService,
+          ),
+    ).then((value) {
+      setState(() {});
+    });
   }
 
   void loadData() async {
-    await homeTaskService.loadData();
     dbService = await DatabaseService.init();
     await dbService.loadAccounts();
+    await homeTaskService.loadData();
     accounts = dbService.getAccounts;
 
     setState(() {
@@ -81,17 +95,12 @@ class _HomeState extends State<Home> {
             children:
                 homeTaskService.todayTasks
                     .map(
-                      (task) => ETaskElementButton(
-                        task: task,
-                        dbService: dbService,
-                        homeTaskService: homeTaskService,
-                        then: (isDone) {
-                          setState(() {
-                            if (isDone != null && isDone) {
-                              onDone(task);
-                            }
-                          });
-                        },
+                      (task) => Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: InkWell(
+                          onTap: () => onTaskTap(task),
+                          child: ETaskElement(task: task),
+                        ),
                       ),
                     )
                     .toList(),
@@ -102,17 +111,12 @@ class _HomeState extends State<Home> {
             children:
                 homeTaskService.weekTasks
                     .map(
-                      (task) => ETaskElementButton(
-                        task: task,
-                        dbService: dbService,
-                        homeTaskService: homeTaskService,
-                        then: (isDone) {
-                          setState(() {
-                            if (isDone != null && isDone) {
-                              onDone(task);
-                            }
-                          });
-                        },
+                      (task) => Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: InkWell(
+                          onTap: () => onTaskTap(task),
+                          child: ETaskElement(task: task),
+                        ),
                       ),
                     )
                     .toList(),
@@ -123,17 +127,12 @@ class _HomeState extends State<Home> {
             children:
                 homeTaskService.monthTasks
                     .map(
-                      (task) => ETaskElementButton(
-                        task: task,
-                        dbService: dbService,
-                        homeTaskService: homeTaskService,
-                        then: (isDone) {
-                          setState(() {
-                            if (isDone != null && isDone) {
-                              onDone(task);
-                            }
-                          });
-                        },
+                      (task) => Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: InkWell(
+                          onTap: () => onTaskTap(task),
+                          child: ETaskElement(task: task),
+                        ),
                       ),
                     )
                     .toList(),

@@ -61,12 +61,30 @@ class DaoTask extends MappingTask {
     return fromMap(rawData.first);
   }
 
+  Future<List<DsTask>> getAllRepeating() async {
+    final List<Map<String, dynamic>> rawData = await db.query(
+      TTask.tableName,
+      where: "${TTask.repeatingTemplateId} IS NOT NULL",
+    );
+    return fromList(rawData);
+  }
+
   Future<List<DsTask>> getTaskOwned(String? accountId) async {
     final List<Map<String, dynamic>> rawData = await db.rawQuery("""
     SELECT * FROM ${TTask.tableName} t
     LEFT JOIN ${TTaskOwner.tableName} o
     ON t.${TTask.id} = o.${TTaskOwner.taskId}
     WHERE o.${TTaskOwner.accountId} = '$accountId';
+    """);
+    return fromList(rawData);
+  }
+
+  Future<List<DsTask>> getAllDone() async {
+    final List<Map<String, dynamic>> rawData = await db.rawQuery("""
+    SELECT * FROM ${TTask.tableName} t
+    LEFT JOIN ${TTaskDate.tableName} d
+    ON a.${TTask.id} = d.${TTaskDate.taskId}
+    WHERE d.${TTaskDate.doneDate} IS NOT NULL;
     """);
     return fromList(rawData);
   }

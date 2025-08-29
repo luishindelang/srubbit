@@ -8,6 +8,7 @@ import 'package:scrubbit/Fronend/Elements/e_done_bottons.dart';
 import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
 import 'package:scrubbit/Fronend/Elements/e_task_element.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
+import 'package:scrubbit/Fronend/Pages/home.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
@@ -32,6 +33,22 @@ class _TaskPopupState extends State<TaskPopup> {
   List<DsAccount> selectedAccounts = [];
   bool selectAll = false;
 
+  bool get canDoDone => selectedAccounts.isNotEmpty || selectAll;
+
+  void routeHome() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => Home()),
+      (route) => false,
+    );
+  }
+
+  void onSelectAll(bool newSelectAll) {
+    setState(() {
+      selectAll = newSelectAll;
+    });
+  }
+
   void onSelectedAccount(List<DsAccount>? newSelectedAccounts) {
     setState(() {
       if (newSelectedAccounts != null) {
@@ -39,26 +56,29 @@ class _TaskPopupState extends State<TaskPopup> {
         selectAll = false;
       } else {
         selectedAccounts = [];
-        selectAll = !selectAll;
+        selectAll = true;
       }
     });
-  }
-
-  bool canDoDone() {
-    return selectedAccounts.isNotEmpty || selectAll;
   }
 
   void onEdit() {
     showDialog<DsTask>(
       context: context,
       builder:
-          (context) =>
-              AddTaskPopup(task: task, accounts: widget.dbService.getAccounts),
-    ).then((newTask) {
+          (context) => AddTaskPopup(
+            task: task,
+            accounts: widget.dbService.getAccounts,
+            isEdit: true,
+            onDelete: () async {
+              await widget.dbService.daoTasks.delete(task.id);
+              routeHome();
+            },
+          ),
+    ).then((newTask) async {
       if (newTask != null) {
-        setState(() async {
+        await widget.dbService.daoTasks.update(newTask);
+        setState(() {
           widget.homeTaskService.updateTask(task, newTask);
-          await widget.dbService.daoTasks.update(newTask);
           task = newTask;
         });
       }
@@ -66,7 +86,7 @@ class _TaskPopupState extends State<TaskPopup> {
   }
 
   void onDone() async {
-    if (canDoDone()) {
+    if (canDoDone) {
       if (isToday(task.taskDates.last.plannedDate)) {
         DsTask? newRepeatingTask = task.nextRepeatingTask();
         if (newRepeatingTask != null) {
@@ -83,10 +103,10 @@ class _TaskPopupState extends State<TaskPopup> {
             newDoneBy: selectedAccounts,
           );
           await widget.dbService.daoTaskDates.update(newTaskDate);
+
           break;
         }
       }
-
       Navigator.pop(context, true);
     }
   }
@@ -128,11 +148,12 @@ class _TaskPopupState extends State<TaskPopup> {
                       selectedAccounts: selectedAccounts,
                       onSelectedAccount: onSelectedAccount,
                       onExtraPressed: () {},
+                      onSelectAll: onSelectAll,
                       selectAll: selectAll,
                     ),
                     SizedBox(height: 70),
                     EDoneBottons(
-                      canBeDone: canDoDone(),
+                      canBeDone: canDoDone,
                       onEdit: onEdit,
                       onDone: onDone,
                       onNext: onNext,
