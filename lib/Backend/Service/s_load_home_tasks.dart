@@ -26,14 +26,12 @@ class SLoadHomeTasks {
         }
       }
       var duration = Duration(days: newTask.offset);
-      var date = dates.last;
-      var first = dates.first;
+      var date = dates.first;
       if (isToday(date.plannedDate.add(duration))) {
         _todayTasks.add(newTask);
       } else if (isInCurrentWeek(date.plannedDate.add(duration))) {
         _weekTasks.add(newTask);
-      } else if (isInCurrentMonth(first.plannedDate.add(duration)) ||
-          isInCurrentMonth(date.plannedDate.add(duration))) {
+      } else if (isInCurrentMonth(date.plannedDate.add(duration))) {
         _monthTasks.add(newTask);
       }
     }

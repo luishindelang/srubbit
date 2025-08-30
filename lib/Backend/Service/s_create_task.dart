@@ -16,11 +16,13 @@ class SCreateTask {
   TimeOfDay? timeFrom;
   TimeOfDay? timeUntil;
 
+  List<DateTime> selectedDates = [];
+  bool selectAll = true;
+
   int type = 0;
   bool isOr = false;
-  List<DateTime> selectedDates = [];
-  DateTime? startDate;
-  DateTime? endDate;
+  bool completeWeek = true;
+  bool completeMonth = true;
 
   int repeatingType = 0;
   int repeatingIntervall = 1;
@@ -75,6 +77,11 @@ class SCreateTask {
   }
 
   void onSelectedDates(List<DateTime> newDates) {
+    if (newDates.isEmpty) {
+      selectAll = true;
+    } else {
+      selectAll = false;
+    }
     selectedDates = newDates;
     selectedDates.sort((a, b) => a.compareTo(b));
     isChanged = true;
@@ -110,22 +117,28 @@ class SCreateTask {
     isChanged = true;
   }
 
-  DsTask? onDone() {
-    if (isChanged) {
-      var now = getNowWithoutTime();
-      List<DsTaskDate> taskDates = [];
-      if (type == 0) {
-        taskDates.add(DsTaskDate(plannedDate: now));
-      } else if (type == 1) {
-        taskDates.add(DsTaskDate(plannedDate: getNowWithoutTime(addDay: 1)));
-      } else if (type == 2 && selectedDates.isEmpty) {
+  List<DsTaskDate> _createTaskDates() {
+    List<DsTaskDate> taskDates = [];
+    var now = getNowWithoutTime();
+    if (type == 0) {
+      taskDates.add(DsTaskDate(plannedDate: now));
+    } else if (type == 1) {
+      taskDates.add(DsTaskDate(plannedDate: getNowWithoutTime(addDay: 1)));
+    } else if (type == 2) {
+      if (completeWeek) {
         taskDates.add(
           DsTaskDate(
             plannedDate: now,
             completionWindow: daysUntilEndOfWeek(now),
           ),
         );
-      } else if (type == 3 && selectedDates.isEmpty) {
+      } else {
+        for (var date in selectedDates) {
+          taskDates.add(DsTaskDate(plannedDate: date));
+        }
+      }
+    } else if (type == 3) {
+      if (completeMonth) {
         taskDates.add(
           DsTaskDate(
             plannedDate: now,
@@ -136,6 +149,21 @@ class SCreateTask {
         for (var date in selectedDates) {
           taskDates.add(DsTaskDate(plannedDate: date));
         }
+      }
+    } else {
+      for (var date in selectedDates) {
+        taskDates.add(DsTaskDate(plannedDate: date));
+      }
+    }
+
+    return taskDates;
+  }
+
+  DsTask? onDone() {
+    if (isChanged) {
+      List<DsTaskDate> taskDates = [];
+      if (!isRepeating) {
+        taskDates = _createTaskDates();
       }
 
       DsTask newTask = DsTask(

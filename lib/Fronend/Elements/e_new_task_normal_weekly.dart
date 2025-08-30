@@ -91,10 +91,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
             onPressed:
                 () => setState(() {
                   showSelection = !showSelection;
-                  if (showSelection) {
-                    widget.taskService.onSelectedDates([]);
-                    widget.taskService.onChangeOrAnd(false);
-                  }
+                  widget.taskService.completeWeek = showSelection;
                 }),
             text: "Select weekdays",
             isSelected: showSelection,

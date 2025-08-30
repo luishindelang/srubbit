@@ -38,6 +38,7 @@ class DaoTask extends MappingTask {
     if (task.repeatingTemplate != null) {
       await daoRepeatingTemplates.update(task.repeatingTemplate!);
     }
+    print("update");
     await daoTaskDate.deleteByTaskId(task.id);
     for (final date in task.taskDates) {
       await daoTaskDate.insert(date, task.id);

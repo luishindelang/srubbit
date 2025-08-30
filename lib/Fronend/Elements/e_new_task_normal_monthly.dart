@@ -92,10 +92,7 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
             onPressed:
                 () => setState(() {
                   showSelection = !showSelection;
-                  if (showSelection) {
-                    widget.taskService.selectedDates = [];
-                    widget.taskService.isOr = false;
-                  }
+                  widget.taskService.completeMonth = showSelection;
                 }),
             text: "Select specific days",
             isSelected: showSelection,

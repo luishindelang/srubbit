@@ -49,6 +49,9 @@ class _HomeState extends State<Home> {
   }
 
   void onTaskTap(DsTask task) {
+    for (var date in task.taskDates) {
+      print(date.plannedDate);
+    }
     showDialog<bool>(
       context: context,
       builder:

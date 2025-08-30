@@ -50,8 +50,6 @@ class _EDatePickerState extends State<EDatePicker> {
         } else if (selectedDates.length == 1) {
           DateTime from = selectedDates.first;
           DateTime to = date;
-          widget.taskService.startDate = from;
-          widget.taskService.endDate;
           selectedDates = dateTimeSpann(from, to);
         } else {
           selectedDates = [];
