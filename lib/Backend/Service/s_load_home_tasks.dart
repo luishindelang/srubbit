@@ -16,24 +16,24 @@ class SLoadHomeTasks {
   List<DsTask> get monthTasks => _monthTasks;
 
   void addNewTask(DsTask newTask) {
-    if (newTask.taskDates.isNotEmpty) {
-      List<DsTaskDate> dates = [];
-      for (var taskDate in newTask.taskDates) {
-        if (taskDate.doneBy == null && taskDate.doneDate == null) {
-          dates.add(taskDate);
-        } else if (!newTask.onEveryDate) {
-          break;
-        }
-      }
-      var duration = Duration(days: newTask.offset);
-      var date = dates.first;
-      if (isToday(date.plannedDate.add(duration))) {
-        _todayTasks.add(newTask);
-      } else if (isInCurrentWeek(date.plannedDate.add(duration))) {
-        _weekTasks.add(newTask);
-      } else if (isInCurrentMonth(date.plannedDate.add(duration))) {
-        _monthTasks.add(newTask);
-      }
+    if (newTask.taskDates.isEmpty) return;
+
+    final dates = newTask.taskDates
+        .where((taskDate) =>
+            (taskDate.doneBy?.isEmpty ?? true) && taskDate.doneDate == null)
+        .toList();
+
+    if (dates.isEmpty) return;
+
+    dates.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
+    final planned = dates.first.plannedDate.add(Duration(days: newTask.offset));
+
+    if (isToday(planned)) {
+      _todayTasks.add(newTask);
+    } else if (isInCurrentWeek(planned)) {
+      _weekTasks.add(newTask);
+    } else if (isInCurrentMonth(planned)) {
+      _monthTasks.add(newTask);
     }
   }
 

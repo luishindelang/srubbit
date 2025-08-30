@@ -72,7 +72,7 @@ class DsTask {
         return 1;
       } else if (isInCurrentWeek(date.add(Duration(days: offset)))) {
         return 2;
-      } else if (isInCurrentWeek(date.add(Duration(days: offset)))) {
+      } else if (isInCurrentMonth(date.add(Duration(days: offset)))) {
         return 3;
       } else {
         return 4;
@@ -90,17 +90,11 @@ class DsTask {
       DateTime newPlannedDate;
 
       if (repeatingTemplate!.repeatingType == 0) {
-        newPlannedDate = DateTime(
-          date.plannedDate.year,
-          date.plannedDate.month,
-          date.plannedDate.day + repeatingTemplate!.repeatingIntervall,
-        );
+        newPlannedDate =
+            date.plannedDate.add(Duration(days: repeatingTemplate!.repeatingIntervall));
       } else if (repeatingTemplate!.repeatingType == 1) {
-        newPlannedDate = DateTime(
-          date.plannedDate.year,
-          date.plannedDate.month,
-          date.plannedDate.day + (7 * repeatingTemplate!.repeatingIntervall),
-        );
+        newPlannedDate = date.plannedDate
+            .add(Duration(days: 7 * repeatingTemplate!.repeatingIntervall));
       } else if (repeatingTemplate!.repeatingType == 2) {
         newPlannedDate = DateTime(
           date.plannedDate.year,

@@ -33,4 +33,20 @@ class DsTaskDate {
       doneBy: newDoneBy ?? doneBy,
     );
   }
+
+  DsTaskDate markDone(DsAccount account) {
+    final updatedDoneBy = [...(doneBy ?? []), account];
+    return copyWith(
+      newDoneDate: DateTime.now(),
+      newDoneBy: updatedDoneBy,
+    );
+  }
+
+  bool isDoneToday() {
+    if (doneDate == null) return false;
+    final today = DateTime.now();
+    return doneDate!.year == today.year &&
+        doneDate!.month == today.month &&
+        doneDate!.day == today.day;
+  }
 }
