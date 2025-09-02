@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/DB/database_service.dart';
+import 'package:scrubbit/Backend/Service/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Fronend/Elements/e_repeating_task_element_button.dart';
-import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
-import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_repeating_task_element_button.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_repeating_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';

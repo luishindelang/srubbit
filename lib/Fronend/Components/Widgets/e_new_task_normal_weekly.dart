@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_lists.dart';
-import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
-import 'package:scrubbit/Fronend/Elements/e_and_switch_or.dart';
-import 'package:scrubbit/Fronend/Elements/e_select_account_button.dart';
-import 'package:scrubbit/Fronend/Elements/e_time_span_button.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_and_switch_or.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_time_span_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
@@ -17,17 +16,18 @@ class ENewTaskNormalWeekly extends StatefulWidget {
     super.key,
     required this.taskService,
     this.withShowSelect = true,
+    required this.weekDays,
   });
 
   final SCreateTask taskService;
   final bool withShowSelect;
+  final List<DateTime> weekDays;
 
   @override
   State<ENewTaskNormalWeekly> createState() => _ENewTaskNormalWeeklyState();
 }
 
 class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
-  late final List<DateTime> weekDaysDate;
   List<DateTime> selectedWeekDays = [];
   bool isTimeSpan = false;
   bool isOr = false;
@@ -56,10 +56,10 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
           if (selectedWeekDays.isEmpty) {
             selectedWeekDays.add(day);
           } else if (selectedWeekDays.length == 1) {
-            int to = weekDaysDate.indexOf(day);
-            int from = weekDaysDate.indexOf(selectedWeekDays.last);
+            int to = widget.weekDays.indexOf(day);
+            int from = widget.weekDays.indexOf(selectedWeekDays.last);
             selectedWeekDays = [];
-            selectedWeekDays.addAll(timeSpann(weekDaysDate, from, to));
+            selectedWeekDays.addAll(timeSpann(widget.weekDays, from, to));
           } else {
             selectedWeekDays = [];
             selectedWeekDays.add(day);
@@ -74,7 +74,6 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
   @override
   void initState() {
     selectedWeekDays = widget.taskService.selectedDates;
-    weekDaysDate = getNext7Weekdays();
     isOr = widget.taskService.isOr;
     showSelection = selectedWeekDays.isNotEmpty;
     super.initState();
@@ -149,7 +148,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                         children: [
                           Row(
                             children:
-                                weekDaysDate.map((day) {
+                                widget.weekDays.map((day) {
                                   return Container(
                                     margin: const EdgeInsets.all(paddingButton),
                                     decoration: BoxDecoration(

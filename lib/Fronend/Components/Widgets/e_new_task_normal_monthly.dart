@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
-import 'package:scrubbit/Fronend/Elements/e_date_picker.dart';
-import 'package:scrubbit/Fronend/Elements/e_select_account_button.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_date_picker.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';

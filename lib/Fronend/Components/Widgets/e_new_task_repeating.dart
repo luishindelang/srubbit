@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_normal_monthly.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_normal_weekly.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_after_complete.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_intervall.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_repeating_select_date.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_monthly.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_weekly.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_new_task_repeating_after_complete.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating_intervall.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating_select_date.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
 class ENewTaskRepeating extends StatefulWidget {
@@ -92,6 +92,7 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
             child: ENewTaskNormalWeekly(
               taskService: widget.taskService,
               withShowSelect: false,
+              weekDays: getNext7Weekdays(),
             ),
           ),
           Visibility(

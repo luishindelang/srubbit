@@ -1,46 +1,54 @@
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
-import 'package:scrubbit/Backend/DB/database_service.dart';
+import 'package:scrubbit/Backend/Service/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 
 class SLoadHomeTasks {
-  final List<DsTask> _todayTasks = [];
-  final List<DsTask> _weekTasks = [];
-  final List<DsTask> _monthTasks = [];
+  final List<DsTaskDate> _todayTasks = [];
+  final List<DsTaskDate> _weekTasks = [];
+  final List<DsTaskDate> _monthTasks = [];
+
+  final List<DsTaskDate> _missedTasks = [];
 
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
 
-  List<DsTask> get todayTasks => _todayTasks;
-  List<DsTask> get weekTasks => _weekTasks;
-  List<DsTask> get monthTasks => _monthTasks;
+  List<DsTaskDate> get todayTasks => _todayTasks;
+  List<DsTaskDate> get weekTasks => _weekTasks;
+  List<DsTaskDate> get monthTasks => _monthTasks;
+
+  List<DsTaskDate> get missedTasks => _missedTasks;
 
   void addNewTask(DsTask newTask) {
     if (newTask.taskDates.isEmpty) return;
 
-    final dates = newTask.taskDates
-        .where((taskDate) =>
-            (taskDate.doneBy?.isEmpty ?? true) && taskDate.doneDate == null)
-        .toList();
+    var now = DateTime.now();
 
-    if (dates.isEmpty) return;
-
-    dates.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
-    final planned = dates.first.plannedDate.add(Duration(days: newTask.offset));
-
-    if (isToday(planned)) {
-      _todayTasks.add(newTask);
-    } else if (isInCurrentWeek(planned)) {
-      _weekTasks.add(newTask);
-    } else if (isInCurrentMonth(planned)) {
-      _monthTasks.add(newTask);
+    for (var taskDate in newTask.taskDates) {
+      var date = taskDate.plannedDate.add(Duration(days: newTask.offset));
+      if (date.isBefore(now)) {
+        taskDate.task = newTask;
+        _missedTasks.add(taskDate);
+        continue;
+      } else if (isToday(date)) {
+        taskDate.task = newTask;
+        _todayTasks.add(taskDate);
+      } else if (isInCurrentWeek(date)) {
+        taskDate.task = newTask;
+        _weekTasks.add(taskDate);
+      } else if (isInCurrentMonth(date)) {
+        taskDate.task = newTask;
+        _monthTasks.add(taskDate);
+      }
+      if (!newTask.onEveryDate) break;
     }
   }
 
   bool removeTask(DsTask oldTask) {
     return _todayTasks.remove(oldTask) ||
         _weekTasks.remove(oldTask) ||
-        _monthTasks.remove(oldTask);
+        _monthTasks.remove(oldTask) ||
+        _missedTasks.remove(oldTask);
   }
 
   void updateTask(DsTask oldTask, DsTask newTask) {

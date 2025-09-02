@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/DB/database_service.dart';
+import 'package:scrubbit/Backend/Service/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_load_home_tasks.dart';
-import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_element.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/overview.dart';
@@ -49,9 +49,6 @@ class _HomeState extends State<Home> {
   }
 
   void onTaskTap(DsTask task) {
-    for (var date in task.taskDates) {
-      print(date.plannedDate);
-    }
     showDialog<bool>(
       context: context,
       builder:
@@ -66,10 +63,7 @@ class _HomeState extends State<Home> {
   }
 
   void loadData() async {
-    dbService = await DatabaseService.init();
-    await dbService.loadAccounts();
-    await homeTaskService.loadData();
-    accounts = dbService.getAccounts;
+    await SData.instance.loadData();
 
     setState(() {
       isLoaded = homeTaskService.isLoaded;

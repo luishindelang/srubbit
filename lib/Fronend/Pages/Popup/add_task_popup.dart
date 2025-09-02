@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
-import 'package:scrubbit/Fronend/Elements/e_emoji_name_input.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_bottom_button.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_normal.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_repeating.dart';
-import 'package:scrubbit/Fronend/Elements/e_select_time_from_until.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_emoji_name_input.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_new_task_bottom_button.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_select_time_from_until.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 

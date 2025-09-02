@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/DB/database_service.dart';
+import 'package:scrubbit/Backend/Service/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_load_home_tasks.dart';
-import 'package:scrubbit/Fronend/Elements/e_done_bottons.dart';
-import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_element.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_done_bottons.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/home.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';

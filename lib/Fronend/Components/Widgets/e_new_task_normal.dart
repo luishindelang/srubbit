@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Service/s_create_task.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_normal_monthly.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_normal_preset_buttons.dart';
-import 'package:scrubbit/Fronend/Elements/e_new_task_normal_weekly.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_monthly.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_new_task_normal_preset_buttons.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_weekly.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
 class ENewTaskNormal extends StatefulWidget {
@@ -27,7 +28,10 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
   Widget showTypeElements() {
     switch (type) {
       case 2:
-        return ENewTaskNormalWeekly(taskService: widget.taskService);
+        return ENewTaskNormalWeekly(
+          taskService: widget.taskService,
+          weekDays: getNext7Weekdays(),
+        );
       case 3:
         return ENewTaskNormalMonthly(
           taskService: widget.taskService,
