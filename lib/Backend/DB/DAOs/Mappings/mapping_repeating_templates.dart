@@ -18,6 +18,7 @@ class MappingRepeatingTemplates {
                 rawData[TRepeatingTemplates.endDate],
               )
               : null,
+      fromDB: true,
     );
   }
 

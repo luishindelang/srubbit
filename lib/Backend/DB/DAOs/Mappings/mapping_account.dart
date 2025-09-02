@@ -5,13 +5,14 @@ import 'package:scrubbit/Backend/DB/SQLite/Tables/t_account.dart';
 class MappingAccount {
   Future<DsAccount> fromMap(Map<String, dynamic> rawData) async {
     return DsAccount(
-      id: rawData[TAccount.id],
-      name: rawData[TAccount.name],
+      id: rawData[TAccount.id] as String,
+      name: rawData[TAccount.name] as String,
       color: Color(rawData[TAccount.color]),
       icon: IconData(
         rawData[TAccount.iconCode],
         fontFamily: rawData[TAccount.iconFamily],
       ),
+      score: rawData[TAccount.score] as int,
       fromDB: true,
     );
   }
@@ -31,6 +32,7 @@ class MappingAccount {
       TAccount.color: account.color.toARGB32(),
       TAccount.iconCode: account.icon.codePoint,
       TAccount.iconFamily: account.icon.fontFamily,
+      TAccount.score: account.score,
     };
   }
 }

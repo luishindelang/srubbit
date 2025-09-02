@@ -30,6 +30,7 @@ void main() {
       repeatAfterDone: true,
       startDate: DateTime.utc(2024, 1, 1),
       endDate: null,
+      repeatingDates: [],
     );
   }
 

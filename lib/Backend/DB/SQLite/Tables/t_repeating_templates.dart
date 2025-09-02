@@ -25,11 +25,4 @@ class TRepeatingTemplates {
   static String deleteTable() {
     return "DROP TABLE IF EXISTS $tableName;";
   }
-
-  // repeating types
-
-  static const String daily = "daily";
-  static const String weekly = "weekly";
-  static const String monthly = "monthly";
-  static const String yearly = "yearly";
 }
