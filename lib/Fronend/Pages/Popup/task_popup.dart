@@ -1,126 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/Service/database_service.dart';
-import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Backend/Service/s_load_home_tasks.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_done_bottons.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
-import 'package:scrubbit/Fronend/Pages/home.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
 class TaskPopup extends StatefulWidget {
-  const TaskPopup({
-    super.key,
-    required this.task,
-    required this.dbService,
-    required this.homeTaskService,
-  });
+  const TaskPopup({super.key, required this.taskDate});
 
-  final DsTask task;
-  final DatabaseService dbService;
-  final SLoadHomeTasks homeTaskService;
+  final DsTaskDate taskDate;
 
   @override
   State<TaskPopup> createState() => _TaskPopupState();
 }
 
 class _TaskPopupState extends State<TaskPopup> {
-  late DsTask task;
+  late UiHome home;
+  late UiAccount account;
+  late DsTaskDate taskDate;
   List<DsAccount> selectedAccounts = [];
-  bool selectAll = false;
+  bool get selectAll => selectedAccounts.isEmpty;
 
   bool get canDoDone => selectedAccounts.isNotEmpty || selectAll;
 
-  void routeHome() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => Home()),
-      (route) => false,
+  void onEdit() {
+    showDialog(
+      context: context,
+      builder:
+          (context) => ChangeNotifierProvider(
+            create: (_) => UiCreateTask(),
+            child: AddTaskPopup(),
+          ),
     );
   }
 
-  void onSelectAll(bool newSelectAll) {
-    setState(() {
-      selectAll = newSelectAll;
-    });
-  }
-
-  void onSelectedAccount(List<DsAccount>? newSelectedAccounts) {
-    setState(() {
-      if (newSelectedAccounts != null) {
-        selectedAccounts = newSelectedAccounts;
-        selectAll = false;
-      } else {
-        selectedAccounts = [];
-        selectAll = true;
-      }
-    });
-  }
-
-  void onEdit() {
-    showDialog<DsTask>(
-      context: context,
-      builder:
-          (context) => AddTaskPopup(
-            task: task,
-            accounts: widget.dbService.getAccounts,
-            isEdit: true,
-            onDelete: () async {
-              await widget.dbService.daoTasks.delete(task.id);
-              routeHome();
-            },
-          ),
-    ).then((newTask) async {
-      if (newTask != null) {
-        await widget.dbService.daoTasks.update(newTask);
-        setState(() {
-          widget.homeTaskService.updateTask(task, newTask);
-          task = newTask;
-        });
-      }
-    });
-  }
-
-  void onDone() async {
+  void onDone() {
     if (canDoDone) {
-      if (isToday(task.taskDates.last.plannedDate)) {
-        DsTask? newRepeatingTask = task.nextRepeatingTask();
-        if (newRepeatingTask != null) {
-          await widget.dbService.daoTasks.insert(
-            newRepeatingTask,
-            isNewRepeatingTask: true,
-          );
-        }
-      }
-      for (var taskDate in task.taskDates) {
-        if (isToday(taskDate.plannedDate)) {
-          var newTaskDate = taskDate.copyWith(
-            newDoneDate: DateTime.now(),
-            newDoneBy: selectedAccounts,
-          );
-          await widget.dbService.daoTaskDates.update(newTaskDate);
-
-          break;
-        }
-      }
-      Navigator.pop(context, true);
+      home.onTaskDateDone(taskDate);
+      Navigator.pop(context);
     }
   }
 
-  void onNext() async {
-    var newTask = task.copyWith(newOffset: task.offset + 1);
-    widget.homeTaskService.updateTask(task, newTask);
-    await widget.dbService.daoTasks.update(newTask);
+  void onNext() {
+    home.onTasMoveToNextDay(taskDate.task);
     Navigator.pop(context);
   }
 
   @override
   void initState() {
-    task = widget.task;
+    home = context.watch<UiHome>();
+    account = context.watch<UiAccount>();
+    taskDate = widget.taskDate;
     super.initState();
   }
 
@@ -138,17 +75,23 @@ class _TaskPopupState extends State<TaskPopup> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ETaskElement(task: task),
+              ETaskElement(task: taskDate.task),
               Padding(
                 padding: const EdgeInsets.all(paddingBox),
                 child: Column(
                   children: [
                     ESelectAccount(
-                      accounts: widget.dbService.getAccounts,
+                      accounts: account.accounts,
                       selectedAccounts: selectedAccounts,
-                      onSelectedAccount: onSelectedAccount,
+                      onSelectedAccount:
+                          (newSelectedAccounts) => setState(() {
+                            selectedAccounts = newSelectedAccounts;
+                          }),
                       onExtraPressed: () {},
-                      onSelectAll: onSelectAll,
+                      onSelectAll:
+                          () => setState(() {
+                            selectedAccounts = [];
+                          }),
                       selectAll: selectAll,
                     ),
                     SizedBox(height: 70),

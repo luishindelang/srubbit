@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/Functions/f_lists.dart';
-import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_and_switch_or.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dart';
@@ -10,16 +10,15 @@ import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
 class ENewTaskNormalWeekly extends StatefulWidget {
   const ENewTaskNormalWeekly({
     super.key,
-    required this.taskService,
     this.withShowSelect = true,
     required this.weekDays,
   });
 
-  final SCreateTask taskService;
   final bool withShowSelect;
   final List<DateTime> weekDays;
 
@@ -28,53 +27,46 @@ class ENewTaskNormalWeekly extends StatefulWidget {
 }
 
 class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
+  late UiCreateTask createTask;
   List<DateTime> selectedWeekDays = [];
   bool isTimeSpan = false;
   bool isOr = false;
 
   bool showSelection = false;
 
-  void onOrAndChange(bool newIs) {
-    setState(() {
-      isOr = newIs;
-      widget.taskService.onChangeOrAnd(isOr);
-    });
-  }
-
   void onSelectWeekDay(DateTime day) {
-    setState(() {
-      if (!isTimeSpan) {
-        if (selectedWeekDays.contains(day)) {
-          selectedWeekDays.remove(day);
+    if (!isTimeSpan) {
+      if (selectedWeekDays.contains(day)) {
+        selectedWeekDays.remove(day);
+      } else {
+        selectedWeekDays.add(day);
+      }
+    } else {
+      if (selectedWeekDays.contains(day)) {
+        selectedWeekDays = [];
+      } else {
+        if (selectedWeekDays.isEmpty) {
+          selectedWeekDays.add(day);
+        } else if (selectedWeekDays.length == 1) {
+          int to = widget.weekDays.indexOf(day);
+          int from = widget.weekDays.indexOf(selectedWeekDays.last);
+          selectedWeekDays = [];
+          selectedWeekDays.addAll(timeSpann(widget.weekDays, from, to));
         } else {
+          selectedWeekDays = [];
           selectedWeekDays.add(day);
         }
-      } else {
-        if (selectedWeekDays.contains(day)) {
-          selectedWeekDays = [];
-        } else {
-          if (selectedWeekDays.isEmpty) {
-            selectedWeekDays.add(day);
-          } else if (selectedWeekDays.length == 1) {
-            int to = widget.weekDays.indexOf(day);
-            int from = widget.weekDays.indexOf(selectedWeekDays.last);
-            selectedWeekDays = [];
-            selectedWeekDays.addAll(timeSpann(widget.weekDays, from, to));
-          } else {
-            selectedWeekDays = [];
-            selectedWeekDays.add(day);
-          }
-        }
       }
-      selectedWeekDays.sort((a, b) => a.compareTo(b));
-      widget.taskService.onSelectedDates(selectedWeekDays);
-    });
+    }
+    selectedWeekDays.sort((a, b) => a.compareTo(b));
+    createTask.onSelectedDates(selectedWeekDays);
   }
 
   @override
   void initState() {
-    selectedWeekDays = widget.taskService.selectedDates;
-    isOr = widget.taskService.isOr;
+    createTask = context.watch<UiCreateTask>();
+    selectedWeekDays = createTask.selectedDates;
+    isOr = createTask.isOr;
     showSelection = selectedWeekDays.isNotEmpty;
     super.initState();
   }
@@ -87,11 +79,14 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
         Visibility(
           visible: widget.withShowSelect,
           child: ESelectAccountButton(
-            onPressed:
-                () => setState(() {
-                  showSelection = !showSelection;
-                  widget.taskService.completeWeek = showSelection;
-                }),
+            onPressed: () {
+              showSelection = !showSelection;
+              if (showSelection) {
+                createTask.onSelectedDates(selectedWeekDays);
+              } else {
+                createTask.onSelectedDates([]);
+              }
+            },
             text: "Select weekdays",
             isSelected: showSelection,
             selectedBackground: buttonColor,
@@ -181,7 +176,10 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                           SizedBox(height: 10),
                           Row(
                             children: [
-                              EAndSwitchOr(isOr: isOr, onChange: onOrAndChange),
+                              EAndSwitchOr(
+                                isOr: isOr,
+                                onChange: createTask.onChangeIsOr,
+                              ),
                               SizedBox(width: 146),
                               ETimeSpanButton(
                                 isTimeSpan: isTimeSpan,

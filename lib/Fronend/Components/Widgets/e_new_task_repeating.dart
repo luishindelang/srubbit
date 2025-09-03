@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_monthly.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_weekly.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_new_task_repeating_after_complete.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating_intervall.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating_select_date.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
 class ENewTaskRepeating extends StatefulWidget {
-  const ENewTaskRepeating({super.key, required this.taskService});
-
-  final SCreateTask taskService;
+  const ENewTaskRepeating({super.key});
 
   @override
   State<ENewTaskRepeating> createState() => _ENewTaskRepeatingState();
 }
 
 class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
-  late int repeatingType;
-  late int repeatingIntervall;
+  late UiCreateTask createTask;
 
   @override
   void initState() {
-    repeatingType = widget.taskService.repeatingType;
-    repeatingIntervall = widget.taskService.repeatingIntervall;
+    createTask = context.watch<UiCreateTask>();
     super.initState();
   }
 
@@ -42,62 +39,45 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               ENewTaskRepeatingIntervall(
-                onIntervallChanged: widget.taskService.onRepeatingIntervall,
-                repeatingIntervall: repeatingIntervall,
-                onTypeChanged: (newType) {
-                  setState(() {
-                    repeatingType = newType;
-                    widget.taskService.onRepeatingType(newType);
-                  });
-                },
-                repeatingType: repeatingType,
+                onIntervallChanged: createTask.onRepeatingIntervall,
+                repeatingIntervall: createTask.repeatingIntervall,
+                onTypeChanged: createTask.onRepeatingType,
+                repeatingType: createTask.repeatingType,
               ),
               SizedBox(width: 30),
               ENewTaskRepeatingAfterComplete(
-                value: widget.taskService.afterComplete,
-                onChanged: (newAfterComplete) {
-                  setState(() {
-                    widget.taskService.onAfterComplete(newAfterComplete);
-                  });
-                },
+                value: createTask.repeatAfterDone,
+                onChanged: createTask.onAfterComplete,
               ),
             ],
           ),
           SizedBox(height: 20),
           ENewTaskRepeatingSelectDate(
             title: "Begin:",
-            selectedDate: widget.taskService.startDateRepeating,
-            onDatePressed:
-                (newDate) => setState(() {
-                  widget.taskService.onStartDateRepeating(
-                    newDate ?? getNowWithoutTime(),
-                  );
-                }),
+            selectedDate: createTask.startDateRepeating,
+            onDatePressed: createTask.onStartDateRepeating,
           ),
           SizedBox(height: 20),
           ENewTaskRepeatingSelectDate(
             title: "End:",
-            selectedDate: widget.taskService.endDateRepeating,
-            onDatePressed:
-                (newDate) => setState(() {
-                  widget.taskService.onEndDateRepeating(newDate);
-                }),
+            selectedDate: createTask.endDateRepeating,
+            onDatePressed: createTask.onEndDateRepeating,
             isEnd: true,
-            startDate: widget.taskService.startDateRepeating,
-            onRepeatingCount: widget.taskService.onRepeatingCount,
+            startDate: createTask.startDateRepeating,
+            onRepeatingCount: createTask.onRepeatingCount,
           ),
           SizedBox(height: 20),
           Visibility(
-            visible: repeatingType == 1,
+            visible: createTask.repeatingType == 1,
             child: ENewTaskNormalWeekly(
-              taskService: widget.taskService,
               withShowSelect: false,
               weekDays: getNext7Weekdays(),
             ),
           ),
           Visibility(
-            visible: repeatingType == 2 || repeatingType == 3,
-            child: ENewTaskNormalMonthly(taskService: widget.taskService),
+            visible:
+                createTask.repeatingType == 2 || createTask.repeatingType == 3,
+            child: ENewTaskNormalMonthly(),
           ),
         ],
       ),

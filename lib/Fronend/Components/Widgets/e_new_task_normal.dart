@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_monthly.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_new_task_normal_preset_buttons.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_weekly.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
 class ENewTaskNormal extends StatefulWidget {
-  const ENewTaskNormal({super.key, required this.taskService});
+  const ENewTaskNormal({super.key, required this.type});
 
-  final SCreateTask taskService;
+  final int type;
 
   @override
   State<ENewTaskNormal> createState() => _ENewTaskNormalState();
@@ -21,24 +20,17 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
   void onChangeType(int newType) {
     setState(() {
       type = newType;
-      widget.taskService.onChangeType(type);
     });
   }
 
   Widget showTypeElements() {
     switch (type) {
       case 2:
-        return ENewTaskNormalWeekly(
-          taskService: widget.taskService,
-          weekDays: getNext7Weekdays(),
-        );
+        return ENewTaskNormalWeekly(weekDays: getNext7Weekdays());
       case 3:
-        return ENewTaskNormalMonthly(
-          taskService: widget.taskService,
-          withShowSelect: true,
-        );
+        return ENewTaskNormalMonthly(withShowSelect: true);
       case 4:
-        return ENewTaskNormalMonthly(taskService: widget.taskService);
+        return ENewTaskNormalMonthly();
       default:
         return const SizedBox(height: 20);
     }
@@ -46,7 +38,7 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
 
   @override
   void initState() {
-    type = widget.taskService.type;
+    type = widget.type;
     super.initState();
   }
 

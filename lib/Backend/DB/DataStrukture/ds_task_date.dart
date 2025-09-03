@@ -27,7 +27,7 @@ class DsTaskDate {
   }
 
   String get id => _id;
-  DateTime get plannedDate => _plannedDate;
+  DateTime get plannedDate => _plannedDate.add(Duration(days: _task.offset));
   DateTime? get doneDate => _doneDate;
   List<DsAccount>? get doneBy => _doneBy;
   DsTask get task => _task;

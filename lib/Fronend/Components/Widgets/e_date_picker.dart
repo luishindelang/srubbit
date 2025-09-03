@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Backend/Functions/f_lists.dart';
-import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_ranged_date_picker_calendar.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_and_switch_or.dart';
@@ -11,11 +10,12 @@ import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
 class EDatePicker extends StatefulWidget {
-  const EDatePicker({super.key, required this.taskService});
+  const EDatePicker({super.key, required this.createTask});
 
-  final SCreateTask taskService;
+  final UiCreateTask createTask;
 
   @override
   State<EDatePicker> createState() => _EDatePickerState();
@@ -30,6 +30,7 @@ class _EDatePickerState extends State<EDatePicker> {
 
   void onDone() {
     if (canBeDone) {
+      widget.createTask.onSelectedDates(selectedDates);
       Navigator.pop(context);
     }
   }
@@ -64,14 +65,13 @@ class _EDatePickerState extends State<EDatePicker> {
         canBeDone = false;
       }
     });
-    widget.taskService.onSelectedDates(selectedDates);
     return selectedDates;
   }
 
   @override
   void initState() {
-    selectedDates = widget.taskService.selectedDates;
-    isOr = widget.taskService.isOr;
+    selectedDates = widget.createTask.selectedDates;
+    isOr = widget.createTask.isOr;
     if (selectedDates.isNotEmpty) {
       canBeDone = true;
     }
@@ -135,7 +135,7 @@ class _EDatePickerState extends State<EDatePicker> {
                   onChange:
                       (newIsOr) => setState(() {
                         isOr = newIsOr;
-                        widget.taskService.onChangeOrAnd(newIsOr);
+                        widget.createTask.onChangeIsOr(newIsOr);
                       }),
                 ),
               ),

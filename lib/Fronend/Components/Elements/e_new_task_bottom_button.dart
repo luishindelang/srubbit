@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
+import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
-import 'package:scrubbit/Backend/Service/s_create_task.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_icon_button.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/delete_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
 class ENewTaskBottomButton extends StatelessWidget {
-  const ENewTaskBottomButton({
-    super.key,
-    required this.accounts,
-    required this.taskService,
-    required this.onDelete,
-    this.isEdit = false,
-  });
+  const ENewTaskBottomButton({super.key, this.isEdit = false});
 
-  final List<DsAccount> accounts;
-  final SCreateTask taskService;
-  final VoidCallback onDelete;
   final bool isEdit;
 
   @override
   Widget build(BuildContext context) {
+    final account = context.watch<UiAccount>();
+    final createTask = context.watch<UiCreateTask>();
+    final home = context.read<UiHome>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -38,12 +34,12 @@ class ENewTaskBottomButton extends StatelessWidget {
               bottom: 70,
             ),
             child: ESelectAccount(
-              accounts: accounts,
-              selectedAccounts: taskService.selecedAccounts,
-              onSelectedAccount: taskService.onSelectAccount,
+              accounts: account.accounts,
+              selectedAccounts: createTask.selecedAccounts,
+              onSelectedAccount: createTask.onSelectAccount,
               onExtraPressed: () {},
-              onSelectAll: (selectAll) {},
-              selectAll: true,
+              onSelectAll: createTask.onSelectAllAccounts,
+              selectAll: createTask.selectAll,
             ),
           ),
         ),
@@ -56,7 +52,7 @@ class ENewTaskBottomButton extends StatelessWidget {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => DeletePopup(onDelete: onDelete),
+                    builder: (context) => DeletePopup(onDelete: () {}),
                   );
                 },
                 icon: Icon(
@@ -70,9 +66,12 @@ class ENewTaskBottomButton extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
                 onTap: () {
-                  if (taskService.canBeDone) {
-                    var newTask = taskService.onDone();
-                    Navigator.pop(context, newTask);
+                  if (createTask.canDoDone) {
+                    var newTask = createTask.onDone();
+                    if (newTask != null) {
+                      home.addTaskDate(newTask);
+                    }
+                    Navigator.pop(context);
                   }
                 },
                 borderRadius: BorderRadius.circular(100),
@@ -85,7 +84,7 @@ class ENewTaskBottomButton extends StatelessWidget {
                     boxShadow: [shadowTaskElement],
                   ),
                   child:
-                      taskService.canBeDone
+                      createTask.canDoDone
                           ? FAssets.doneActive
                           : FAssets.doneInactive,
                 ),

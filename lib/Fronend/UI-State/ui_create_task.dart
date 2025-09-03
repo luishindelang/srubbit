@@ -15,6 +15,15 @@ class UiCreateTask extends ChangeNotifier {
 
   DsTask? _oldTask;
 
+  UiCreateTask({DsTask? task}) {
+    if (task != null) {
+      _oldTask = task;
+      _newTask = task.copyWith();
+    }
+  }
+
+  bool get isEdit => _oldTask != null;
+
   String get emoji => _newTask.name;
   String get name => _newTask.emoji;
   bool get isImportant => _newTask.isImportant;
@@ -47,8 +56,9 @@ class UiCreateTask extends ChangeNotifier {
 
   bool get isOr => !_newTask.onEveryDate;
 
-  DsRepeatingTemplates get repeatingTemplate =>
+  DsRepeatingTemplates get _repeatingTemplate =>
       _newTask.repeatingTemplate ??
+      _oldTask?.repeatingTemplate ??
       DsRepeatingTemplates(
         repeatingType: 0,
         repeatingIntervall: 1,
@@ -56,21 +66,22 @@ class UiCreateTask extends ChangeNotifier {
         startDate: getNowWithoutTime(),
       );
 
-  int get repeatingType => repeatingTemplate.repeatingType;
-  int get repeatingIntervall => repeatingTemplate.repeatingIntervall;
-  int? get repeatingCount => repeatingTemplate.repeatingCount;
-  bool get repeatAfterDone => repeatingTemplate.repeatAfterDone;
-  DateTime get startDateRepeating => repeatingTemplate.startDate;
-  DateTime? get endDateRepeating => repeatingTemplate.endDate;
+  int get repeatingType => _repeatingTemplate.repeatingType;
+  int get repeatingIntervall => _repeatingTemplate.repeatingIntervall;
+  int? get repeatingCount => _repeatingTemplate.repeatingCount;
+  bool get repeatAfterDone => _repeatingTemplate.repeatAfterDone;
+  DateTime get startDateRepeating => _repeatingTemplate.startDate;
+  DateTime? get endDateRepeating => _repeatingTemplate.endDate;
 
-  void setTask(DsTask task) {
-    _oldTask = task;
-    _newTask = task.copyWith();
-    notifyListeners();
-  }
+  bool get canDoDone => _newTask.name.isNotEmpty && _newTask.emoji.isNotEmpty;
 
   void onSelectAccount(List<DsAccount> newSelectedAccounts) {
     _newTask.update(newTaskOwners: newSelectedAccounts);
+    notifyListeners();
+  }
+
+  void onSelectAllAccounts() {
+    _newTask.update(newTaskOwners: []);
     notifyListeners();
   }
 
@@ -84,6 +95,58 @@ class UiCreateTask extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onChangeEmoji(String emoji) {
+    _newTask.update(newEmoji: emoji);
+    notifyListeners();
+  }
+
+  void onChangeImportant(bool isImportant) {
+    _newTask.update(newIsImportant: isImportant);
+  }
+
+  void onIsRepeating(bool isRepeating) {
+    if (isRepeating) {
+      _newTask.update(newRepeatingTemplate: _repeatingTemplate);
+    } else {
+      _newTask.update(newRepeatingTemplate: null);
+    }
+  }
+
+  void onChangeIsOr(bool isOr) {
+    _newTask.update(newOnEveryDate: !isOr);
+    notifyListeners();
+  }
+
+  void onRepeatingIntervall(int repeatingIntervall) {
+    _repeatingTemplate.update(newRepeatingIntervall: repeatingIntervall);
+  }
+
+  void onRepeatingType(int repeatingType) {
+    _repeatingTemplate.update(newRepeatingType: repeatingType);
+    notifyListeners();
+  }
+
+  void onAfterComplete(bool repeatAfterDone) {
+    _repeatingTemplate.update(newRepeatAfterDone: repeatAfterDone);
+    notifyListeners();
+  }
+
+  void onStartDateRepeating(DateTime? startDateRepeating) {
+    _repeatingTemplate.update(
+      newStartDate: startDateRepeating ?? getNowWithoutTime(),
+    );
+    notifyListeners();
+  }
+
+  void onEndDateRepeating(DateTime? endDateRepeating) {
+    _repeatingTemplate.update(newEndDate: endDateRepeating);
+    notifyListeners();
+  }
+
+  void onRepeatingCount(int? repeatingCount) {
+    _repeatingTemplate.update(newRepeatingCount: repeatingCount);
+  }
+
   void onSelectedDates(List<DateTime> newDates) {
     newDates.sort((a, b) => a.compareTo(b));
     for (var date in newDates) {
@@ -91,13 +154,17 @@ class UiCreateTask extends ChangeNotifier {
         DsTaskDate(plannedDate: date, task: _oldTask ?? _newTask),
       );
     }
+    notifyListeners();
   }
 
-  DsTask onDone() {
-    if (_oldTask != null) {
-      _oldTask!.updateComplete(_newTask);
-      return _oldTask!;
+  DsTask? onDone() {
+    if (canDoDone) {
+      if (_oldTask != null) {
+        _oldTask!.updateComplete(_newTask);
+        return _oldTask!;
+      }
+      return _newTask;
     }
-    return _newTask;
+    return null;
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/Service/s_create_task.dart';
+import 'package:provider/provider.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_emoji_name_input.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_new_task_bottom_button.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal.dart';
@@ -9,55 +7,19 @@ import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_select_time_from_until.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
 class AddTaskPopup extends StatefulWidget {
-  const AddTaskPopup({
-    super.key,
-    required this.accounts,
-    this.task,
-    this.isEdit = false,
-    this.onDelete,
-  });
-
-  final List<DsAccount> accounts;
-  final DsTask? task;
-  final bool isEdit;
-  final VoidCallback? onDelete;
+  const AddTaskPopup({super.key});
 
   @override
   State<AddTaskPopup> createState() => _AddTaskPopupState();
 }
 
 class _AddTaskPopupState extends State<AddTaskPopup> {
-  SCreateTask taskService = SCreateTask();
-
-  void onChangeEmoji(String newEmoji) {
-    setState(() {
-      taskService.onChangeEmoji(newEmoji);
-    });
-  }
-
-  void onChangeName(String newName) {
-    setState(() {
-      taskService.onChangeName(newName);
-    });
-  }
-
-  void onIsRepeating(bool newIsRepeating) {
-    setState(() {
-      taskService.onIsRepeating(newIsRepeating);
-    });
-  }
-
-  @override
-  void initState() {
-    if (widget.task != null) taskService.loadDataFromTask(widget.task!);
-    if (widget.accounts.isNotEmpty) taskService.selecedAccounts = [];
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final createTask = context.watch<UiCreateTask>();
     return Dialog(
       child: Container(
         width: 800,
@@ -70,38 +32,29 @@ class _AddTaskPopupState extends State<AddTaskPopup> {
             mainAxisSize: MainAxisSize.min,
             children: [
               EEmojiNameInput(
-                emojy: taskService.emoji,
-                onChangeEmoji: onChangeEmoji,
-                name: taskService.name,
-                onChangeName: onChangeName,
-                isImportant: taskService.isImportant,
-                onChangeImportant: taskService.onChangeImportant,
+                emojy: createTask.emoji,
+                onChangeEmoji: createTask.onChangeEmoji,
+                name: createTask.name,
+                onChangeName: createTask.onChangeName,
+                isImportant: createTask.isImportant,
+                onChangeImportant: createTask.onChangeImportant,
               ),
               ESelectTimeFromUntil(
-                isRepeating: taskService.isRepeating,
-                onIsRepeating: onIsRepeating,
-                onTimeSelect: taskService.onTimesSelect,
-                timeFrom: taskService.timeFrom,
-                timeUntil: taskService.timeUntil,
+                isRepeating: createTask.isRepeating,
+                onIsRepeating: createTask.onIsRepeating,
+                onTimeSelect: createTask.onTimesSelect,
+                timeFrom: createTask.timeFrom,
+                timeUntil: createTask.timeUntil,
               ),
               Visibility(
-                visible: !taskService.isRepeating,
-                child: ENewTaskNormal(taskService: taskService),
+                visible: !createTask.isRepeating,
+                child: ENewTaskNormal(type: createTask.type),
               ),
               Visibility(
-                visible: taskService.isRepeating,
-                child: ENewTaskRepeating(taskService: taskService),
+                visible: createTask.isRepeating,
+                child: ENewTaskRepeating(),
               ),
-              ENewTaskBottomButton(
-                accounts: widget.accounts,
-                taskService: taskService,
-                isEdit: widget.isEdit,
-                onDelete: () {
-                  if (widget.onDelete != null) {
-                    widget.onDelete!();
-                  }
-                },
-              ),
+              ENewTaskBottomButton(isEdit: createTask.isEdit),
             ],
           ),
         ),
