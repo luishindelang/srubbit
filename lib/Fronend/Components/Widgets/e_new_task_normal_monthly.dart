@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Backend/Service/s_create_task.dart';
-import 'package:scrubbit/Fronend/Elements/e_date_picker.dart';
-import 'package:scrubbit/Fronend/Elements/e_select_account_button.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_date_picker.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
 class ENewTaskNormalMonthly extends StatefulWidget {
-  const ENewTaskNormalMonthly({
-    super.key,
-    required this.taskService,
-    this.withShowSelect = false,
-  });
+  const ENewTaskNormalMonthly({super.key, this.withShowSelect = false});
 
-  final SCreateTask taskService;
   final bool withShowSelect;
 
   @override
@@ -23,6 +19,7 @@ class ENewTaskNormalMonthly extends StatefulWidget {
 }
 
 class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
+  late UiCreateTask createTask;
   List<DateTime> selectedDates = [];
   bool? isTimeSpann;
   bool? isOr;
@@ -32,18 +29,18 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
   void openDatePicker() {
     showDialog(
       context: context,
-      builder: (context) => EDatePicker(taskService: widget.taskService),
-    ).then(
-      (data) => setState(() {
-        selectedDates = widget.taskService.selectedDates;
-      }),
-    );
+      builder: (context) => EDatePicker(createTask: createTask),
+    ).then((_) {
+      selectedDates = createTask.selectedDates;
+    });
   }
 
   String showSelectedTime() {
-    if (selectedDates.isNotEmpty && isOr != null && isTimeSpann != null) {
-      DateTime from = selectedDates.first;
-      DateTime to = selectedDates.last;
+    if (createTask.selectedDates.isNotEmpty &&
+        isOr != null &&
+        isTimeSpann != null) {
+      DateTime from = createTask.selectedDates.first;
+      DateTime to = createTask.selectedDates.last;
       bool monthFrom = false;
       bool monthTo = true;
       if (from.month != to.month) monthFrom = true;
@@ -75,9 +72,10 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
 
   @override
   void initState() {
-    selectedDates = widget.taskService.selectedDates;
-    isOr = widget.taskService.isOr;
-    showSelection = selectedDates.isNotEmpty;
+    createTask = context.watch<UiCreateTask>();
+    isOr = createTask.isOr;
+    showSelection = createTask.selectedDates.isNotEmpty;
+    selectedDates = createTask.selectedDates;
     super.initState();
   }
 
@@ -89,11 +87,14 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
         Visibility(
           visible: widget.withShowSelect,
           child: ESelectAccountButton(
-            onPressed:
-                () => setState(() {
-                  showSelection = !showSelection;
-                  widget.taskService.completeMonth = showSelection;
-                }),
+            onPressed: () {
+              showSelection = !showSelection;
+              if (showSelection) {
+                createTask.onSelectedDates(selectedDates);
+              } else {
+                createTask.onSelectedDates([]);
+              }
+            },
             text: "Select specific days",
             isSelected: showSelection,
             selectedBackground: buttonColor,
@@ -105,7 +106,7 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
             onTap: openDatePicker,
             child: Container(
               margin: EdgeInsets.only(top: 10.0),
-              width: selectedDates.isEmpty ? 180 : 660,
+              width: createTask.selectedDates.isEmpty ? 180 : 660,
               decoration: BoxDecoration(
                 color: taskListBackgroundColor,
                 borderRadius: BorderRadius.circular(borderRadiusBox),
@@ -145,7 +146,7 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
                             ],
                           ),
                           Text(
-                            isOr == null || selectedDates.isEmpty
+                            isOr == null || createTask.selectedDates.isEmpty
                                 ? ""
                                 : isOr!
                                 ? "ODER"
@@ -165,7 +166,7 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
                       spacing: 5,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children:
-                          groupByMonth(selectedDates).map((dates) {
+                          groupByMonth(createTask.selectedDates).map((dates) {
                             return SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(

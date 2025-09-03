@@ -5,6 +5,7 @@ class TAccount {
   static const String color = "farbe";
   static const String iconCode = "icon_code";
   static const String iconFamily = "icon_family";
+  static const String score = "score";
 
   static String createTable() {
     return """
@@ -13,7 +14,8 @@ class TAccount {
       $name TEXT NOT NULL,
       $color INTEGER NOT NULL,
       $iconCode INTEGER NOT NULL,
-      $iconFamily TEXT
+      $iconFamily TEXT,
+      $score INTEGER
     );
     """;
   }

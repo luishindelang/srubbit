@@ -14,17 +14,17 @@ class DaoTask extends MappingTask {
   DaoTask(this.db)
     : super(DaoTaskDate(db), DaoRepeatingTemplates(db), DaoAccount(db));
 
-  Future<void> insert(DsTask task, {bool isNewRepeatingTask = false}) async {
+  Future<void> insert(DsTask task) async {
     await db.insert(
       TTask.tableName,
       await toMap(task),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    if (task.repeatingTemplate != null && !isNewRepeatingTask) {
+    if (task.repeatingTemplate != null) {
       await daoRepeatingTemplates.insert(task.repeatingTemplate!);
     }
-    for (final date in task.taskDates) {
-      await daoTaskDate.insert(date, task.id);
+    for (var newTaskDate in task.taskDates) {
+      await daoTaskDate.insert(newTaskDate, task.id);
     }
   }
 
@@ -38,11 +38,20 @@ class DaoTask extends MappingTask {
     if (task.repeatingTemplate != null) {
       await daoRepeatingTemplates.update(task.repeatingTemplate!);
     }
-    print("update");
-    await daoTaskDate.deleteByTaskId(task.id);
-    for (final date in task.taskDates) {
-      await daoTaskDate.insert(date, task.id);
+    for (var newTaskDate in task.addTaskDates) {
+      await daoTaskDate.insert(newTaskDate, task.id);
     }
+    for (var taskDate in task.removedTaskDates) {
+      await daoTaskDate.delete(taskDate.id);
+    }
+
+    final newTaskDates = [
+      ...task.addTaskDates,
+      ...task.taskDates,
+      ...task.removedTaskDates,
+    ];
+    newTaskDates.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
+    task.update(newTaskDates: newTaskDates);
   }
 
   Future<List<DsTask>> getAll() async {

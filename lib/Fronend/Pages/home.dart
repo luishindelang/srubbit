@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/DB/database_service.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
+import 'package:scrubbit/Backend/Service/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Backend/Service/s_load_home_tasks.dart';
-import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_element.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/overview.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -21,69 +23,43 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late DatabaseService dbService;
-  final SLoadHomeTasks homeTaskService = SLoadHomeTasks();
   List<DsAccount> accounts = [];
   bool isLoaded = false;
 
   void showNewTaskPopup() {
-    showDialog<DsTask>(
+    showDialog(
       context: context,
-      builder: (context) => AddTaskPopup(accounts: accounts),
-    ).then((newTask) async {
-      if (newTask != null) {
-        await dbService.daoTasks.insert(newTask);
-        setState(() {
-          homeTaskService.addNewTask(newTask);
-        });
-      }
-    });
+      builder:
+          (context) => ChangeNotifierProvider(
+            create: (_) => UiCreateTask(),
+            child: AddTaskPopup(),
+          ),
+    );
   }
 
   void routeOverview() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Overview(dbService: dbService)),
-    ).then((value) {
-      setState(() {});
-    });
+    );
   }
 
-  void onTaskTap(DsTask task) {
-    for (var date in task.taskDates) {
-      print(date.plannedDate);
-    }
-    showDialog<bool>(
+  void onTaskTap(DsTaskDate taskDate) {
+    showDialog(
       context: context,
-      builder:
-          (context) => TaskPopup(
-            task: task,
-            dbService: dbService,
-            homeTaskService: homeTaskService,
-          ),
-    ).then((value) {
-      setState(() {});
-    });
-  }
-
-  void loadData() async {
-    dbService = await DatabaseService.init();
-    await dbService.loadAccounts();
-    await homeTaskService.loadData();
-    accounts = dbService.getAccounts;
-
-    setState(() {
-      isLoaded = homeTaskService.isLoaded;
-    });
+      builder: (context) => TaskPopup(taskDate: taskDate),
+    );
   }
 
   @override
   void initState() {
-    loadData();
+    dbService = context.read<DatabaseService>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final home = context.watch<UiHome>();
     return EScaffold(
       weekday: weekDaysFull[getNowWithoutTime().weekday - 1],
       date: formatDateDay(getNowWithoutTime(), true, true),
@@ -96,13 +72,13 @@ class _HomeState extends State<Home> {
           ETaskBoxTitle(
             title: "Heute",
             children:
-                homeTaskService.todayTasks
+                home.todayTasks
                     .map(
-                      (task) => Padding(
+                      (taskDate) => Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: InkWell(
-                          onTap: () => onTaskTap(task),
-                          child: ETaskElement(task: task),
+                          onTap: () => onTaskTap(taskDate),
+                          child: ETaskElement(task: taskDate.task),
                         ),
                       ),
                     )
@@ -112,13 +88,13 @@ class _HomeState extends State<Home> {
           ETaskBoxTitle(
             title: "Diese Woche",
             children:
-                homeTaskService.weekTasks
+                home.weekTasks
                     .map(
-                      (task) => Padding(
+                      (taskDate) => Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: InkWell(
-                          onTap: () => onTaskTap(task),
-                          child: ETaskElement(task: task),
+                          onTap: () => onTaskTap(taskDate),
+                          child: ETaskElement(task: taskDate.task),
                         ),
                       ),
                     )
@@ -128,13 +104,13 @@ class _HomeState extends State<Home> {
           ETaskBoxTitle(
             title: "Diesen Monat",
             children:
-                homeTaskService.monthTasks
+                home.monthTasks
                     .map(
-                      (task) => Padding(
+                      (taskDate) => Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: InkWell(
-                          onTap: () => onTaskTap(task),
-                          child: ETaskElement(task: task),
+                          onTap: () => onTaskTap(taskDate),
+                          child: ETaskElement(task: taskDate.task),
                         ),
                       ),
                     )

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_element.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
 
 class ERepeatingTaskElementButton extends StatelessWidget {
   const ERepeatingTaskElementButton({

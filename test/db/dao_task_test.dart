@@ -3,7 +3,6 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:scrubbit/Backend/DB/DAOs/dao_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Backend/DB/SQLite/sql_connection.dart';
 
 void main() {
@@ -33,19 +32,12 @@ void main() {
     );
   }
 
-  DsTaskDate buildDate() {
-    return DsTaskDate(
-      plannedDate: DateTime.utc(2024, 1, 2),
-      completionWindow: 0,
-    );
-  }
-
   DsTask buildTask(String name) {
     return DsTask(
       name: 'Task $name',
       emoji: 'test emojy',
       onEveryDate: false,
-      taskDates: [buildDate()],
+      taskDates: [],
       offset: 0,
       isImportant: true,
       timeFrom: null,

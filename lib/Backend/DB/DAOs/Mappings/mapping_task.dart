@@ -18,15 +18,12 @@ class MappingTask {
         repeatingTemplateId != null
             ? await daoRepeatingTemplates.get(repeatingTemplateId)
             : null;
-    final taskDates = await daoTaskDate.getByTaskId(rawData[TTask.id]);
     final taskOwners = await daoAccount.getOwners(rawData[TTask.id]);
-
-    return DsTask(
+    final task = DsTask(
       id: rawData[TTask.id] as String,
       name: rawData[TTask.name] as String,
       emoji: rawData[TTask.emoji] as String,
       onEveryDate: rawData[TTask.onEveryDate] == 1,
-      taskDates: taskDates,
       offset: rawData[TTask.offset],
       isImportant: rawData[TTask.isImportant] == 1,
       timeFrom: intToTimeOfDay(rawData[TTask.timeFrom]),
@@ -35,6 +32,14 @@ class MappingTask {
       taskOwners: taskOwners,
       fromDB: true,
     );
+    if (task.repeatingTemplate != null) {
+      final lastDoneDate = await daoTaskDate.getLastDoneDateByTaskId(task);
+      task.repeatingTemplate!.setLastDoneDate = lastDoneDate;
+    }
+    final taskDates = await daoTaskDate.getByTask(task);
+    task.setTaskDates = taskDates;
+
+    return task;
   }
 
   Future<List<DsTask>> fromList(List<Map<String, dynamic>> rawData) async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
-import 'package:scrubbit/Fronend/Elements/e_select_account_button.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
@@ -23,7 +23,7 @@ class ESelectAccount extends StatefulWidget {
   final List<DsAccount> selectedAccounts;
   final void Function(List<DsAccount>) onSelectedAccount;
   final VoidCallback onExtraPressed;
-  final void Function(bool) onSelectAll;
+  final void Function() onSelectAll;
   final bool selectAll;
   final bool reverse;
   final bool withShadow;
@@ -81,7 +81,7 @@ class _ESelectAccountState extends State<ESelectAccount> {
                 ESelectAccountButton(
                   onPressed: () {
                     onAllSelect();
-                    widget.onSelectAll(selectAll);
+                    widget.onSelectAll();
                   },
                   text: "Alle",
                   isSelected: selectAll,

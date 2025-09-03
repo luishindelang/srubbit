@@ -1,4 +1,5 @@
 import 'package:scrubbit/Backend/DB/DAOs/dao_account.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_date.dart';
 import 'package:sqflite/sqflite.dart';
@@ -19,22 +20,31 @@ class DaoTaskDate extends MappingTaskDate {
   Future<void> update(DsTaskDate taskDate) async {
     await db.update(
       TTaskDate.tableName,
-      {
-        TTaskDate.plannedDate: taskDate.plannedDate.millisecondsSinceEpoch,
-        TTaskDate.completionWindow: taskDate.completionWindow,
-      },
+      toMap(taskDate, taskDate.task.id),
       where: '${TTaskDate.id} = ?',
       whereArgs: [taskDate.id],
     );
   }
 
-  Future<List<DsTaskDate>> getByTaskId(String taskId) async {
+  Future<List<DsTaskDate>> getByTask(DsTask task) async {
     final List<Map<String, dynamic>> rawData = await db.query(
       TTaskDate.tableName,
       where: '${TTaskDate.taskId} = ?',
-      whereArgs: [taskId],
+      whereArgs: [task.id],
     );
-    return fromList(rawData);
+    return fromList(rawData, task);
+  }
+
+  Future<DateTime?> getLastDoneDateByTaskId(DsTask task) async {
+    final List<Map<String, dynamic>> rawData = await db.query(
+      TTaskDate.tableName,
+      where: "${TTaskDate.taskId} = ?",
+      whereArgs: [task.id],
+      orderBy: "${TTaskDate.plannedDate} ASC",
+    );
+    if (rawData.isEmpty) return null;
+    final taskDate = await fromMap(rawData.first, task);
+    return taskDate.plannedDate;
   }
 
   Future<void> deleteByTaskId(String taskId) async {
@@ -42,6 +52,14 @@ class DaoTaskDate extends MappingTaskDate {
       TTaskDate.tableName,
       where: '${TTaskDate.taskId} = ?',
       whereArgs: [taskId],
+    );
+  }
+
+  Future<void> delete(String id) async {
+    await db.delete(
+      TTaskDate.tableName,
+      where: '${TTaskDate.id} = ?',
+      whereArgs: [id],
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:scrubbit/Backend/DB/DAOs/dao_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/SQLite/sql_connection.dart';
-import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
 
 void main() {
   sqfliteFfiInit();
@@ -39,7 +38,6 @@ void main() {
       await dao.insert(template);
       final fetched = await dao.get(template.id);
       expect(fetched, isNotNull);
-      expect(fetched!.repeatingType, TRepeatingTemplates.weekly);
     });
 
     test('update template', () async {

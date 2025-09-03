@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/DB/database_service.dart';
+import 'package:scrubbit/Backend/Service/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Fronend/Elements/e_repeating_task_element_button.dart';
-import 'package:scrubbit/Fronend/Elements/e_scaffold.dart';
-import 'package:scrubbit/Fronend/Elements/e_select_account.dart';
-import 'package:scrubbit/Fronend/Elements/e_task_box_title.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_repeating_task_element_button.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_repeating_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
 class Overview extends StatefulWidget {
   const Overview({super.key, required this.dbService});
@@ -21,37 +25,29 @@ class Overview extends StatefulWidget {
 }
 
 class _OverviewState extends State<Overview> {
-  List<DsTask> repeatingTasks = [];
+  late UiHome home;
+  late UiAccount account;
   List<DsAccount> selectedAccounts = [];
-  bool selectAll = false;
 
   void routePop() {
     Navigator.pop(context);
   }
 
-  bool onSelectAll(bool newSelectAll) {
+  void onSelectAll() {
     setState(() {
-      selectAll = newSelectAll;
+      selectedAccounts = [];
     });
-    return selectAll;
   }
 
   void onRepeatingTaskPressed(DsTask task) {
     showDialog<DsTask>(
       context: context,
       builder:
-          (context) => EditRepeatingTaskPopup(
-            task: task,
-            accounts: widget.dbService.getAccounts,
+          (context) => ChangeNotifierProvider(
+            create: (_) => UiCreateTask(task: task),
+            child: EditRepeatingTaskPopup(),
           ),
-    ).then((newTask) async {
-      if (newTask != null) {
-        setState(() {
-          repeatingTasks.remove(task);
-          repeatingTasks.add(newTask);
-        });
-      }
-    });
+    );
   }
 
   void onEditAccouts() {
@@ -63,17 +59,10 @@ class _OverviewState extends State<Overview> {
     });
   }
 
-  void loadData() async {
-    var data = await widget.dbService.daoTasks.getAllRepeating();
-
-    setState(() {
-      repeatingTasks = data;
-    });
-  }
-
   @override
   void initState() {
-    loadData();
+    home = context.watch<UiHome>();
+    account = context.watch<UiAccount>();
     super.initState();
   }
 
@@ -90,7 +79,7 @@ class _OverviewState extends State<Overview> {
             flex: 1,
             title: "Repeating Tasks",
             children:
-                repeatingTasks
+                home.repeatingTasks
                     .map(
                       (task) => ERepeatingTaskElementButton(
                         task: task,
@@ -106,14 +95,14 @@ class _OverviewState extends State<Overview> {
             behindTitle: Expanded(
               child: ESelectAccount(
                 reverse: true,
-                accounts: widget.dbService.getAccounts,
+                accounts: account.accounts,
                 selectedAccounts: selectedAccounts,
                 onSelectedAccount: (newSelectedAccounts) {
                   selectedAccounts = newSelectedAccounts;
                 },
                 onExtraPressed: () {},
                 onSelectAll: onSelectAll,
-                selectAll: selectAll,
+                selectAll: selectedAccounts.isEmpty,
                 withShadow: true,
               ),
             ),
