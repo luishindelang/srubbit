@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
-import 'package:scrubbit/Backend/Service/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_repeating_task_element_button.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
@@ -16,17 +15,13 @@ import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
 class Overview extends StatefulWidget {
-  const Overview({super.key, required this.dbService});
-
-  final DatabaseService dbService;
+  const Overview({super.key});
 
   @override
   State<Overview> createState() => _OverviewState();
 }
 
 class _OverviewState extends State<Overview> {
-  late UiHome home;
-  late UiAccount account;
   List<DsAccount> selectedAccounts = [];
 
   void routePop() {
@@ -54,20 +49,13 @@ class _OverviewState extends State<Overview> {
     showDialog<List<DsAccount>>(
       context: context,
       builder: (context) => EditAccountPopup(),
-    ).then((value) {
-      print("after account edit");
-    });
-  }
-
-  @override
-  void initState() {
-    home = context.watch<UiHome>();
-    account = context.watch<UiAccount>();
-    super.initState();
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final home = context.watch<UiHome>();
+    final account = context.watch<UiAccount>();
     return EScaffold(
       weekday: weekDaysFull[getNowWithoutTime().weekday - 1],
       date: formatDateDay(getNowWithoutTime(), true, true),

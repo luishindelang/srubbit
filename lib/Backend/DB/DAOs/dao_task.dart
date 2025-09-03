@@ -93,7 +93,7 @@ class DaoTask extends MappingTask {
     final List<Map<String, dynamic>> rawData = await db.rawQuery("""
     SELECT * FROM ${TTask.tableName} t
     LEFT JOIN ${TTaskDate.tableName} d
-    ON a.${TTask.id} = d.${TTaskDate.taskId}
+    ON t.${TTask.id} = d.${TTaskDate.taskId}
     WHERE d.${TTaskDate.doneDate} IS NOT NULL;
     """);
     return fromList(rawData);

@@ -24,8 +24,8 @@ class UiCreateTask extends ChangeNotifier {
 
   bool get isEdit => _oldTask != null;
 
-  String get emoji => _newTask.name;
-  String get name => _newTask.emoji;
+  String get name => _newTask.name;
+  String get emoji => _newTask.emoji;
   bool get isImportant => _newTask.isImportant;
   bool get isRepeating => _newTask.repeatingTemplate != null;
 

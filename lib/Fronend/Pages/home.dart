@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
-import 'package:scrubbit/Backend/Service/database_service.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
@@ -22,8 +20,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late DatabaseService dbService;
-  List<DsAccount> accounts = [];
   bool isLoaded = false;
 
   void showNewTaskPopup() {
@@ -40,7 +36,7 @@ class _HomeState extends State<Home> {
   void routeOverview() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Overview(dbService: dbService)),
+      MaterialPageRoute(builder: (context) => Overview()),
     );
   }
 
@@ -53,7 +49,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    dbService = context.read<DatabaseService>();
     super.initState();
   }
 

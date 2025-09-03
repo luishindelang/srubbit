@@ -7,10 +7,10 @@ class MappingAccount {
     return DsAccount(
       id: rawData[TAccount.id] as String,
       name: rawData[TAccount.name] as String,
-      color: Color(rawData[TAccount.color]),
+      color: Color(rawData[TAccount.color] as int),
       icon: IconData(
-        rawData[TAccount.iconCode],
-        fontFamily: rawData[TAccount.iconFamily],
+        rawData[TAccount.iconCode] as int,
+        fontFamily: rawData[TAccount.iconFamily] as String?,
       ),
       score: rawData[TAccount.score] as int,
       fromDB: true,
