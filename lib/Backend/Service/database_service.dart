@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
   static DatabaseService? _instance;
+  late Database _db;
 
   late final DaoAccount daoAccounts;
   late final DaoTask daoTasks;
@@ -18,6 +19,7 @@ class DatabaseService {
     daoTaskDates = DaoTaskDate(db);
     daoRepeatingTemplates = DaoRepeatingTemplates(db);
     daoTasks = DaoTask(db);
+    _db = db;
   }
 
   static Future<DatabaseService> init() async {
@@ -25,5 +27,9 @@ class DatabaseService {
     final db = await SqlConnection.instance.database;
     _instance = DatabaseService._(db);
     return _instance!;
+  }
+
+  Future<void> resetDB() async {
+    await SqlConnection.resetDB(_db);
   }
 }

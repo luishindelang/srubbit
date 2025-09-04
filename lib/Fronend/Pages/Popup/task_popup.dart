@@ -22,9 +22,6 @@ class TaskPopup extends StatefulWidget {
 }
 
 class _TaskPopupState extends State<TaskPopup> {
-  late UiHome home;
-  late UiAccount account;
-  late DsTaskDate taskDate;
   List<DsAccount> selectedAccounts = [];
   bool get selectAll => selectedAccounts.isEmpty;
 
@@ -35,34 +32,29 @@ class _TaskPopupState extends State<TaskPopup> {
       context: context,
       builder:
           (context) => ChangeNotifierProvider(
-            create: (_) => UiCreateTask(),
+            create: (_) => UiCreateTask(task: widget.taskDate.task),
             child: AddEditTaskPopup(),
           ),
     );
   }
 
-  void onDone() {
-    if (canDoDone) {
-      home.onTaskDateDone(taskDate);
-      Navigator.pop(context);
-    }
-  }
-
-  void onNext() {
-    home.onTasMoveToNextDay(taskDate.task);
-    Navigator.pop(context);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    taskDate = widget.taskDate;
-    home = context.watch<UiHome>();
-    account = context.watch<UiAccount>();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final home = context.watch<UiHome>();
+    final account = context.watch<UiAccount>();
+
+    void onDone() {
+      if (canDoDone) {
+        home.onTaskDateDone(widget.taskDate, selectedAccounts);
+        Navigator.pop(context);
+      }
+    }
+
+    void onNext() {
+      home.onTaskMoveToNextDay(widget.taskDate.task);
+      Navigator.pop(context);
+    }
+
     return Dialog(
       insetPadding: EdgeInsets.all(paddingTaskPopup),
       shape: RoundedRectangleBorder(
@@ -75,7 +67,7 @@ class _TaskPopupState extends State<TaskPopup> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ETaskElement(task: taskDate.task),
+              ETaskElement(task: widget.taskDate.task),
               Padding(
                 padding: const EdgeInsets.all(paddingBox),
                 child: Column(

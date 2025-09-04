@@ -90,13 +90,36 @@ class DsTask {
     removedTaskDates.clear();
   }
 
-  void updateTaskDate(List<DsTaskDate> newTaskDates) {
-    for (var newTaskDate in newTaskDates) {
-      if (!_taskDates.contains(newTaskDate)) addTaskDate(newTaskDate);
+  void savedToDb() {
+    addTaskDates.clear();
+    removedTaskDates.clear();
+  }
+
+  void _updateTaskDate(List<DsTaskDate> newTaskDates) {
+    final desired = newTaskDates
+        .map((d) => d.copyWith(newTask: this))
+        .toList(growable: false);
+
+    final current = List<DsTaskDate>.from(_taskDates, growable: false);
+
+    bool sameDate(DsTaskDate a, DsTaskDate b) =>
+        a.plannedDate.isAtSameMomentAs(b.plannedDate);
+
+    for (final oldItem in current) {
+      final stillWanted = desired.any((d) => sameDate(d, oldItem));
+      if (!stillWanted) {
+        removeTaskDate(oldItem);
+      }
     }
-    for (var oldTaskDate in _taskDates) {
-      if (!newTaskDates.contains(oldTaskDate)) removeTaskDate(oldTaskDate);
+
+    for (final want in desired) {
+      final alreadyThere = _taskDates.any((d) => sameDate(d, want));
+      if (!alreadyThere) {
+        addTaskDate(want);
+      }
     }
+
+    _taskDates.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
   }
 
   void update({
@@ -121,22 +144,22 @@ class DsTask {
     _timeUntil = newTimeUntil ?? _timeUntil;
     _repeatingTemplate = newRepeatingTemplate ?? _repeatingTemplate;
     _taskOwners = newTaskOwners ?? _taskOwners;
-    updateTaskDate(newTaskDates ?? _taskDates);
+    _updateTaskDate(newTaskDates ?? _taskDates);
     fromDB = false;
   }
 
   void updateComplete(DsTask newTask) {
     if (_id == newTask.id) {
-      _name = newTask._name;
-      _emoji = newTask._emoji;
-      _onEveryDate = newTask._onEveryDate;
-      _offset = newTask._offset;
-      _isImportant = newTask._isImportant;
-      _timeFrom = newTask._timeFrom;
-      _timeUntil = newTask._timeUntil;
-      _repeatingTemplate = newTask._repeatingTemplate;
-      _taskOwners = newTask._taskOwners;
-      updateTaskDate(newTask._taskDates);
+      _name = newTask.name;
+      _emoji = newTask.emoji;
+      _onEveryDate = newTask.onEveryDate;
+      _offset = newTask.offset;
+      _isImportant = newTask.isImportant;
+      _timeFrom = newTask.timeFrom;
+      _timeUntil = newTask.timeUntil;
+      _repeatingTemplate = newTask.repeatingTemplate;
+      _taskOwners = newTask.taskOwners;
+      _updateTaskDate(newTask.taskDates);
       fromDB = false;
     }
   }
@@ -154,7 +177,7 @@ class DsTask {
     List<DsAccount>? newTaskOwners,
     List<DsTaskDate>? newTaskDates,
   }) {
-    return DsTask(
+    final copied = DsTask(
       id: _id,
       name: newName ?? _name,
       emoji: newEmoji ?? _emoji,
@@ -163,9 +186,18 @@ class DsTask {
       isImportant: newIsImportant ?? _isImportant,
       timeFrom: newTimeFrom ?? _timeFrom,
       timeUntil: newTimeUntil ?? _timeUntil,
-      repeatingTemplate: newRepeatingTemplate ?? _repeatingTemplate,
-      taskOwners: newTaskOwners ?? _taskOwners,
-      taskDates: newTaskDates ?? _taskDates,
+      repeatingTemplate:
+          (newRepeatingTemplate ?? _repeatingTemplate)?.copyWith(),
+      taskOwners: (newTaskOwners ?? _taskOwners)?.toList(growable: true),
+      taskDates: (newTaskDates ?? _taskDates)
+          .map((d) => d.copyWith())
+          .toList(growable: true),
     );
+
+    for (var i = 0; i < copied.taskDates.length; i++) {
+      copied.taskDates[i] = copied.taskDates[i].copyWith(newTask: copied);
+    }
+
+    return copied;
   }
 }

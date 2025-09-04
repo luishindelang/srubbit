@@ -16,18 +16,14 @@ class SelectWeekly extends StatelessWidget {
     super.key,
     this.withShowSelect = true,
     required this.weekDays,
-    required this.type,
   });
 
   final bool withShowSelect;
   final List<DateTime> weekDays;
-  final int type;
 
   @override
   Widget build(BuildContext context) {
     final createTask = context.watch<UiCreateTask>();
-    createTask.onSetType(type);
-    print(createTask.selectedDates);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

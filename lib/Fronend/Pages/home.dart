@@ -18,6 +18,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final home = context.watch<UiHome>();
+    home.loadData();
 
     void showNewTaskPopup() {
       showDialog(

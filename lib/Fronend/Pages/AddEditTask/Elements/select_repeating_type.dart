@@ -60,7 +60,6 @@ class SelectRepeatingType extends StatelessWidget {
             child: SelectWeekly(
               withShowSelect: false,
               weekDays: getNext7Weekdays(),
-              type: 0,
             ),
           ),
           Visibility(

@@ -17,7 +17,9 @@ class MappingTaskDate {
       ),
       doneDate:
           rawData[TTaskDate.doneDate] != null
-              ? DateTime.fromMillisecondsSinceEpoch(rawData[TTaskDate.doneDate])
+              ? DateTime.fromMillisecondsSinceEpoch(
+                rawData[TTaskDate.doneDate] as int,
+              )
               : null,
       doneBy: doneBy.isNotEmpty ? doneBy : null,
       task: task,

@@ -26,6 +26,9 @@ class DaoTask extends MappingTask {
     for (var newTaskDate in task.taskDates) {
       await daoTaskDate.insert(newTaskDate, task.id);
     }
+
+    task.savedToDb();
+    task.taskDates.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
   }
 
   Future<void> update(DsTask task) async {
@@ -45,13 +48,8 @@ class DaoTask extends MappingTask {
       await daoTaskDate.delete(taskDate.id);
     }
 
-    final newTaskDates = [
-      ...task.addTaskDates,
-      ...task.taskDates,
-      ...task.removedTaskDates,
-    ];
-    newTaskDates.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
-    task.update(newTaskDates: newTaskDates);
+    task.savedToDb();
+    task.taskDates.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
   }
 
   Future<List<DsTask>> getAll() async {

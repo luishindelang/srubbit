@@ -52,7 +52,16 @@ class ENewTaskBottomButton extends StatelessWidget {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => DeletePopup(onDelete: () {}),
+                    builder:
+                        (context) => DeletePopup(
+                          onDelete: () {
+                            home.remove(createTask.task.id);
+                            Navigator.popUntil(
+                              context,
+                              (route) => route.isFirst,
+                            );
+                          },
+                        ),
                   );
                 },
                 icon: Icon(
@@ -69,7 +78,11 @@ class ENewTaskBottomButton extends StatelessWidget {
                   if (createTask.canDoDone) {
                     var newTask = createTask.onDone();
                     if (newTask != null) {
-                      home.addTaskDate(newTask);
+                      if (createTask.isEdit) {
+                        home.updateTask(newTask);
+                      } else {
+                        home.addTask(newTask);
+                      }
                     }
                     Navigator.pop(context);
                   }
