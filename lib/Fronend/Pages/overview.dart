@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_repeating_task_element_button.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
-import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
-import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
-import 'package:scrubbit/Fronend/Pages/Popup/edit_repeating_task_popup.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_score_overview.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/edit_repeating_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
-import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
@@ -22,16 +19,8 @@ class Overview extends StatefulWidget {
 }
 
 class _OverviewState extends State<Overview> {
-  List<DsAccount> selectedAccounts = [];
-
   void routePop() {
     Navigator.pop(context);
-  }
-
-  void onSelectAll() {
-    setState(() {
-      selectedAccounts = [];
-    });
   }
 
   void onRepeatingTaskPressed(DsTask task) {
@@ -45,17 +34,9 @@ class _OverviewState extends State<Overview> {
     );
   }
 
-  void onEditAccouts() {
-    showDialog<List<DsAccount>>(
-      context: context,
-      builder: (context) => EditAccountPopup(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final home = context.watch<UiHome>();
-    final account = context.watch<UiAccount>();
     return EScaffold(
       weekday: weekDaysFull[getNowWithoutTime().weekday - 1],
       date: formatDateDay(getNowWithoutTime(), true, true),
@@ -77,25 +58,7 @@ class _OverviewState extends State<Overview> {
                     .toList(),
           ),
           SizedBox(width: 10),
-          ETaskBoxTitle(
-            flex: 2,
-            title: "Score Overview",
-            behindTitle: Expanded(
-              child: ESelectAccount(
-                reverse: true,
-                accounts: account.accounts,
-                selectedAccounts: selectedAccounts,
-                onSelectedAccount: (newSelectedAccounts) {
-                  selectedAccounts = newSelectedAccounts;
-                },
-                onExtraPressed: () {},
-                onSelectAll: onSelectAll,
-                selectAll: selectedAccounts.isEmpty,
-                withShadow: true,
-              ),
-            ),
-            children: [],
-          ),
+          EScoreOverview(),
         ],
       ),
     );

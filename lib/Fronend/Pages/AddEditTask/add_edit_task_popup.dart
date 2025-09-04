@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scrubbit/Fronend/Components/Widgets/e_emoji_name_input.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/Elements/emoji_name_input.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_new_task_bottom_button.dart';
-import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating.dart';
-import 'package:scrubbit/Fronend/Components/Widgets/e_select_time_from_until.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/Elements/select_normal_type.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/Elements/select_repeating_type.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/Elements/select_time_from_until.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
-class EditRepeatingTaskPopup extends StatefulWidget {
-  const EditRepeatingTaskPopup({super.key});
+class AddEditTaskPopup extends StatelessWidget {
+  const AddEditTaskPopup({super.key});
 
-  @override
-  State<EditRepeatingTaskPopup> createState() => _EditRepeatingTaskPopupState();
-}
-
-class _EditRepeatingTaskPopupState extends State<EditRepeatingTaskPopup> {
   @override
   Widget build(BuildContext context) {
     final createTask = context.watch<UiCreateTask>();
@@ -30,21 +26,30 @@ class _EditRepeatingTaskPopupState extends State<EditRepeatingTaskPopup> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              EEmojiNameInput(
-                name: createTask.name,
-                onChangeName: createTask.onChangeName,
+              EmojiNameInput(
                 emojy: createTask.emoji,
                 onChangeEmoji: createTask.onChangeEmoji,
+                name: createTask.name,
+                onChangeName: createTask.onChangeName,
                 isImportant: createTask.isImportant,
                 onChangeImportant: createTask.onChangeImportant,
               ),
-              ESelectTimeFromUntil(
+              SelectTimeFromUntil(
+                isRepeating: createTask.isRepeating,
+                onIsRepeating: createTask.onIsRepeating,
                 onTimeSelect: createTask.onTimesSelect,
                 timeFrom: createTask.timeFrom,
                 timeUntil: createTask.timeUntil,
               ),
-              ENewTaskRepeating(),
-              ENewTaskBottomButton(isEdit: true),
+              Visibility(
+                visible: !createTask.isRepeating,
+                child: SelectNormalType(type: createTask.type),
+              ),
+              Visibility(
+                visible: createTask.isRepeating,
+                child: SelectRepeatingType(),
+              ),
+              ENewTaskBottomButton(isEdit: createTask.isEdit),
             ],
           ),
         ),

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scrubbit/Backend/Functions/f_lists.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_and_switch_or.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dart';
-import 'package:scrubbit/Fronend/Components/Elements/e_time_span_button.dart';
+import 'package:scrubbit/Fronend/Components/Widgets/e_switch_time_span_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
@@ -12,88 +11,38 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
-class ENewTaskNormalWeekly extends StatefulWidget {
-  const ENewTaskNormalWeekly({
+class SelectWeekly extends StatelessWidget {
+  const SelectWeekly({
     super.key,
     this.withShowSelect = true,
     required this.weekDays,
+    required this.type,
   });
 
   final bool withShowSelect;
   final List<DateTime> weekDays;
-
-  @override
-  State<ENewTaskNormalWeekly> createState() => _ENewTaskNormalWeeklyState();
-}
-
-class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
-  late UiCreateTask createTask;
-  List<DateTime> selectedWeekDays = [];
-  bool isTimeSpan = false;
-  bool isOr = false;
-
-  bool showSelection = false;
-
-  void onSelectWeekDay(DateTime day) {
-    if (!isTimeSpan) {
-      if (selectedWeekDays.contains(day)) {
-        selectedWeekDays.remove(day);
-      } else {
-        selectedWeekDays.add(day);
-      }
-    } else {
-      if (selectedWeekDays.contains(day)) {
-        selectedWeekDays = [];
-      } else {
-        if (selectedWeekDays.isEmpty) {
-          selectedWeekDays.add(day);
-        } else if (selectedWeekDays.length == 1) {
-          int to = widget.weekDays.indexOf(day);
-          int from = widget.weekDays.indexOf(selectedWeekDays.last);
-          selectedWeekDays = [];
-          selectedWeekDays.addAll(timeSpann(widget.weekDays, from, to));
-        } else {
-          selectedWeekDays = [];
-          selectedWeekDays.add(day);
-        }
-      }
-    }
-    selectedWeekDays.sort((a, b) => a.compareTo(b));
-    createTask.onSelectedDates(selectedWeekDays);
-  }
-
-  @override
-  void initState() {
-    createTask = context.watch<UiCreateTask>();
-    selectedWeekDays = createTask.selectedDates;
-    isOr = createTask.isOr;
-    showSelection = selectedWeekDays.isNotEmpty;
-    super.initState();
-  }
+  final int type;
 
   @override
   Widget build(BuildContext context) {
+    final createTask = context.watch<UiCreateTask>();
+    createTask.onSetType(type);
+    print(createTask.selectedDates);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Visibility(
-          visible: widget.withShowSelect,
+          visible: withShowSelect,
           child: ESelectAccountButton(
-            onPressed: () {
-              showSelection = !showSelection;
-              if (showSelection) {
-                createTask.onSelectedDates(selectedWeekDays);
-              } else {
-                createTask.onSelectedDates([]);
-              }
-            },
+            onPressed: createTask.onSelectCompleteWeek,
             text: "Select weekdays",
-            isSelected: showSelection,
+            isSelected: !createTask.completeWeek,
             selectedBackground: buttonColor,
           ),
         ),
         Visibility(
-          visible: showSelection || !widget.withShowSelect,
+          visible: !createTask.completeWeek || !withShowSelect,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
@@ -143,7 +92,7 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                         children: [
                           Row(
                             children:
-                                widget.weekDays.map((day) {
+                                weekDays.map((day) {
                                   return Container(
                                     margin: const EdgeInsets.all(paddingButton),
                                     decoration: BoxDecoration(
@@ -153,9 +102,13 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                                       ),
                                     ),
                                     child: CButton(
-                                      onPressed: () => onSelectWeekDay(day),
+                                      onPressed:
+                                          () => createTask.onSelectWeekDay(
+                                            day,
+                                            weekDays,
+                                          ),
                                       backgroundColor:
-                                          selectedWeekDays.contains(day)
+                                          createTask.selectedDates.contains(day)
                                               ? buttonColor
                                               : scaffoldBackgroundColor,
                                       splashColor: buttonSplashColor,
@@ -163,9 +116,11 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                                       paddingHor: 20,
                                       paddingVert: 6,
                                       child: Text(
-                                        weekDays[day.weekday - 1],
+                                        weekDaysText[day.weekday - 1],
                                         style:
-                                            selectedWeekDays.contains(day)
+                                            createTask.selectedDates.contains(
+                                                  day,
+                                                )
                                                 ? buttonSelected
                                                 : buttonSelect,
                                       ),
@@ -177,16 +132,13 @@ class _ENewTaskNormalWeeklyState extends State<ENewTaskNormalWeekly> {
                           Row(
                             children: [
                               EAndSwitchOr(
-                                isOr: isOr,
+                                isOr: createTask.isOr,
                                 onChange: createTask.onChangeIsOr,
                               ),
                               SizedBox(width: 146),
-                              ETimeSpanButton(
-                                isTimeSpan: isTimeSpan,
-                                onPressed:
-                                    () => setState(() {
-                                      isTimeSpan = !isTimeSpan;
-                                    }),
+                              ESwitchTimeSpanButton(
+                                isTimeSpan: createTask.isTimeSpan,
+                                onChange: createTask.onChangeTimeSpan,
                               ),
                             ],
                           ),

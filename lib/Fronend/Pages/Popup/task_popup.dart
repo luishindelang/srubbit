@@ -5,7 +5,7 @@ import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_done_bottons.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
-import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/add_edit_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
@@ -36,7 +36,7 @@ class _TaskPopupState extends State<TaskPopup> {
       builder:
           (context) => ChangeNotifierProvider(
             create: (_) => UiCreateTask(),
-            child: AddTaskPopup(),
+            child: AddEditTaskPopup(),
           ),
     );
   }
@@ -55,10 +55,10 @@ class _TaskPopupState extends State<TaskPopup> {
 
   @override
   void initState() {
+    super.initState();
+    taskDate = widget.taskDate;
     home = context.watch<UiHome>();
     account = context.watch<UiAccount>();
-    taskDate = widget.taskDate;
-    super.initState();
   }
 
   @override

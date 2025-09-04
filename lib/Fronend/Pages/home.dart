@@ -5,56 +5,45 @@ import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
-import 'package:scrubbit/Fronend/Pages/Popup/add_task_popup.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/add_edit_task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/overview.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  bool isLoaded = false;
-
-  void showNewTaskPopup() {
-    showDialog(
-      context: context,
-      builder:
-          (context) => ChangeNotifierProvider(
-            create: (_) => UiCreateTask(),
-            child: AddTaskPopup(),
-          ),
-    );
-  }
-
-  void routeOverview() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Overview()),
-    );
-  }
-
-  void onTaskTap(DsTaskDate taskDate) {
-    showDialog(
-      context: context,
-      builder: (context) => TaskPopup(taskDate: taskDate),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     final home = context.watch<UiHome>();
+
+    void showNewTaskPopup() {
+      showDialog(
+        context: context,
+        builder:
+            (context) => ChangeNotifierProvider(
+              create: (_) => UiCreateTask(),
+              child: AddEditTaskPopup(),
+            ),
+      );
+    }
+
+    void routeOverview() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Overview()),
+      );
+    }
+
+    void onTaskTap(DsTaskDate taskDate) {
+      showDialog(
+        context: context,
+        builder: (context) => TaskPopup(taskDate: taskDate),
+      );
+    }
+
     return EScaffold(
       weekday: weekDaysFull[getNowWithoutTime().weekday - 1],
       date: formatDateDay(getNowWithoutTime(), true, true),

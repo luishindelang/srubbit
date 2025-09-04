@@ -1,4 +1,4 @@
-const weekDays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+const weekDaysText = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 const weekDaysFull = [
   "Montag",
   "Dienstag",

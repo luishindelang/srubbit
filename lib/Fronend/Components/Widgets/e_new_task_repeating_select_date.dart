@@ -67,6 +67,7 @@ class _ENewTaskRepeatingSelectDateState
               currentMonth: DateTime(DateTime.now().year, DateTime.now().month),
               selectedDate: widget.selectedDate,
               onDatePressed: (newDate) {
+                if (newDate.isBefore(getNowWithoutTime())) return;
                 if (startDate != null) {
                   if (newDate.isAfter(startDate!)) {
                     Navigator.pop(context, newDate);
@@ -75,7 +76,7 @@ class _ENewTaskRepeatingSelectDateState
                   Navigator.pop(context, newDate);
                 }
               },
-              weekDays: weekDays,
+              weekDays: weekDaysText,
               monthNames: monthNames,
               backgroundColor: scaffoldBackgroundColor,
               topBackgroundColor: taskListBackgroundColor,

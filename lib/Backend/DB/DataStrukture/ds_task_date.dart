@@ -19,7 +19,7 @@ class DsTaskDate {
     List<DsAccount>? doneBy,
     this.fromDB = false,
   }) {
-    id = id ?? uuid();
+    _id = id ?? uuid();
     _plannedDate = plannedDate;
     _task = task;
     _doneDate = doneDate;

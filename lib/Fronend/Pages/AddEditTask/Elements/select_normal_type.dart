@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_monthly.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/Elements/select_monthly.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_new_task_normal_preset_buttons.dart';
-import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_weekly.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/Elements/select_weekly.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 
-class ENewTaskNormal extends StatefulWidget {
-  const ENewTaskNormal({super.key, required this.type});
+class SelectNormalType extends StatefulWidget {
+  const SelectNormalType({super.key, required this.type});
 
   final int type;
 
   @override
-  State<ENewTaskNormal> createState() => _ENewTaskNormalState();
+  State<SelectNormalType> createState() => _SelectNormalTypeState();
 }
 
-class _ENewTaskNormalState extends State<ENewTaskNormal> {
+class _SelectNormalTypeState extends State<SelectNormalType> {
   late int type;
 
   void onChangeType(int newType) {
@@ -26,11 +26,11 @@ class _ENewTaskNormalState extends State<ENewTaskNormal> {
   Widget showTypeElements() {
     switch (type) {
       case 2:
-        return ENewTaskNormalWeekly(weekDays: getNext7Weekdays());
+        return SelectWeekly(weekDays: getNext7Weekdays(), type: type);
       case 3:
-        return ENewTaskNormalMonthly(withShowSelect: true);
+        return SelectMonthly(withShowSelect: true);
       case 4:
-        return ENewTaskNormalMonthly();
+        return SelectMonthly();
       default:
         return const SizedBox(height: 20);
     }

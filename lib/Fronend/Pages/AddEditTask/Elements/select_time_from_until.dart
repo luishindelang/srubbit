@@ -6,8 +6,8 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 
-class ESelectTimeFromUntil extends StatefulWidget {
-  const ESelectTimeFromUntil({
+class SelectTimeFromUntil extends StatefulWidget {
+  const SelectTimeFromUntil({
     super.key,
     required this.onTimeSelect,
     this.isRepeating,
@@ -23,10 +23,10 @@ class ESelectTimeFromUntil extends StatefulWidget {
   final TimeOfDay? timeUntil;
 
   @override
-  State<ESelectTimeFromUntil> createState() => _ESelectTimeFromUntilState();
+  State<SelectTimeFromUntil> createState() => _SelectTimeFromUntilState();
 }
 
-class _ESelectTimeFromUntilState extends State<ESelectTimeFromUntil> {
+class _SelectTimeFromUntilState extends State<SelectTimeFromUntil> {
   bool isRepeating = false;
   bool showTime = false;
   TimeOfDay? timeFrom;

@@ -67,6 +67,30 @@ List<List<DateTime>> groupByMonth(List<DateTime> dates) {
   return finalList;
 }
 
+List<DateTime> datesUntilEndOfWeek() {
+  final today = getNowWithoutTime();
+  final daysUntilSunday = DateTime.sunday - today.weekday;
+
+  return List.generate(
+    daysUntilSunday + 1,
+    (i) => today.add(Duration(days: i)),
+  );
+}
+
+List<DateTime> datesUntilEndOfMonth() {
+  final today = getNowWithoutTime();
+  final startOfNextMonth =
+      (today.month == 12)
+          ? DateTime(today.year + 1, 1, 1)
+          : DateTime(today.year, today.month + 1, 1);
+
+  final lastDayOfMonth = startOfNextMonth.subtract(const Duration(days: 1));
+
+  final daysUntilEnd = lastDayOfMonth.difference(today).inDays;
+
+  return List.generate(daysUntilEnd + 1, (i) => today.add(Duration(days: i)));
+}
+
 bool isSameDay(DateTime a, DateTime? b) =>
     a.year == b?.year && a.month == b?.month && a.day == b?.day;
 
@@ -92,6 +116,38 @@ bool isInCurrentMonth(DateTime date) {
   final now = getNowWithoutTime();
 
   return date.year == now.year && date.month == now.month;
+}
+
+bool allDaysUntilSundayIncluded(List<DateTime> dates) {
+  if (dates.isEmpty) return false;
+
+  final today = getNowWithoutTime();
+  final daysUntilSunday = DateTime.sunday - today.weekday;
+  final requiredDays =
+      List.generate(
+        daysUntilSunday + 1,
+        (i) => DateTime(today.year, today.month, today.day + i),
+      ).toSet();
+  final givenDays = dates.map((d) => DateTime(d.year, d.month, d.day)).toSet();
+  return requiredDays.every(givenDays.contains);
+}
+
+bool allDaysUntilEndOfMonthIncluded(List<DateTime> dates) {
+  if (dates.isEmpty) return false;
+
+  final today = getNowWithoutTime();
+  final startOfNextMonth =
+      (today.month == 12)
+          ? DateTime(today.year + 1, 1, 1)
+          : DateTime(today.year, today.month + 1, 1);
+  final lastDayOfMonth = startOfNextMonth.subtract(const Duration(days: 1));
+  final requiredDays =
+      List.generate(
+        lastDayOfMonth.difference(today).inDays + 1,
+        (i) => DateTime(today.year, today.month, today.day + i),
+      ).toSet();
+  final givenDays = dates.map((d) => DateTime(d.year, d.month, d.day)).toSet();
+  return requiredDays.every(givenDays.contains);
 }
 
 DateTime getNowWithoutTime({

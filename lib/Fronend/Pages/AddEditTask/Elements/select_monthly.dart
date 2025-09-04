@@ -9,57 +9,9 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
-class ENewTaskNormalMonthly extends StatefulWidget {
-  const ENewTaskNormalMonthly({super.key, this.withShowSelect = false});
-
+class SelectMonthly extends StatelessWidget {
+  const SelectMonthly({super.key, this.withShowSelect = false});
   final bool withShowSelect;
-
-  @override
-  State<ENewTaskNormalMonthly> createState() => _ENewTaskNormalMonthlyState();
-}
-
-class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
-  late UiCreateTask createTask;
-  List<DateTime> selectedDates = [];
-  bool? isTimeSpann;
-  bool? isOr;
-
-  bool showSelection = false;
-
-  void openDatePicker() {
-    showDialog(
-      context: context,
-      builder: (context) => EDatePicker(createTask: createTask),
-    ).then((_) {
-      selectedDates = createTask.selectedDates;
-    });
-  }
-
-  String showSelectedTime() {
-    if (createTask.selectedDates.isNotEmpty &&
-        isOr != null &&
-        isTimeSpann != null) {
-      DateTime from = createTask.selectedDates.first;
-      DateTime to = createTask.selectedDates.last;
-      bool monthFrom = false;
-      bool monthTo = true;
-      if (from.month != to.month) monthFrom = true;
-      bool yearFrom = false;
-      bool yearTo = true;
-      if (from.year != to.year) yearFrom = true;
-
-      if (isTimeSpann!) {
-        return "${formatDateDay(from, monthFrom, yearFrom)} - ${formatDateDay(to, monthTo, yearTo)}";
-      } else {
-        String fromDate = formatDate(from, monthFrom, yearFrom);
-        if (fromDate.isNotEmpty) {
-          fromDate += " - ";
-        }
-        return "$fromDate${formatDate(to, monthTo, yearTo)}";
-      }
-    }
-    return "Select date(s)";
-  }
 
   String allSelectedMonthDates(List<DateTime> dates) {
     String finalData = "";
@@ -71,37 +23,45 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
   }
 
   @override
-  void initState() {
-    createTask = context.watch<UiCreateTask>();
-    isOr = createTask.isOr;
-    showSelection = createTask.selectedDates.isNotEmpty;
-    selectedDates = createTask.selectedDates;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final createTask = context.watch<UiCreateTask>();
+    String showSelectedTime() {
+      if (createTask.selectedDates.isNotEmpty) {
+        DateTime from = createTask.selectedDates.first;
+        DateTime to = createTask.selectedDates.last;
+        bool monthFrom = false;
+        bool monthTo = true;
+        if (from.month != to.month) monthFrom = true;
+        bool yearFrom = false;
+        bool yearTo = true;
+        if (from.year != to.year) yearFrom = true;
+
+        return "${formatDateDay(from, monthFrom, yearFrom)} - ${formatDateDay(to, monthTo, yearTo)}";
+      }
+      return "Select date(s)";
+    }
+
+    void openDatePicker() {
+      showDialog(
+        context: context,
+        builder: (context) => EDatePicker(createTask: createTask),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Visibility(
-          visible: widget.withShowSelect,
+          visible: withShowSelect,
           child: ESelectAccountButton(
-            onPressed: () {
-              showSelection = !showSelection;
-              if (showSelection) {
-                createTask.onSelectedDates(selectedDates);
-              } else {
-                createTask.onSelectedDates([]);
-              }
-            },
+            onPressed: createTask.onSelectCompleteMonth,
             text: "Select specific days",
-            isSelected: showSelection,
+            isSelected: !createTask.completeMonth,
             selectedBackground: buttonColor,
           ),
         ),
         Visibility(
-          visible: showSelection || !widget.withShowSelect,
+          visible: !createTask.completeMonth || !withShowSelect,
           child: InkWell(
             onTap: openDatePicker,
             child: Container(
@@ -146,9 +106,9 @@ class _ENewTaskNormalMonthlyState extends State<ENewTaskNormalMonthly> {
                             ],
                           ),
                           Text(
-                            isOr == null || createTask.selectedDates.isEmpty
+                            createTask.selectedDates.isEmpty
                                 ? ""
-                                : isOr!
+                                : createTask.isOr
                                 ? "ODER"
                                 : "UND",
                             style: selectedCalendarTitle,

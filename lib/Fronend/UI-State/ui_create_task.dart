@@ -3,6 +3,7 @@ import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
+import 'package:scrubbit/Backend/Functions/f_lists.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 
 class UiCreateTask extends ChangeNotifier {
@@ -12,17 +13,20 @@ class UiCreateTask extends ChangeNotifier {
     onEveryDate: false,
     isImportant: false,
   );
-
-  DsTask? _oldTask;
+  bool isEdit = false;
+  bool isTimeSpan = false;
 
   UiCreateTask({DsTask? task}) {
     if (task != null) {
-      _oldTask = task;
-      _newTask = task.copyWith();
+      _newTask = task;
+      isEdit = true;
     }
   }
 
-  bool get isEdit => _oldTask != null;
+  int setType = 0;
+
+  bool completeWeek = true;
+  bool completeMonth = true;
 
   String get name => _newTask.name;
   String get emoji => _newTask.emoji;
@@ -58,7 +62,6 @@ class UiCreateTask extends ChangeNotifier {
 
   DsRepeatingTemplates get _repeatingTemplate =>
       _newTask.repeatingTemplate ??
-      _oldTask?.repeatingTemplate ??
       DsRepeatingTemplates(
         repeatingType: 0,
         repeatingIntervall: 1,
@@ -74,6 +77,10 @@ class UiCreateTask extends ChangeNotifier {
   DateTime? get endDateRepeating => _repeatingTemplate.endDate;
 
   bool get canDoDone => _newTask.name.isNotEmpty && _newTask.emoji.isNotEmpty;
+
+  void onSetType(int newType) {
+    setType = newType;
+  }
 
   void onSelectAccount(List<DsAccount> newSelectedAccounts) {
     _newTask.update(newTaskOwners: newSelectedAccounts);
@@ -104,12 +111,64 @@ class UiCreateTask extends ChangeNotifier {
     _newTask.update(newIsImportant: isImportant);
   }
 
+  void onChangeTimeSpan(bool newIsTimeSpan) {
+    isTimeSpan = newIsTimeSpan;
+  }
+
+  void onSelectCompleteWeek() {
+    completeWeek = !completeWeek;
+    notifyListeners();
+  }
+
+  void onSelectCompleteMonth() {
+    completeMonth = !completeMonth;
+    notifyListeners();
+  }
+
+  void onSelectWeekDay(DateTime day, List<DateTime> weekDays) {
+    if (isTimeSpan) {
+      if (_newTask.taskDates.isEmpty) {
+        _newTask.addTaskDate(DsTaskDate(plannedDate: day, task: _newTask));
+        notifyListeners();
+      } else if (_newTask.taskDates.length == 1) {
+        int to = weekDays.indexOf(day);
+        int from = weekDays.indexOf(selectedDates.last);
+        _newTask.clearTaskDate();
+        onSelectedDates(timeSpann(weekDays, from, to));
+      } else {
+        _newTask.clearTaskDate();
+        _newTask.addTaskDate(DsTaskDate(plannedDate: day, task: _newTask));
+        notifyListeners();
+      }
+    } else {
+      for (var taskDate in _newTask.taskDates) {
+        if (isSameDay(taskDate.plannedDate, day)) {
+          _newTask.removeTaskDate(taskDate);
+          notifyListeners();
+          return;
+        }
+      }
+      _newTask.addTaskDate(DsTaskDate(plannedDate: day, task: _newTask));
+      notifyListeners();
+    }
+  }
+
+  void onSelectedDates(List<DateTime> newDates) {
+    newDates.sort((a, b) => a.compareTo(b));
+    _newTask.clearTaskDate();
+    for (var date in newDates) {
+      _newTask.addTaskDate(DsTaskDate(plannedDate: date, task: _newTask));
+    }
+    notifyListeners();
+  }
+
   void onIsRepeating(bool isRepeating) {
     if (isRepeating) {
       _newTask.update(newRepeatingTemplate: _repeatingTemplate);
     } else {
       _newTask.update(newRepeatingTemplate: null);
     }
+    notifyListeners();
   }
 
   void onChangeIsOr(bool isOr) {
@@ -147,22 +206,10 @@ class UiCreateTask extends ChangeNotifier {
     _repeatingTemplate.update(newRepeatingCount: repeatingCount);
   }
 
-  void onSelectedDates(List<DateTime> newDates) {
-    newDates.sort((a, b) => a.compareTo(b));
-    for (var date in newDates) {
-      _newTask.taskDates.add(
-        DsTaskDate(plannedDate: date, task: _oldTask ?? _newTask),
-      );
-    }
-    notifyListeners();
-  }
-
   DsTask? onDone() {
     if (canDoDone) {
-      if (_oldTask != null) {
-        _oldTask!.updateComplete(_newTask);
-        return _oldTask!;
-      }
+      if (setType == 2 && !isRepeating) onSelectedDates(datesUntilEndOfMonth());
+      if (setType == 3 && !isRepeating) onSelectedDates(datesUntilEndOfMonth());
       return _newTask;
     }
     return null;

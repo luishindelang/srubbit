@@ -1,32 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
-import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_monthly.dart';
-import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_normal_weekly.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/Elements/select_monthly.dart';
+import 'package:scrubbit/Fronend/Pages/AddEditTask/Elements/select_weekly.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_new_task_repeating_after_complete.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating_intervall.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating_select_date.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 
-class ENewTaskRepeating extends StatefulWidget {
-  const ENewTaskRepeating({super.key});
-
-  @override
-  State<ENewTaskRepeating> createState() => _ENewTaskRepeatingState();
-}
-
-class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
-  late UiCreateTask createTask;
-
-  @override
-  void initState() {
-    createTask = context.watch<UiCreateTask>();
-    super.initState();
-  }
+class SelectRepeatingType extends StatelessWidget {
+  const SelectRepeatingType({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final createTask = context.watch<UiCreateTask>();
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: newTaskBodySedePadding,
@@ -69,15 +57,16 @@ class _ENewTaskRepeatingState extends State<ENewTaskRepeating> {
           SizedBox(height: 20),
           Visibility(
             visible: createTask.repeatingType == 1,
-            child: ENewTaskNormalWeekly(
+            child: SelectWeekly(
               withShowSelect: false,
               weekDays: getNext7Weekdays(),
+              type: 0,
             ),
           ),
           Visibility(
             visible:
                 createTask.repeatingType == 2 || createTask.repeatingType == 3,
-            child: ENewTaskNormalMonthly(),
+            child: SelectMonthly(),
           ),
         ],
       ),

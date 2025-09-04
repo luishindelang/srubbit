@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Backend/Functions/f_lists.dart';
+import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_ranged_date_picker_calendar.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_and_switch_or.dart';
@@ -36,6 +37,7 @@ class _EDatePickerState extends State<EDatePicker> {
   }
 
   List<DateTime> onSelectMonthDay(DateTime date) {
+    if (date.isBefore(getNowWithoutTime())) return selectedDates;
     if (!isTimeSpan) {
       if (selectedDates.contains(date)) {
         selectedDates.remove(date);
@@ -90,7 +92,7 @@ class _EDatePickerState extends State<EDatePicker> {
             currentMonth: DateTime(DateTime.now().year, DateTime.now().month),
             selectedDates: selectedDates,
             onDatePressed: onSelectMonthDay,
-            weekDays: weekDays,
+            weekDays: weekDaysText,
             monthNames: monthNames,
             backgroundColor: scaffoldBackgroundColor,
             topBackgroundColor: taskListBackgroundColor,

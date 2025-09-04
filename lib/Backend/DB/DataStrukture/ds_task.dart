@@ -16,7 +16,7 @@ class DsTask {
   late DsRepeatingTemplates? _repeatingTemplate;
   late List<DsAccount>? _taskOwners;
 
-  late List<DsTaskDate> _taskDates;
+  List<DsTaskDate> _taskDates = [];
 
   List<DsTaskDate> addTaskDates = [];
   List<DsTaskDate> removedTaskDates = [];
@@ -34,7 +34,7 @@ class DsTask {
     TimeOfDay? timeUntil,
     DsRepeatingTemplates? repeatingTemplate,
     List<DsAccount>? taskOwners,
-    List<DsTaskDate> taskDates = const [],
+    List<DsTaskDate>? taskDates,
     this.fromDB = false,
   }) {
     _id = id ?? uuid();
@@ -47,7 +47,7 @@ class DsTask {
     _timeUntil = timeUntil;
     _repeatingTemplate = repeatingTemplate;
     _taskOwners = taskOwners;
-    _taskDates = taskDates;
+    if (taskDates != null) _taskDates = taskDates;
   }
 
   String get id => _id;
@@ -64,21 +64,38 @@ class DsTask {
 
   set setTaskDates(List<DsTaskDate> newTaskDates) => _taskDates = newTaskDates;
 
-  void _addTaskDate(DsTaskDate newTaskDate) {
+  void addTaskDate(DsTaskDate newTaskDate) {
     addTaskDates.add(newTaskDate);
+    _taskDates.add(newTaskDate);
   }
 
-  void _removeTaskDate(DsTaskDate taskDate) {
+  void removeTaskDate(DsTaskDate taskDate) {
+    bool removedNew = addTaskDates.remove(taskDate);
     _taskDates.remove(taskDate);
-    removedTaskDates.add(taskDate);
+    if (!removedNew) {
+      removedTaskDates.add(taskDate);
+    }
   }
 
-  void _updateTaskDate(List<DsTaskDate> newTaskDates) {
+  void clearTaskDate() {
+    removedTaskDates.addAll(_taskDates);
+    addTaskDates.clear();
+    _taskDates.clear();
+  }
+
+  void resetTaskDate() {
+    addTaskDates.clear();
+    _taskDates.addAll(removedTaskDates);
+    _taskDates.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
+    removedTaskDates.clear();
+  }
+
+  void updateTaskDate(List<DsTaskDate> newTaskDates) {
     for (var newTaskDate in newTaskDates) {
-      if (!_taskDates.contains(newTaskDate)) _addTaskDate(newTaskDate);
+      if (!_taskDates.contains(newTaskDate)) addTaskDate(newTaskDate);
     }
     for (var oldTaskDate in _taskDates) {
-      if (!newTaskDates.contains(oldTaskDate)) _removeTaskDate(oldTaskDate);
+      if (!newTaskDates.contains(oldTaskDate)) removeTaskDate(oldTaskDate);
     }
   }
 
@@ -104,7 +121,7 @@ class DsTask {
     _timeUntil = newTimeUntil ?? _timeUntil;
     _repeatingTemplate = newRepeatingTemplate ?? _repeatingTemplate;
     _taskOwners = newTaskOwners ?? _taskOwners;
-    _updateTaskDate(newTaskDates ?? _taskDates);
+    updateTaskDate(newTaskDates ?? _taskDates);
     fromDB = false;
   }
 
@@ -119,7 +136,7 @@ class DsTask {
       _timeUntil = newTask._timeUntil;
       _repeatingTemplate = newTask._repeatingTemplate;
       _taskOwners = newTask._taskOwners;
-      _updateTaskDate(newTask._taskDates);
+      updateTaskDate(newTask._taskDates);
       fromDB = false;
     }
   }

@@ -7,8 +7,8 @@ import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 
-class EEmojiNameInput extends StatefulWidget {
-  const EEmojiNameInput({
+class EmojiNameInput extends StatefulWidget {
+  const EmojiNameInput({
     super.key,
     required this.isImportant,
     required this.onChangeName,
@@ -26,10 +26,10 @@ class EEmojiNameInput extends StatefulWidget {
   final String? emojy;
 
   @override
-  State<EEmojiNameInput> createState() => _EEmojiNameInputState();
+  State<EmojiNameInput> createState() => _EmojiNameInputState();
 }
 
-class _EEmojiNameInputState extends State<EEmojiNameInput> {
+class _EmojiNameInputState extends State<EmojiNameInput> {
   String emoji = '';
   final _nameController = TextEditingController();
   final _emojiController = TextEditingController();
@@ -38,10 +38,10 @@ class _EEmojiNameInputState extends State<EEmojiNameInput> {
 
   @override
   void initState() {
+    super.initState();
     isImportant = widget.isImportant;
     if (widget.name != null) _nameController.text = widget.name!;
     if (widget.emojy != null) emoji = widget.emojy!;
-    super.initState();
   }
 
   @override
