@@ -20,6 +20,9 @@ class UiCreateTask extends ChangeNotifier {
     if (task != null) {
       _newTask = task;
       isEdit = true;
+      isRepeating = task.repeatingTemplate != null;
+    } else {
+      isRepeating = false;
     }
   }
 
@@ -28,10 +31,11 @@ class UiCreateTask extends ChangeNotifier {
   bool completeWeek = true;
   bool completeMonth = true;
 
+  late bool isRepeating;
+
   String get name => _newTask.name;
   String get emoji => _newTask.emoji;
   bool get isImportant => _newTask.isImportant;
-  bool get isRepeating => _newTask.repeatingTemplate != null;
 
   List<DsAccount> get selecedAccounts => _newTask.taskOwners ?? [];
 
@@ -60,14 +64,15 @@ class UiCreateTask extends ChangeNotifier {
 
   bool get isOr => !_newTask.onEveryDate;
 
+  final _newRepeatingTemplate = DsRepeatingTemplates(
+    repeatingType: 0,
+    repeatingIntervall: 1,
+    repeatAfterDone: false,
+    startDate: getNowWithoutTime(),
+  );
+
   DsRepeatingTemplates get _repeatingTemplate =>
-      _newTask.repeatingTemplate ??
-      DsRepeatingTemplates(
-        repeatingType: 0,
-        repeatingIntervall: 1,
-        repeatAfterDone: false,
-        startDate: getNowWithoutTime(),
-      );
+      _newTask.repeatingTemplate ?? _newRepeatingTemplate;
 
   int get repeatingType => _repeatingTemplate.repeatingType;
   int get repeatingIntervall => _repeatingTemplate.repeatingIntervall;
@@ -162,12 +167,13 @@ class UiCreateTask extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onIsRepeating(bool isRepeating) {
-    if (isRepeating) {
-      _newTask.update(newRepeatingTemplate: _repeatingTemplate);
-    } else {
-      _newTask.update(newRepeatingTemplate: null);
-    }
+  void onIsRepeating(bool newIsRepeating) {
+    isRepeating = newIsRepeating;
+    // if (isRepeating) {
+    //   _newTask.update(newRepeatingTemplate: _repeatingTemplate);
+    // } else {
+    //   _newTask.update(newRepeatingTemplate: null);
+    // }
     notifyListeners();
   }
 
@@ -208,6 +214,11 @@ class UiCreateTask extends ChangeNotifier {
 
   DsTask? onDone() {
     if (canDoDone) {
+      if (isRepeating) {
+        _newTask.update(newRepeatingTemplate: _repeatingTemplate);
+      } else {
+        _newTask.update(newRepeatingTemplate: null);
+      }
       if (setType == 2 && !isRepeating) onSelectedDates(datesUntilEndOfMonth());
       if (setType == 3 && !isRepeating) onSelectedDates(datesUntilEndOfMonth());
       return _newTask;
