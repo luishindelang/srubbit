@@ -12,6 +12,12 @@ const scaffoldAppBarTitleNormal = TextStyle(
   color: textNegativeColor,
 );
 
+const scaffoldAppBarTitleMissed = TextStyle(
+  fontSize: 32,
+  fontWeight: FontWeight.w500,
+  color: buttonColor,
+);
+
 const taskBoxTitle = TextStyle(
   fontSize: 32,
   fontWeight: FontWeight.w500,

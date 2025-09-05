@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_action_floating_button.dart';
+import 'package:scrubbit/Fronend/Components/Elements/e_missed_task_button.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
@@ -15,6 +17,7 @@ class EScaffold extends StatelessWidget {
     required this.settingsIcon,
     required this.body,
     this.onAddPressed,
+    this.missedTasks,
   });
 
   final String weekday;
@@ -23,6 +26,7 @@ class EScaffold extends StatelessWidget {
   final VoidCallback onSettingsPressed;
   final IconData settingsIcon;
   final Widget body;
+  final List<DsTaskDate>? missedTasks;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +52,13 @@ class EScaffold extends StatelessWidget {
                   paddingHor: 1,
                   paddingVert: 1,
                   child: Icon(settingsIcon, size: 38, color: buttonColor),
+                ),
+                Visibility(
+                  visible: missedTasks?.isNotEmpty ?? false,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: EMissedTaskButton(missedTasks: missedTasks ?? []),
+                  ),
                 ),
               ],
             ),

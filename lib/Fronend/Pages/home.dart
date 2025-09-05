@@ -51,6 +51,7 @@ class Home extends StatelessWidget {
       onAddPressed: showNewTaskPopup,
       onSettingsPressed: routeOverview,
       settingsIcon: Icons.explore_rounded,
+      missedTasks: home.missedTasks,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
