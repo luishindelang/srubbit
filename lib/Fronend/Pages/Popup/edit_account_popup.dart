@@ -77,13 +77,37 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("User Settings", style: scaffoldAppBarTitleMissed),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: buttonBackgroundColor,
+                        borderRadius: BorderRadius.circular(
+                          borderRadiusButtons,
+                        ),
+                        boxShadow: [shadowTaskElement],
+                      ),
+                      child: InkWell(
+                        onTap: () => add(),
+                        borderRadius: BorderRadius.circular(
+                          borderRadiusButtons,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 5,
+                          ),
+                          child: Text("+ Add user", style: editAccount),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 15),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -105,25 +129,6 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              decoration: BoxDecoration(
-                color: buttonBackgroundColor,
-                borderRadius: BorderRadius.circular(borderRadiusButtons),
-                boxShadow: [shadowTaskElement],
-              ),
-              child: InkWell(
-                onTap: () => add(),
-                borderRadius: BorderRadius.circular(borderRadiusButtons),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 5,
-                  ),
-                  child: Text("+ Add user", style: editAccount),
-                ),
-              ),
-            ),
             SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -132,9 +137,6 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
                 children: [
                   InkWell(
                     onTap: () {
-                      print("add: $accountsAdd");
-                      print("update: $accountsUpdate");
-                      print("remove: $accountsRemove");
                       account.finishEditAccounts(
                         accountsAdd,
                         accountsUpdate,
