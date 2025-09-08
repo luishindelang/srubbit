@@ -24,11 +24,7 @@ void main() {
   });
   group("DAO Account", () {
     test('insert and get', () async {
-      final account = DsAccount(
-        name: 'Test',
-        color: const Color(0xFFFF0000),
-        icon: Icons.add,
-      );
+      final account = DsAccount(name: 'Test', color: const Color(0xFFFF0000));
 
       await dao.insert(account);
       final fetched = await dao.get(account.id);
@@ -38,11 +34,7 @@ void main() {
     });
 
     test('update existing account', () async {
-      final account = DsAccount(
-        name: 'Test',
-        color: const Color(0xFF00FF00),
-        icon: Icons.add,
-      );
+      final account = DsAccount(name: 'Test', color: const Color(0xFF00FF00));
       await dao.insert(account);
 
       final updated = account.copyWith(newName: 'Updated');
@@ -53,16 +45,8 @@ void main() {
     });
 
     test('getAll returns all accounts', () async {
-      final account1 = DsAccount(
-        name: 'A',
-        color: const Color(0xFF000000),
-        icon: Icons.add,
-      );
-      final account2 = DsAccount(
-        name: 'B',
-        color: const Color(0xFFFFFFFF),
-        icon: Icons.add,
-      );
+      final account1 = DsAccount(name: 'A', color: const Color(0xFF000000));
+      final account2 = DsAccount(name: 'B', color: const Color(0xFFFFFFFF));
       await dao.insert(account1);
       await dao.insert(account2);
 
@@ -71,11 +55,7 @@ void main() {
     });
 
     test('delete removes account', () async {
-      final account = DsAccount(
-        name: 'A',
-        color: const Color(0xFF000000),
-        icon: Icons.add,
-      );
+      final account = DsAccount(name: 'A', color: const Color(0xFF000000));
       await dao.insert(account);
       await dao.delete(account.id);
 

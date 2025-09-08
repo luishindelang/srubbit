@@ -9,6 +9,7 @@ import 'package:scrubbit/Fronend/Pages/AddEditTask/add_edit_task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/overview.dart';
 import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
@@ -19,6 +20,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final home = context.watch<UiHome>();
     home.loadData();
+    final accounts = context.read<UiAccount>();
+    accounts.loadAccounts();
 
     void showNewTaskPopup() {
       showDialog(

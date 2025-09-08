@@ -22,16 +22,17 @@ class _EScoreOverviewState extends State<EScoreOverview> {
     });
   }
 
-  void onEditAccouts() {
-    showDialog<List<DsAccount>>(
-      context: context,
-      builder: (context) => EditAccountPopup(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final account = context.watch<UiAccount>();
+
+    void onEditAccouts() {
+      showDialog(
+        context: context,
+        builder: (context) => EditAccountPopup(accounts: account.accounts),
+      );
+    }
+
     return ETaskBoxTitle(
       flex: 2,
       title: "Score Overview",

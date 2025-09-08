@@ -8,11 +8,7 @@ class MappingAccount {
       id: rawData[TAccount.id] as String,
       name: rawData[TAccount.name] as String,
       color: Color(rawData[TAccount.color] as int),
-      icon: IconData(
-        rawData[TAccount.iconCode] as int,
-        fontFamily: rawData[TAccount.iconFamily] as String?,
-      ),
-      score: rawData[TAccount.score] as int,
+
       fromDB: true,
     );
   }
@@ -30,9 +26,6 @@ class MappingAccount {
       TAccount.id: account.id,
       TAccount.name: account.name,
       TAccount.color: account.color.toARGB32(),
-      TAccount.iconCode: account.icon.codePoint,
-      TAccount.iconFamily: account.icon.fontFamily,
-      TAccount.score: account.score,
     };
   }
 }

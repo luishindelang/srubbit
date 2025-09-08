@@ -17,19 +17,21 @@ const buttonColor = Color.fromARGB(255, 80, 140, 163);
 const buttonBackgroundColor = Color.fromARGB(255, 246, 246, 246);
 const buttonSplashColor = Color.fromARGB(255, 167, 197, 209);
 
+const boxBorderColor = Color.fromARGB(255, 150, 150, 150);
+
 const importantTaskColor = Color.fromARGB(255, 249, 248, 113);
 
 const userColors = [
-  Color.fromARGB(255, 255, 195, 66),
-  Color.fromARGB(255, 74, 192, 135),
-  Color.fromARGB(255, 37, 150, 199),
-  Color.fromARGB(255, 148, 130, 184),
-  Color.fromARGB(255, 170, 139, 133),
-  Color.fromARGB(255, 252, 155, 170),
-  Color.fromARGB(255, 171, 244, 123),
-  Color.fromARGB(255, 159, 219, 244),
+  Color.fromARGB(255, 143, 118, 184),
   Color.fromARGB(255, 222, 188, 223),
+  Color.fromARGB(255, 252, 155, 170),
+  Color.fromARGB(255, 255, 195, 66),
+  Color.fromARGB(255, 171, 244, 123),
+  Color.fromARGB(255, 74, 192, 135),
+  Color.fromARGB(255, 170, 139, 133),
   Color.fromARGB(255, 151, 175, 185),
+  Color.fromARGB(255, 159, 219, 244),
+  Color.fromARGB(255, 37, 150, 189),
 ];
 
 const shadowColor = Color.fromARGB(35, 0, 0, 0);

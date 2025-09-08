@@ -95,6 +95,7 @@ class UiHome extends ChangeNotifier {
   void loadData() async {
     if (!_isLoaded) {
       final dbService = await DatabaseService.init();
+      // await dbService.resetDB();
       final data = await dbService.daoTasks.getAll();
       for (var task in data) {
         _putTaskInRightList(task);

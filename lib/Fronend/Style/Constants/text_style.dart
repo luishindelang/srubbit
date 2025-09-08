@@ -75,6 +75,12 @@ const inputText = TextStyle(
   color: textColor,
 );
 
+const editAccount = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+  color: textColor,
+);
+
 const buttonSelect = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w400,
