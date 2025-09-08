@@ -62,91 +62,94 @@ class SelectMonthly extends StatelessWidget {
         ),
         Visibility(
           visible: !createTask.completeMonth || !withShowSelect,
-          child: InkWell(
-            onTap: openDatePicker,
-            child: Container(
-              margin: EdgeInsets.only(top: 10.0),
-              width: createTask.selectedDates.isEmpty ? 180 : 660,
-              decoration: BoxDecoration(
-                color: taskListBackgroundColor,
-                borderRadius: BorderRadius.circular(borderRadiusBox),
-                border: Border.all(width: 1.5, color: buttonColor),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(borderRadiusBox),
-                        topRight: Radius.circular(borderRadiusBox),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: InkWell(
+              onTap: openDatePicker,
+              child: Container(
+                margin: EdgeInsets.only(top: 10.0),
+                width: createTask.selectedDates.isEmpty ? 180 : 660,
+                decoration: BoxDecoration(
+                  color: taskListBackgroundColor,
+                  borderRadius: BorderRadius.circular(borderRadiusBox),
+                  border: Border.all(width: 1.5, color: buttonColor),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(borderRadiusBox),
+                          topRight: Radius.circular(borderRadiusBox),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5.0,
+                          horizontal: 10.0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              spacing: 5.0,
+                              children: [
+                                Icon(
+                                  Icons.calendar_month_rounded,
+                                  color: buttonColor,
+                                  size: 20,
+                                ),
+                                Text(
+                                  showSelectedTime(),
+                                  style: selectedCalendarTitle,
+                                ),
+                              ],
+                            ),
+                            Text(
+                              createTask.selectedDates.isEmpty
+                                  ? ""
+                                  : createTask.isOr
+                                  ? "ODER"
+                                  : "UND",
+                              style: selectedCalendarTitle,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    child: Padding(
+                    Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 5.0,
                         horizontal: 10.0,
+                        vertical: 15,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            spacing: 5.0,
-                            children: [
-                              Icon(
-                                Icons.calendar_month_rounded,
-                                color: buttonColor,
-                                size: 20,
-                              ),
-                              Text(
-                                showSelectedTime(),
-                                style: selectedCalendarTitle,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            createTask.selectedDates.isEmpty
-                                ? ""
-                                : createTask.isOr
-                                ? "ODER"
-                                : "UND",
-                            style: selectedCalendarTitle,
-                          ),
-                        ],
+                      child: Column(
+                        spacing: 5,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:
+                            groupByMonth(createTask.selectedDates).map((dates) {
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      allSelectedMonthDates(dates),
+                                      style: selectedCalendarDays,
+                                    ),
+                                    SizedBox(width: 5),
+                                    Text(
+                                      monthNames[dates.first.month - 1],
+                                      style: selectedCalendarMonths,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 15,
-                    ),
-                    child: Column(
-                      spacing: 5,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:
-                          groupByMonth(createTask.selectedDates).map((dates) {
-                            return SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    allSelectedMonthDates(dates),
-                                    style: selectedCalendarDays,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    monthNames[dates.first.month - 1],
-                                    style: selectedCalendarMonths,
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
