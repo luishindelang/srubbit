@@ -11,6 +11,7 @@ class UiHome extends ChangeNotifier {
   final _weekTasks = <DsTaskDate>[];
   final _monthTasks = <DsTaskDate>[];
   final _missedTasks = <DsTaskDate>[];
+  final _doneTasks = <DsTaskDate>[];
   final _repeatingTasks = <DsTask>[];
 
   bool _isLoaded = false;
@@ -26,6 +27,21 @@ class UiHome extends ChangeNotifier {
   UnmodifiableListView<DsTask> get repeatingTasks =>
       UnmodifiableListView(_repeatingTasks);
 
+  UnmodifiableListView<DsTaskDate> doneTask(List<DsAccount> accounts) {
+    final list = <DsTaskDate>[];
+    if (accounts.isEmpty) return UnmodifiableListView(_doneTasks);
+    for (var doneTaskDate in _doneTasks) {
+      if (doneTaskDate.doneBy != null) {
+        for (var doneBy in doneTaskDate.doneBy!) {
+          for (var selectedAccount in accounts) {
+            if (doneBy.id == selectedAccount.id) list.add(doneTaskDate);
+          }
+        }
+      }
+    }
+    return UnmodifiableListView(list);
+  }
+
   void _putTaskInRightList(DsTask task) {
     if (task.repeatingTemplate != null) {
       _repeatingTasks.add(task);
@@ -33,7 +49,10 @@ class UiHome extends ChangeNotifier {
     if (task.onEveryDate) {
       for (var taskDate in task.taskDates) {
         final date = taskDate.plannedDate;
-        if (taskDate.doneDate != null) break;
+        if (taskDate.doneDate != null) {
+          _doneTasks.add(taskDate);
+          continue;
+        }
         if (date.isBefore(getNowWithoutTime())) {
           _missedTasks.add(taskDate);
         } else if (isToday(date)) {
@@ -58,6 +77,7 @@ class UiHome extends ChangeNotifier {
       for (var taskDate in task.taskDates) {
         final date = taskDate.plannedDate;
         if (taskDate.doneDate != null) {
+          _doneTasks.add(taskDate);
           break;
         }
         if (date.isBefore(getNowWithoutTime())) {
@@ -105,6 +125,17 @@ class UiHome extends ChangeNotifier {
     }
   }
 
+  void reloadData() {
+    _isLoaded = false;
+    _todayTasks.clear();
+    _weekTasks.clear();
+    _monthTasks.clear();
+    _missedTasks.clear();
+    _doneTasks.clear();
+    _repeatingTasks.clear();
+    loadData();
+  }
+
   void addTask(DsTask task) async {
     final dbService = await DatabaseService.init();
     await dbService.daoTasks.insert(task);
@@ -130,6 +161,18 @@ class UiHome extends ChangeNotifier {
       for (var oneTaskDate in taskDate.task.taskDates) {
         oneTaskDate.update(newDoneDate: now, newDoneBy: accounts);
         await dbService.daoTaskDates.update(oneTaskDate);
+      }
+    }
+    if (accounts.isEmpty) {
+      final allAccounts = await dbService.daoAccounts.getAll();
+      for (var account in allAccounts) {
+        account.update(newScore: account.score + 1);
+        dbService.daoAccounts.update(account);
+      }
+    } else {
+      for (var account in accounts) {
+        account.update(newScore: account.score + 1);
+        dbService.daoAccounts.update(account);
       }
     }
     _removeFromList(taskDate.task.id);

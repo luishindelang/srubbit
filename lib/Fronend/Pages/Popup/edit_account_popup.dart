@@ -8,6 +8,7 @@ import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
+import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
 class EditAccountPopup extends StatefulWidget {
   const EditAccountPopup({super.key, this.accounts});
@@ -55,6 +56,7 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
   @override
   Widget build(BuildContext context) {
     final account = context.read<UiAccount>();
+    final home = context.read<UiHome>();
     return Dialog(
       insetPadding: EdgeInsets.all(40),
       shape: RoundedRectangleBorder(
@@ -141,6 +143,7 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
                         accountsAdd,
                         accountsUpdate,
                         accountsRemove,
+                        home,
                       );
                       Navigator.pop(context);
                     },

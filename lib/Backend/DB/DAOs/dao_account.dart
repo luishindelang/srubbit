@@ -29,6 +29,7 @@ class DaoAccount extends MappingAccount {
   Future<List<DsAccount>> getAll() async {
     final List<Map<String, dynamic>> rawData = await db.query(
       TAccount.tableName,
+      orderBy: "${TAccount.score} DESC",
     );
     return fromList(rawData);
   }
@@ -49,7 +50,7 @@ class DaoAccount extends MappingAccount {
     final rawData = await db.rawQuery("""
     SELECT * FROM ${TAccount.tableName} a
     LEFT JOIN ${TTaskDoneByAccount.tableName} t
-    ON a.${TAccount.id} = t.${TTaskDoneByAccount.accountId}
+    ON a.${TAccount.id} = t.${TTaskDoneByAccount.accountId};
     WHERE t.${TTaskDoneByAccount.taskDateId} = '$taskId';
     """);
     return fromList(rawData);

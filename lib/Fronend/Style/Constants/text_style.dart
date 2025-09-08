@@ -81,6 +81,24 @@ const editAccount = TextStyle(
   color: textColor,
 );
 
+const scaleOverview = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w500,
+  color: textTitleColor,
+);
+
+const scoreBarName = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+  color: textTitleColor,
+);
+
+const taskHistory = TextStyle(
+  fontSize: 24,
+  fontWeight: FontWeight.w400,
+  color: textTitleColor,
+);
+
 const buttonSelect = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w400,
