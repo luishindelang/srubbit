@@ -33,7 +33,11 @@ class EMissedTaskButton extends StatelessWidget {
               leadingDistribution: TextLeadingDistribution.proportional,
             ),
           ),
-          Icon(Icons.notifications_none_rounded, color: buttonColor, size: 35),
+          Icon(
+            Icons.notifications_none_rounded,
+            color: textTitleColor,
+            size: 35,
+          ),
         ],
       ),
     );
