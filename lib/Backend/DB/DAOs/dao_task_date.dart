@@ -2,6 +2,7 @@ import 'package:scrubbit/Backend/DB/DAOs/dao_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_date.dart';
+import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_done_by_account.dart';
 import 'package:sqflite/sqflite.dart';
 import 'Mappings/mapping_task_date.dart';
 
@@ -24,6 +25,20 @@ class DaoTaskDate extends MappingTaskDate {
       where: '${TTaskDate.id} = ?',
       whereArgs: [taskDate.id],
     );
+    if (taskDate.doneBy != null) {
+      for (var account in taskDate.doneBy!) {
+        await db.delete(
+          TTaskDoneByAccount.tableName,
+          where:
+              "${TTaskDoneByAccount.taskDateId} = ? AND ${TTaskDoneByAccount.accountId} = ?",
+          whereArgs: [taskDate.task.id, account.id],
+        );
+        await db.insert(TTaskDoneByAccount.tableName, {
+          TTaskDoneByAccount.taskDateId: taskDate.task.id,
+          TTaskDoneByAccount.accountId: account.id,
+        });
+      }
+    }
   }
 
   Future<List<DsTaskDate>> getByTask(DsTask task) async {

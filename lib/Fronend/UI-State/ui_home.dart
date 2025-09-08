@@ -119,7 +119,20 @@ class UiHome extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onTaskDateDone(DsTaskDate taskDate, List<DsAccount> accounts) {
+  void onTaskDateDone(DsTaskDate taskDate, List<DsAccount> accounts) async {
+    final now = DateTime.now();
+    final dbService = await DatabaseService.init();
+    if (taskDate.task.onEveryDate) {
+      taskDate.update(newDoneDate: now, newDoneBy: accounts);
+      await dbService.daoTaskDates.update(taskDate);
+    } else {
+      for (var oneTaskDate in taskDate.task.taskDates) {
+        oneTaskDate.update(newDoneDate: now, newDoneBy: accounts);
+        await dbService.daoTaskDates.update(oneTaskDate);
+      }
+    }
+    _removeFromList(taskDate.task.id);
+    _putTaskInRightList(taskDate.task);
     notifyListeners();
   }
 
@@ -128,7 +141,7 @@ class UiHome extends ChangeNotifier {
       newPlannedDate: taskDate.plannedDate.add(Duration(days: 1)),
     );
     final dbService = await DatabaseService.init();
-    dbService.daoTaskDates.update(taskDate);
+    await dbService.daoTaskDates.update(taskDate);
     _removeFromList(taskDate.task.id);
     _putTaskInRightList(taskDate.task);
     notifyListeners();
