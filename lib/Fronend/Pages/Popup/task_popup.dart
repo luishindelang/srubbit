@@ -51,7 +51,7 @@ class _TaskPopupState extends State<TaskPopup> {
     }
 
     void onNext() {
-      home.onTaskMoveToNextDay(widget.taskDate.task);
+      home.onTaskMoveToNextDay(widget.taskDate);
       Navigator.pop(context);
     }
 

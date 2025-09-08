@@ -81,6 +81,7 @@ class UiHome extends ChangeNotifier {
     _todayTasks.removeWhere((taskDate) => taskDate.task.id == id);
     _weekTasks.removeWhere((taskDate) => taskDate.task.id == id);
     _monthTasks.removeWhere((taskDate) => taskDate.task.id == id);
+    _missedTasks.removeWhere((taskDate) => taskDate.task.id == id);
     _repeatingTasks.removeWhere((task) => task.id == id);
   }
 
@@ -122,12 +123,14 @@ class UiHome extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onTaskMoveToNextDay(DsTask task) async {
-    task.update(newOffset: task.offset + 1);
+  void onTaskMoveToNextDay(DsTaskDate taskDate) async {
+    taskDate.update(
+      newPlannedDate: taskDate.plannedDate.add(Duration(days: 1)),
+    );
     final dbService = await DatabaseService.init();
-    dbService.daoTasks.update(task);
-    _removeFromList(task.id);
-    _putTaskInRightList(task);
+    dbService.daoTaskDates.update(taskDate);
+    _removeFromList(taskDate.task.id);
+    _putTaskInRightList(taskDate.task);
     notifyListeners();
   }
 }
