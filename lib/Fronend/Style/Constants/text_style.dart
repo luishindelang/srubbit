@@ -18,6 +18,18 @@ const scaffoldAppBarTitleMissed = TextStyle(
   color: textTitleColor,
 );
 
+const taskDateTimeBold = TextStyle(
+  fontSize: 22,
+  fontWeight: FontWeight.w600,
+  color: textTitleColor,
+);
+
+const taskDateTimeNormal = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w500,
+  color: textTitleColor,
+);
+
 const taskBoxTitle = TextStyle(
   fontSize: 32,
   fontWeight: FontWeight.w500,

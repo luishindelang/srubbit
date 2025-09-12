@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
+import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_done_bottons.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
 import 'package:scrubbit/Fronend/Pages/AddEditTask/add_edit_task_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
+import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/de.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
@@ -86,7 +89,20 @@ class _TaskPopupState extends State<TaskPopup> {
                           }),
                       selectAll: selectAll,
                     ),
-                    SizedBox(height: 70),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 3),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "${weekDaysFull[widget.taskDate.plannedDate.weekday - 1]}, ${formatDateDay(widget.taskDate.plannedDate, true, true)}",
+                            style: taskDateTimeNormal,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 30),
                     EDoneBottons(
                       canBeDone: canDoDone,
                       onEdit: onEdit,
