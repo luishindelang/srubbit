@@ -19,9 +19,9 @@ class EScoreBarAccount extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(account.name, style: scoreBarName),
+          Text("${account.name} (${account.score})", style: scoreBarName),
           Container(
-            width: 60,
+            width: 70,
             height: height,
             decoration: BoxDecoration(
               color: account.color,
