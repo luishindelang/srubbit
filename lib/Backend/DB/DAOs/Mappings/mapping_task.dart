@@ -18,7 +18,7 @@ class MappingTask {
         repeatingTemplateId != null
             ? await daoRepeatingTemplates.get(repeatingTemplateId)
             : null;
-    final taskOwners = await daoAccount.getOwners(rawData[TTask.id]);
+    final taskOwners = await daoAccount.getOwners(rawData[TTask.id] as String?);
     final task = DsTask(
       id: rawData[TTask.id] as String,
       name: rawData[TTask.name] as String,

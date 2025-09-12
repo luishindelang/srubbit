@@ -9,7 +9,7 @@ class MappingTaskDate {
   MappingTaskDate(this.daoAccount);
 
   Future<DsTaskDate> fromMap(Map<String, dynamic> rawData, DsTask task) async {
-    final doneBy = await daoAccount.getDoneBy(rawData[TTaskDate.id]);
+    final doneBy = await daoAccount.getDoneBy(rawData[TTaskDate.id] as String?);
     return DsTaskDate(
       id: rawData[TTaskDate.id],
       plannedDate: DateTime.fromMillisecondsSinceEpoch(
