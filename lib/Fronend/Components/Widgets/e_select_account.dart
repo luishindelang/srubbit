@@ -17,7 +17,7 @@ class ESelectAccount extends StatefulWidget {
     required this.selectAll,
     this.reverse = false,
     this.withShadow = false,
-    this.neverUnselect = false,
+    this.neverUnselect = true,
   });
 
   final List<DsAccount> accounts;
@@ -40,8 +40,8 @@ class _ESelectAccountState extends State<ESelectAccount> {
 
   void onAccountSelect(DsAccount account) {
     setState(() {
-      if (selectedAccounts.contains(account)) {
-        selectedAccounts.remove(account);
+      if (selectedAccounts.any((a) => a.id == account.id)) {
+        selectedAccounts.removeWhere((a) => a.id == account.id);
       } else {
         selectedAccounts.add(account);
       }
@@ -101,7 +101,7 @@ class _ESelectAccountState extends State<ESelectAccount> {
                   return ESelectAccountButton(
                     onPressed: () => onAccountSelect(account),
                     text: account.name,
-                    isSelected: selectedAccounts.contains(account),
+                    isSelected: selectedAccounts.any((a) => a.id == account.id),
                     selectedBackground: account.color,
                     withShadow: widget.withShadow,
                   );

@@ -45,6 +45,7 @@ class ETaskElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(task.taskOwners);
     return Container(
       padding: EdgeInsets.all(paddingTaskElement),
       decoration: BoxDecoration(

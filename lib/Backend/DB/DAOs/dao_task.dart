@@ -20,6 +20,14 @@ class DaoTask extends MappingTask {
       await toMap(task),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    if (task.taskOwners != null) {
+      for (var owners in task.taskOwners!) {
+        await db.insert(TTaskOwner.tableName, {
+          TTaskOwner.accountId: owners.id,
+          TTaskOwner.taskId: task.id,
+        });
+      }
+    }
     if (task.repeatingTemplate != null) {
       await daoRepeatingTemplates.insert(task.repeatingTemplate!);
     }
@@ -46,6 +54,20 @@ class DaoTask extends MappingTask {
     }
     for (var taskDate in task.removedTaskDates) {
       await daoTaskDate.delete(taskDate.id);
+    }
+
+    if (task.taskOwners != null) {
+      await db.delete(
+        TTaskOwner.tableName,
+        where: "${TTaskOwner.taskId} = ?",
+        whereArgs: [task.id],
+      );
+      for (var owners in task.taskOwners!) {
+        await db.insert(TTaskOwner.tableName, {
+          TTaskOwner.accountId: owners.id,
+          TTaskOwner.taskId: task.id,
+        });
+      }
     }
 
     task.savedToDb();

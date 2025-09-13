@@ -84,7 +84,7 @@ class ENewTaskBottomButton extends StatelessWidget {
                         home.addTask(newTask);
                       }
                     }
-                    Navigator.pop(context);
+                    Navigator.popUntil(context, (route) => route.isFirst);
                   }
                 },
                 borderRadius: BorderRadius.circular(100),
