@@ -31,10 +31,10 @@ class DaoTaskDate extends MappingTaskDate {
           TTaskDoneByAccount.tableName,
           where:
               "${TTaskDoneByAccount.taskDateId} = ? AND ${TTaskDoneByAccount.accountId} = ?",
-          whereArgs: [taskDate.task.id, account.id],
+          whereArgs: [taskDate.id, account.id],
         );
         await db.insert(TTaskDoneByAccount.tableName, {
-          TTaskDoneByAccount.taskDateId: taskDate.task.id,
+          TTaskDoneByAccount.taskDateId: taskDate.id,
           TTaskDoneByAccount.accountId: account.id,
         });
       }

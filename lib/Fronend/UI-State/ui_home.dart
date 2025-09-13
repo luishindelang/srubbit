@@ -28,18 +28,25 @@ class UiHome extends ChangeNotifier {
       UnmodifiableListView(_repeatingTasks);
 
   UnmodifiableListView<DsTaskDate> doneTask(List<DsAccount> accounts) {
-    final list = <DsTaskDate>[];
     if (accounts.isEmpty) return UnmodifiableListView(_doneTasks);
-    for (var doneTaskDate in _doneTasks) {
-      if (doneTaskDate.doneBy != null) {
-        for (var doneBy in doneTaskDate.doneBy!) {
-          for (var selectedAccount in accounts) {
-            if (doneBy.id == selectedAccount.id) list.add(doneTaskDate);
-          }
-        }
+
+    final selectedIds = accounts.map((a) => a.id).toList();
+    final seenTaskIds = <String>{};
+    final result = <DsTaskDate>[];
+
+    for (final taskDate in _doneTasks) {
+      final taskId = taskDate.task.id;
+      if (seenTaskIds.contains(taskId)) continue;
+
+      final matches =
+          (taskDate.doneBy?.any((db) => selectedIds.contains(db.id))) ?? false;
+      if (matches) {
+        result.add(taskDate);
+        seenTaskIds.add(taskId);
       }
     }
-    return UnmodifiableListView(list);
+
+    return UnmodifiableListView(result);
   }
 
   void _putTaskInRightList(DsTask task) {
@@ -161,18 +168,6 @@ class UiHome extends ChangeNotifier {
       for (var oneTaskDate in taskDate.task.taskDates) {
         oneTaskDate.update(newDoneDate: now, newDoneBy: accounts);
         await dbService.daoTaskDates.update(oneTaskDate);
-      }
-    }
-    if (accounts.isEmpty) {
-      final allAccounts = await dbService.daoAccounts.getAll();
-      for (var account in allAccounts) {
-        account.update(newScore: account.score + 1);
-        dbService.daoAccounts.update(account);
-      }
-    } else {
-      for (var account in accounts) {
-        account.update(newScore: account.score + 1);
-        dbService.daoAccounts.update(account);
       }
     }
     _removeFromList(taskDate.task.id);

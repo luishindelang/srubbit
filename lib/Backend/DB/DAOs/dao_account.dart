@@ -46,14 +46,14 @@ class DaoAccount extends MappingAccount {
     return fromMap(rawData.first);
   }
 
-  Future<List<DsAccount>> getDoneBy(String? taskId) async {
-    if (taskId == null) return [];
+  Future<List<DsAccount>> getDoneBy(String? taskDateId) async {
+    if (taskDateId == null) return [];
     final rawData = await db.rawQuery("""
     SELECT a.* 
     FROM ${TAccount.tableName} a
     LEFT JOIN ${TTaskDoneByAccount.tableName} t
-    ON a.${TAccount.id} = t.${TTaskDoneByAccount.accountId};
-    WHERE t.${TTaskDoneByAccount.taskDateId} = '$taskId';
+    ON a.${TAccount.id} = t.${TTaskDoneByAccount.accountId}
+    WHERE t.${TTaskDoneByAccount.taskDateId} = '$taskDateId';
     """);
     return fromList(rawData);
   }

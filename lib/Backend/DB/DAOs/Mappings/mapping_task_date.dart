@@ -38,7 +38,7 @@ class MappingTaskDate {
     return finalData;
   }
 
-  Map<String, dynamic> toMap(DsTaskDate taskDate, String? taskId) {
+  Map<String, dynamic> toMap(DsTaskDate taskDate, String taskId) {
     return {
       TTaskDate.id: taskDate.id,
       TTaskDate.plannedDate: taskDate.plannedDate.millisecondsSinceEpoch,

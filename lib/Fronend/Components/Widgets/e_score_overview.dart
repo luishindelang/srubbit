@@ -58,6 +58,7 @@ class _EScoreOverviewState extends State<EScoreOverview> {
           onSelectAll: onSelectAll,
           selectAll: selectedAccounts.isEmpty,
           withShadow: true,
+          neverUnselect: true,
         ),
       ),
       children: [

@@ -17,6 +17,7 @@ class ESelectAccount extends StatefulWidget {
     required this.selectAll,
     this.reverse = false,
     this.withShadow = false,
+    this.neverUnselect = false,
   });
 
   final List<DsAccount> accounts;
@@ -27,6 +28,7 @@ class ESelectAccount extends StatefulWidget {
   final bool selectAll;
   final bool reverse;
   final bool withShadow;
+  final bool neverUnselect;
 
   @override
   State<ESelectAccount> createState() => _ESelectAccountState();
@@ -44,6 +46,9 @@ class _ESelectAccountState extends State<ESelectAccount> {
         selectedAccounts.add(account);
       }
       selectAll = false;
+      if (widget.neverUnselect && selectedAccounts.isEmpty) {
+        selectAll = true;
+      }
       widget.onSelectedAccount(selectedAccounts);
     });
   }
@@ -53,7 +58,11 @@ class _ESelectAccountState extends State<ESelectAccount> {
       if (!selectAll) {
         selectedAccounts = [];
       }
-      selectAll = !selectAll;
+      if (widget.neverUnselect) {
+        selectAll = true;
+      } else {
+        selectAll = !selectAll;
+      }
       widget.onSelectedAccount(selectedAccounts);
     });
   }

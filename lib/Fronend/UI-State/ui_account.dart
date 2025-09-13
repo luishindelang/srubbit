@@ -65,4 +65,31 @@ class UiAccount extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void reloadAccounts() async {
+    final dbService = await DatabaseService.init();
+    final data = await dbService.daoAccounts.getAll();
+    _accounts.clear();
+    for (var account in data) {
+      _accounts.add(account);
+    }
+    _isLoaded = true;
+    notifyListeners();
+  }
+
+  void updateScore(List<DsAccount> selectedAccounts) async {
+    final dbService = await DatabaseService.init();
+    if (selectedAccounts.isEmpty) {
+      for (var account in _accounts) {
+        account.update(newScore: account.score + 1);
+        await dbService.daoAccounts.update(account);
+      }
+    } else {
+      for (var account in selectedAccounts) {
+        account.update(newScore: account.score + 1);
+        dbService.daoAccounts.update(account);
+      }
+    }
+    notifyListeners();
+  }
 }
