@@ -43,11 +43,56 @@ class ETaskElement extends StatelessWidget {
     return SizedBox.shrink();
   }
 
+  BoxDecoration bandBackground(List<Color> colors) {
+    final n = colors.length;
+    final cum = <double>[];
+
+    for (var i = 0; i <= n; i++) {
+      cum.add(i / n);
+    }
+
+    final gColors = <Color>[];
+    final gStops = <double>[];
+    for (var i = 0; i < n; i++) {
+      gColors
+        ..add(colors[i])
+        ..add(colors[i]);
+      gStops
+        ..add(cum[i])
+        ..add(cum[i + 1]);
+    }
+
+    return BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: gColors,
+        stops: gStops,
+      ),
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(borderRadiusTaskElement),
+        bottomLeft: Radius.circular(borderRadiusTaskElement),
+      ),
+    );
+  }
+
+  Widget showOwner() {
+    if (task.taskOwners == null ? false : task.taskOwners!.isEmpty) {
+      return SizedBox(width: 14);
+    }
+    return Container(
+      margin: EdgeInsets.only(right: 4),
+      width: 10,
+      height: 63,
+      decoration: bandBackground(
+        task.taskOwners!.map((account) => account.color).toList(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(task.taskOwners);
     return Container(
-      padding: EdgeInsets.all(paddingTaskElement),
       decoration: BoxDecoration(
         color: task.isImportant ? importantTaskColor : scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(borderRadiusTaskElement),
@@ -55,10 +100,9 @@ class ETaskElement extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: paddingEmojiHor),
-            child: Text(task.emoji, style: taskElementEmoji),
-          ),
+          showOwner(),
+          Text(task.emoji, style: taskElementEmoji),
+          SizedBox(width: 2),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
