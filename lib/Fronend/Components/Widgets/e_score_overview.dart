@@ -75,7 +75,7 @@ class _EScoreOverviewState extends State<EScoreOverview> {
               child: Row(
                 spacing: 5,
                 children: [
-                  Icon(Icons.history_rounded, color: buttonColor, size: 40),
+                  Icon(Icons.history_rounded, color: buttonColor, size: 32),
                   Text("Task History", style: taskHistory),
                 ],
               ),
