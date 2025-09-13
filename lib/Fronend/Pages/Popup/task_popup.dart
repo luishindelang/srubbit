@@ -48,8 +48,10 @@ class _TaskPopupState extends State<TaskPopup> {
 
     void onDone() {
       if (canDoDone) {
-        home.onTaskDateDone(widget.taskDate, selectedAccounts);
-        account.updateScore(selectedAccounts);
+        final a =
+            selectedAccounts.isNotEmpty ? selectedAccounts : account.accounts;
+        home.onTaskDateDone(widget.taskDate, a);
+        account.updateScore(a);
         Navigator.pop(context);
       }
     }
