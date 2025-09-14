@@ -33,9 +33,12 @@ class SelectRepeatingType extends StatelessWidget {
                 repeatingType: createTask.repeatingType,
               ),
               SizedBox(width: 30),
-              ENewTaskRepeatingAfterComplete(
-                value: createTask.repeatAfterDone,
-                onChanged: createTask.onAfterComplete,
+              Visibility(
+                visible: createTask.repeatingType == 0,
+                child: ENewTaskRepeatingAfterComplete(
+                  value: createTask.repeatAfterDone,
+                  onChanged: createTask.onAfterComplete,
+                ),
               ),
             ],
           ),
