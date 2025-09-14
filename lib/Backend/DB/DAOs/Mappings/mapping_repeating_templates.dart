@@ -1,8 +1,15 @@
+import 'package:scrubbit/Backend/DB/DAOs/dao_repeating_templates_dates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
 
 class MappingRepeatingTemplates {
-  DsRepeatingTemplates fromMap(Map<String, dynamic> rawData) {
+  final DaoRepeatingTemplatesDates daoRepeatingTemplatesDates;
+
+  MappingRepeatingTemplates(this.daoRepeatingTemplatesDates);
+
+  Future<DsRepeatingTemplates> fromMap(Map<String, dynamic> rawData) async {
+    final repeatingDate = await daoRepeatingTemplatesDates
+        .getByRepeatingTemplate(rawData[TRepeatingTemplates.id]);
     return DsRepeatingTemplates(
       id: rawData[TRepeatingTemplates.id],
       repeatingType: rawData[TRepeatingTemplates.repeatingType],
@@ -18,12 +25,19 @@ class MappingRepeatingTemplates {
                 rawData[TRepeatingTemplates.endDate],
               )
               : null,
+      repeatingDates: repeatingDate,
       fromDB: true,
     );
   }
 
-  List<DsRepeatingTemplates> fromList(List<Map<String, dynamic>> rawData) {
-    return rawData.map(fromMap).toList();
+  Future<List<DsRepeatingTemplates>> fromList(
+    List<Map<String, dynamic>> rawData,
+  ) async {
+    List<DsRepeatingTemplates> finalData = [];
+    for (var value in rawData) {
+      finalData.add(await fromMap(value));
+    }
+    return finalData;
   }
 
   Map<String, dynamic> toMap(DsRepeatingTemplates template) {

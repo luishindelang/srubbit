@@ -1,3 +1,4 @@
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates_dates.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Backend/Functions/f_uuid.dart';
 
@@ -10,6 +11,7 @@ class DsRepeatingTemplates {
   late DateTime _startDate;
   late DateTime? _endDate;
   late DateTime? _lastDoneDate;
+  late List<DsRepeatingTemplatesDates> _repeatingDates;
 
   bool fromDB;
 
@@ -22,6 +24,7 @@ class DsRepeatingTemplates {
     required DateTime startDate,
     DateTime? endDate,
     DateTime? lastDoneDate,
+    List<DsRepeatingTemplatesDates>? repeatingDates,
     this.fromDB = false,
   }) {
     _id = id ?? uuid();
@@ -32,6 +35,7 @@ class DsRepeatingTemplates {
     _startDate = startDate;
     _endDate = endDate;
     _lastDoneDate = lastDoneDate;
+    _repeatingDates = repeatingDates ?? [];
   }
 
   String get id => _id;
@@ -42,6 +46,7 @@ class DsRepeatingTemplates {
   DateTime get startDate => _startDate;
   DateTime? get endDate => _endDate;
   DateTime? get lastDoneDate => _lastDoneDate;
+  List<DsRepeatingTemplatesDates> get repeatingDates => _repeatingDates;
 
   set setLastDoneDate(DateTime? newLastDoneDate) =>
       _lastDoneDate = newLastDoneDate;
@@ -97,31 +102,39 @@ class DsRepeatingTemplates {
     );
   }
 
-  bool isToday() {
-    var today = getNowWithoutTime();
-    if (_repeatingCount != null && _repeatingCount == 0) return false;
-    switch (_repeatingType) {
-      case 0:
-        if (_lastDoneDate == null) {
-          if (isSameDay(today, _startDate)) return true;
-          return false;
+  List<DateTime> test() {
+    List<DateTime> dates = [];
+    final now = getNowWithoutTime();
+    if (_lastDoneDate != null) {
+      if (_repeatingType == 0) {
+        final daysSiceStart = now.difference(_startDate).inDays;
+        if (!_repeatAfterDone) {
+          final daysToNext = daysSiceStart % _repeatingIntervall;
+          return [now.add(Duration(days: daysToNext))];
         } else {
-          int diff = 0;
-          if (!_repeatAfterDone) {
-            diff = today.difference(_startDate).inDays;
-          } else {
-            diff = today.difference(_lastDoneDate!).inDays;
-          }
-          if (diff % _repeatingIntervall == 0) {
-            return true;
-          }
-          return false;
+          return [_lastDoneDate!.add(Duration(days: _repeatingIntervall))];
         }
-      case 1:
-        if (_lastDoneDate == null) {}
-        return false;
-      default:
-        return false;
+      } else if (_repeatingType == 1) {
+        final daysUntilEndOfWeek = 7 - now.weekday;
+        final startOfNextWeek = now.add(Duration(days: daysUntilEndOfWeek + 1));
+        final nextWeekStartDate = startOfNextWeek.add(
+          Duration(days: _repeatingIntervall * 7),
+        );
+        for (var repeatingDate in _repeatingDates) {
+          final weekDay = repeatingDate.weekDay;
+          if (weekDay != 0) {
+            if (weekDay >= now.weekday) {
+              final daysUntil = weekDay - now.weekday;
+              dates.add(now.add(Duration(days: daysUntil)));
+            } else {
+              dates.add(nextWeekStartDate.add(Duration(days: weekDay)));
+            }
+          }
+        }
+      } else if (_repeatingType == 2) {}
+    } else {
+      return [_startDate.add(Duration(days: _repeatingIntervall))];
     }
+    return dates;
   }
 }

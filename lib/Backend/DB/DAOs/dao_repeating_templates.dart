@@ -1,3 +1,4 @@
+import 'package:scrubbit/Backend/DB/DAOs/dao_repeating_templates_dates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
 import 'package:sqflite/sqflite.dart';
@@ -5,7 +6,7 @@ import 'Mappings/mapping_repeating_templates.dart';
 
 class DaoRepeatingTemplates extends MappingRepeatingTemplates {
   final Database db;
-  DaoRepeatingTemplates(this.db);
+  DaoRepeatingTemplates(this.db) : super(DaoRepeatingTemplatesDates(db));
 
   Future<void> insert(DsRepeatingTemplates template) async {
     await db.insert(
@@ -13,6 +14,9 @@ class DaoRepeatingTemplates extends MappingRepeatingTemplates {
       toMap(template),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    for (var dates in template.repeatingDates) {
+      await daoRepeatingTemplatesDates.insert(dates, template.id);
+    }
   }
 
   Future<void> update(DsRepeatingTemplates template) async {
@@ -22,6 +26,10 @@ class DaoRepeatingTemplates extends MappingRepeatingTemplates {
       where: '${TRepeatingTemplates.id} = ?',
       whereArgs: [template.id],
     );
+    await daoRepeatingTemplatesDates.deleteByRepeatingTemplate(template.id);
+    for (var dates in template.repeatingDates) {
+      await daoRepeatingTemplatesDates.insert(dates, template.id);
+    }
   }
 
   Future<DsRepeatingTemplates?> get(String? id) async {
