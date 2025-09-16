@@ -91,8 +91,8 @@ List<DateTime> datesUntilEndOfMonth() {
   return List.generate(daysUntilEnd + 1, (i) => today.add(Duration(days: i)));
 }
 
-bool isSameDay(DateTime a, DateTime? b) =>
-    a.year == b?.year && a.month == b?.month && a.day == b?.day;
+bool isSameDay(DateTime? a, DateTime? b) =>
+    a?.year == b?.year && a?.month == b?.month && a?.day == b?.day;
 
 bool isToday(DateTime date) {
   final today = getNowWithoutTime();
@@ -195,4 +195,21 @@ DateTime addToDate(DateTime? date, int type, int intervall) {
     default:
       return getNowWithoutTime();
   }
+}
+
+int adjustDayForMonth(int day, int month, int year) {
+  final lastDayOfMonth = DateTime(year, month + 1, 0).day;
+
+  if (day > lastDayOfMonth) {
+    return lastDayOfMonth;
+  }
+  return day;
+}
+
+int monthDifference(DateTime from, DateTime to) {
+  return (to.year - from.year) * 12 + (to.month - from.month).abs();
+}
+
+int yearDifference(DateTime from, DateTime to) {
+  return (to.year - from.year).abs();
 }

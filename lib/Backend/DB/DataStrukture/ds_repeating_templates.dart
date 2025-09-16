@@ -102,39 +102,70 @@ class DsRepeatingTemplates {
     );
   }
 
-  List<DateTime> test() {
-    List<DateTime> dates = [];
-    final now = getNowWithoutTime();
-    if (_lastDoneDate != null) {
-      if (_repeatingType == 0) {
-        final daysSiceStart = now.difference(_startDate).inDays;
-        if (!_repeatAfterDone) {
-          final daysToNext = daysSiceStart % _repeatingIntervall;
-          return [now.add(Duration(days: daysToNext))];
-        } else {
-          return [_lastDoneDate!.add(Duration(days: _repeatingIntervall))];
-        }
-      } else if (_repeatingType == 1) {
-        final daysUntilEndOfWeek = 7 - now.weekday;
-        final startOfNextWeek = now.add(Duration(days: daysUntilEndOfWeek + 1));
-        final nextWeekStartDate = startOfNextWeek.add(
-          Duration(days: _repeatingIntervall * 7),
-        );
-        for (var repeatingDate in _repeatingDates) {
-          final weekDay = repeatingDate.weekDay;
-          if (weekDay != 0) {
-            if (weekDay >= now.weekday) {
-              final daysUntil = weekDay - now.weekday;
-              dates.add(now.add(Duration(days: daysUntil)));
-            } else {
-              dates.add(nextWeekStartDate.add(Duration(days: weekDay)));
-            }
+  List<DateTime> getDates() {
+    final today = getNowWithoutTime();
+
+    if (_repeatingType == 0) {
+      // daily
+      if (today.isAfter(_startDate)) {
+        return [_startDate];
+      }
+      if (!_repeatAfterDone) {
+        final daysSiceStart = today.difference(_startDate).inDays;
+        final daysToNext = daysSiceStart % _repeatingIntervall;
+        final nextDate = today.add(Duration(days: daysToNext));
+        final lastDate = nextDate.subtract(Duration(days: _repeatingIntervall));
+        final missedTask = <DateTime>[];
+        if (_lastDoneDate != null) {
+          if (!isSameDay(_lastDoneDate!, lastDate)) {
+            missedTask.add(lastDate);
           }
         }
-      } else if (_repeatingType == 2) {}
+        return [...missedTask, nextDate];
+      } else {
+        if (_lastDoneDate != null) {
+          final nextDate = _lastDoneDate!.add(
+            Duration(days: _repeatingIntervall),
+          );
+          return [nextDate];
+        }
+        return [_startDate];
+      }
     } else {
-      return [_startDate.add(Duration(days: _repeatingIntervall))];
+      // weekly,, monthly, yearly
+      if (_repeatingDates.isEmpty) {
+        return [_startDate];
+      }
+      var daysToNext = 0;
+      if (_repeatingType == 1) {
+        final daysSiceStart = today.difference(_startDate).inDays;
+        daysToNext = (daysSiceStart ~/ 7) % _repeatingIntervall;
+      } else if (_repeatingIntervall == 2) {
+        final daysSiceStart = monthDifference(_startDate, today);
+        daysToNext = daysSiceStart % _repeatingIntervall;
+      } else if (_repeatingType == 3) {
+        final daysSiceStart = yearDifference(_startDate, today);
+        daysToNext = daysSiceStart % _repeatingIntervall;
+      }
+
+      final list = <DateTime>[];
+      if (_lastDoneDate != null) {
+        final lastDate = _repeatingDates.last.getDate(
+          daysToNext - _repeatingIntervall,
+        );
+        if (!isSameDay(_lastDoneDate, lastDate)) {
+          if (lastDate != null) {
+            list.add(lastDate);
+          }
+        }
+      }
+      for (var repeatingDate in _repeatingDates) {
+        final date = repeatingDate.getDate(daysToNext);
+        if (date != null) {
+          list.add(date);
+        }
+      }
+      return list;
     }
-    return dates;
   }
 }
