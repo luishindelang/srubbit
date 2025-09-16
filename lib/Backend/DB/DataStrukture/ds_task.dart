@@ -200,4 +200,12 @@ class DsTask {
 
     return copied;
   }
+
+  void createRepeatingDates() {
+    if (_repeatingTemplate != null) {
+      for (var date in _repeatingTemplate!.getDates()) {
+        _taskDates.add(DsTaskDate(plannedDate: date, task: this));
+      }
+    }
+  }
 }
