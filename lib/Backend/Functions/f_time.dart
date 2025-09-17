@@ -207,9 +207,9 @@ int adjustDayForMonth(int day, int month, int year) {
 }
 
 int monthDifference(DateTime from, DateTime to) {
-  return (to.year - from.year) * 12 + (to.month - from.month).abs();
+  return (to.year - from.year) * 12 + (to.month - from.month);
 }
 
 int yearDifference(DateTime from, DateTime to) {
-  return (to.year - from.year).abs();
+  return (to.year - from.year);
 }

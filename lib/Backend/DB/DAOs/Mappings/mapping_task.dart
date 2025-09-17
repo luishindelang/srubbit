@@ -32,15 +32,13 @@ class MappingTask {
       taskOwners: taskOwners,
       fromDB: true,
     );
+    final taskDates = await daoTaskDate.getByTask(task);
+    task.setTaskDates = taskDates;
     if (task.repeatingTemplate != null) {
       final lastDoneDate = await daoTaskDate.getLastDoneDateByTaskId(task);
       task.repeatingTemplate!.setLastDoneDate = lastDoneDate;
       task.createRepeatingDates();
-    } else {
-      final taskDates = await daoTaskDate.getByTask(task);
-      task.setTaskDates = taskDates;
     }
-
     return task;
   }
 

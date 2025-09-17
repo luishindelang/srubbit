@@ -111,12 +111,20 @@ class DsRepeatingTemplates {
     if (_repeatingType == 0) {
       // daily
       if (today.isAfter(_startDate)) {
-        return [_startDate];
+        if (_lastDoneDate == null) {
+          return [_startDate];
+        }
       }
       if (!_repeatAfterDone) {
         final daysSiceStart = today.difference(_startDate).inDays;
+
         final daysToNext = daysSiceStart % _repeatingIntervall;
-        final nextDate = today.add(Duration(days: daysToNext));
+        var nextDate = today.add(Duration(days: daysToNext));
+        if (_lastDoneDate != null) {
+          nextDate = today.add(
+            Duration(days: daysToNext + _repeatingIntervall),
+          );
+        }
         final lastDate = nextDate.subtract(Duration(days: _repeatingIntervall));
         final missedTask = <DateTime>[];
         if (_lastDoneDate != null) {
@@ -135,27 +143,30 @@ class DsRepeatingTemplates {
         return [_startDate];
       }
     } else {
-      // weekly,, monthly, yearly
+      // weekly, monthly, yearly
       if (_repeatingDates.isEmpty) {
         return [_startDate];
       }
       var daysToNext = 0;
+
       if (_repeatingType == 1) {
         final daysSiceStart = today.difference(_startDate).inDays;
-        daysToNext = (daysSiceStart ~/ 7) % _repeatingIntervall;
-      } else if (_repeatingIntervall == 2) {
-        final daysSiceStart = monthDifference(_startDate, today);
-        daysToNext = daysSiceStart % _repeatingIntervall;
+        if (daysSiceStart < 0) {
+          daysToNext = ((daysSiceStart ~/ 7) % _repeatingIntervall) + 7;
+        } else {
+          daysToNext = (daysSiceStart ~/ 7) % _repeatingIntervall;
+        }
+      } else if (_repeatingType == 2) {
+        final monthSiceStart = monthDifference(_startDate, today);
+        daysToNext = monthSiceStart % _repeatingIntervall;
       } else if (_repeatingType == 3) {
-        final daysSiceStart = yearDifference(_startDate, today);
-        daysToNext = daysSiceStart % _repeatingIntervall;
+        final yearsSiceStart = yearDifference(_startDate, today);
+        daysToNext = yearsSiceStart % _repeatingIntervall;
       }
 
       final list = <DateTime>[];
       if (_lastDoneDate != null) {
-        final lastDate = _repeatingDates.last.getDate(
-          daysToNext - _repeatingIntervall,
-        );
+        var lastDate = _repeatingDates.last.getDate(daysToNext);
         if (!isSameDay(_lastDoneDate, lastDate)) {
           if (lastDate != null) {
             list.add(lastDate);
@@ -163,9 +174,14 @@ class DsRepeatingTemplates {
         }
       }
       for (var repeatingDate in _repeatingDates) {
-        final date = repeatingDate.getDate(daysToNext);
+        var date = repeatingDate.getDate(daysToNext);
         if (date != null) {
-          list.add(date);
+          if (date.isBefore(_startDate) || isSameDay(date, _lastDoneDate)) {
+            date = _repeatingDates.last.getDate((daysToNext + 1));
+          }
+          if (date != null) {
+            list.add(date);
+          }
         }
       }
       return list;

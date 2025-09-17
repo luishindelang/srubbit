@@ -71,10 +71,8 @@ class UiHome extends ChangeNotifier {
         }
       }
     } else {
-      print("not onEveryDate");
       final dates =
           task.taskDates.map((taskDate) => taskDate.plannedDate).toList();
-      print(dates);
       if (allDaysUntilEndOfMonthIncluded(dates)) {
         _monthTasks.add(task.taskDates.first);
         return;
@@ -87,11 +85,11 @@ class UiHome extends ChangeNotifier {
         final date = taskDate.plannedDate;
         if (taskDate.doneDate != null) {
           _doneTasks.add(taskDate);
-          break;
+          continue;
         }
         if (date.isBefore(getNowWithoutTime())) {
           _missedTasks.add(taskDate);
-          break;
+          continue;
         } else if (isToday(date)) {
           _todayTasks.add(taskDate);
           break;
@@ -164,15 +162,27 @@ class UiHome extends ChangeNotifier {
   void onTaskDateDone(DsTaskDate taskDate, List<DsAccount> accounts) async {
     final now = DateTime.now();
     final dbService = await DatabaseService.init();
+
     if (taskDate.task.onEveryDate) {
       taskDate.update(newDoneDate: now, newDoneBy: accounts);
-      await dbService.daoTaskDates.update(taskDate);
+      if (taskDate.task.repeatingTemplate != null) {
+        await dbService.daoTaskDates.insert(taskDate, taskDate.task.id);
+        taskDate.task.repeatingTemplate!.update(newLastDoneDate: now);
+      } else {
+        await dbService.daoTaskDates.update(taskDate);
+      }
     } else {
       for (var oneTaskDate in taskDate.task.taskDates) {
         oneTaskDate.update(newDoneDate: now, newDoneBy: accounts);
-        await dbService.daoTaskDates.update(oneTaskDate);
+        if (taskDate.task.repeatingTemplate != null) {
+          await dbService.daoTaskDates.insert(taskDate, taskDate.task.id);
+          taskDate.task.repeatingTemplate!.update(newLastDoneDate: now);
+        } else {
+          await dbService.daoTaskDates.update(taskDate);
+        }
       }
     }
+    taskDate.task.createRepeatingDates();
     _removeFromList(taskDate.task.id);
     _putTaskInRightList(taskDate.task);
     notifyListeners();
