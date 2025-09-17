@@ -59,6 +59,7 @@ class DsRepeatingTemplates {
     DateTime? newStartDate,
     DateTime? newEndDate,
     DateTime? newLastDoneDate,
+    List<DsRepeatingTemplatesDates>? newRepeatingDates,
   }) {
     _repeatingType = newRepeatingType ?? _repeatingType;
     _repeatingIntervall = newRepeatingIntervall ?? _repeatingIntervall;
@@ -67,17 +68,19 @@ class DsRepeatingTemplates {
     _startDate = newStartDate ?? _startDate;
     _endDate = newEndDate ?? _endDate;
     _lastDoneDate = newLastDoneDate ?? _lastDoneDate;
+    _repeatingDates = newRepeatingDates ?? _repeatingDates;
     fromDB = false;
   }
 
   void updateComplete(DsRepeatingTemplates repeatingTempleate) {
-    _repeatingType = repeatingTempleate._repeatingType;
-    _repeatingIntervall = repeatingTempleate._repeatingIntervall;
-    _repeatingCount = repeatingTempleate._repeatingCount;
-    _repeatAfterDone = repeatingTempleate._repeatAfterDone;
-    _startDate = repeatingTempleate._startDate;
-    _endDate = repeatingTempleate._endDate;
-    _lastDoneDate = repeatingTempleate._lastDoneDate;
+    _repeatingType = repeatingTempleate.repeatingType;
+    _repeatingIntervall = repeatingTempleate.repeatingIntervall;
+    _repeatingCount = repeatingTempleate.repeatingCount;
+    _repeatAfterDone = repeatingTempleate.repeatAfterDone;
+    _startDate = repeatingTempleate.startDate;
+    _endDate = repeatingTempleate.endDate;
+    _lastDoneDate = repeatingTempleate.lastDoneDate;
+    _repeatingDates = repeatingTempleate.repeatingDates;
     fromDB = false;
   }
 

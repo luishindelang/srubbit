@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_repeating_templates_dates.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Backend/Functions/f_lists.dart';
@@ -234,7 +235,23 @@ class UiCreateTask extends ChangeNotifier {
   DsTask? onDone() {
     if (canDoDone) {
       if (isRepeating) {
+        final repeatingDates = <DsRepeatingTemplatesDates>[];
+        for (var date in selectedDates) {
+          if (repeatingType == 1) {
+            repeatingDates.add(
+              DsRepeatingTemplatesDates(weekDay: date.weekday),
+            );
+          } else if (repeatingType == 2) {
+            repeatingDates.add(DsRepeatingTemplatesDates(monthDay: date.day));
+          } else if (repeatingType == 3) {
+            repeatingDates.add(
+              DsRepeatingTemplatesDates(month: date.month, monthDay: date.day),
+            );
+          }
+        }
+        _repeatingTemplate.update(newRepeatingDates: repeatingDates);
         _newTask.update(newRepeatingTemplate: _repeatingTemplate);
+        _newTask.update(newTaskDates: []);
       } else {
         _newTask.update(newRepeatingTemplate: null);
       }
