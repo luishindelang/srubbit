@@ -77,7 +77,7 @@ class ETaskElement extends StatelessWidget {
   }
 
   Widget showOwner() {
-    if (task.taskOwners == null ? false : task.taskOwners!.isEmpty) {
+    if (task.taskOwners == null ? true : task.taskOwners!.isEmpty) {
       return SizedBox(width: 14);
     }
     return Container(

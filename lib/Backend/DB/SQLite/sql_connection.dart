@@ -1,6 +1,7 @@
 import 'package:path/path.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_account.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates.dart';
+import 'package:scrubbit/Backend/DB/SQLite/Tables/t_repeating_templates_dates.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_date.dart';
 import 'package:scrubbit/Backend/DB/SQLite/Tables/t_task_done_by_account.dart';
@@ -46,6 +47,7 @@ class SqlConnection {
     await db.execute(TTaskDate.createTable());
     await db.execute(TTaskDoneByAccount.createTable());
     await db.execute(TTaskOwner.createTable());
+    await db.execute(TRepeatingTemplatesDates.createTable());
   }
 
   static Future<void> deleteTables(Database db) async {
@@ -55,5 +57,6 @@ class SqlConnection {
     await db.execute(TTask.deleteTable());
     await db.execute(TRepeatingTemplates.deleteTable());
     await db.execute(TAccount.deleteTable());
+    await db.execute(TRepeatingTemplatesDates.deleteTable());
   }
 }

@@ -254,20 +254,20 @@ class UiCreateTask extends ChangeNotifier {
         _newTask.update(newTaskDates: []);
       } else {
         _newTask.update(newRepeatingTemplate: null);
-      }
-      if ((setType == 2 || setType == 3) &&
-          !isRepeating &&
-          (completeMonth || completeWeek)) {
-        _newTask.update(newOnEveryDate: false);
-      }
-      if (setType == 0 && !isRepeating) {
-        onSelectedDates([getNowWithoutTime()]);
-      } else if (setType == 1 && !isRepeating) {
-        onSelectedDates([getNowWithoutTime(addDay: 1)]);
-      } else if (setType == 2 && !isRepeating && completeWeek) {
-        onSelectedDates(datesUntilEndOfWeek());
-      } else if (setType == 3 && !isRepeating && completeMonth) {
-        onSelectedDates(datesUntilEndOfMonth());
+        if ((setType == 2 || setType == 3) &&
+            !isRepeating &&
+            (completeMonth || completeWeek)) {
+          _newTask.update(newOnEveryDate: false);
+        }
+        if (setType == 0 && !isRepeating) {
+          onSelectedDates([getNowWithoutTime()]);
+        } else if (setType == 1 && !isRepeating) {
+          onSelectedDates([getNowWithoutTime(addDay: 1)]);
+        } else if (setType == 2 && !isRepeating && completeWeek) {
+          onSelectedDates(datesUntilEndOfWeek());
+        } else if (setType == 3 && !isRepeating && completeMonth) {
+          onSelectedDates(datesUntilEndOfMonth());
+        }
       }
 
       if (_oldTask != null) _oldTask!.updateComplete(_newTask);

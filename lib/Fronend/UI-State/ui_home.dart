@@ -71,8 +71,10 @@ class UiHome extends ChangeNotifier {
         }
       }
     } else {
+      print("not onEveryDate");
       final dates =
           task.taskDates.map((taskDate) => taskDate.plannedDate).toList();
+      print(dates);
       if (allDaysUntilEndOfMonthIncluded(dates)) {
         _monthTasks.add(task.taskDates.first);
         return;
@@ -146,6 +148,7 @@ class UiHome extends ChangeNotifier {
   void addTask(DsTask task) async {
     final dbService = await DatabaseService.init();
     await dbService.daoTasks.insert(task);
+    task.createRepeatingDates();
     _putTaskInRightList(task);
     notifyListeners();
   }
