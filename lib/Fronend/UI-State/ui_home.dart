@@ -50,10 +50,12 @@ class UiHome extends ChangeNotifier {
   }
 
   void _putTaskInRightList(DsTask task) {
+    print(task.name);
     if (task.repeatingTemplate != null) {
       _repeatingTasks.add(task);
     }
     if (task.onEveryDate) {
+      print("hier");
       for (var taskDate in task.taskDates) {
         final date = taskDate.plannedDate;
         if (taskDate.doneDate != null) {
@@ -71,16 +73,24 @@ class UiHome extends ChangeNotifier {
         }
       }
     } else {
-      final dates =
-          task.taskDates.map((taskDate) => taskDate.plannedDate).toList();
-      if (allDaysUntilEndOfMonthIncluded(dates)) {
-        _monthTasks.add(task.taskDates.first);
-        return;
-      }
-      if (allDaysUntilSundayIncluded(dates)) {
-        _weekTasks.add(task.taskDates.first);
-        return;
-      }
+      // final datesNotDone =
+      //     task.taskDates
+      //         .where((taskDate) => taskDate.doneDate == null)
+      //         .toList();
+      // final dates =
+      //     datesNotDone.map((taskDate) => taskDate.plannedDate).toList();
+      // print(dates);
+      // if (allDaysUntilEndOfMonthIncluded(dates) && dates.length > 1) {
+      //   _monthTasks.add(task.taskDates.first);
+      //   print("kompleteMonth");
+      //   return;
+      // }
+
+      // if (allDaysUntilSundayIncluded(dates) && dates.length > 1) {
+      //   _weekTasks.add(task.taskDates.first);
+      //   print("kompleteWeek");
+      //   return;
+      // }
       for (var taskDate in task.taskDates) {
         final date = taskDate.plannedDate;
         if (taskDate.doneDate != null) {
@@ -89,16 +99,20 @@ class UiHome extends ChangeNotifier {
         }
         if (date.isBefore(getNowWithoutTime())) {
           _missedTasks.add(taskDate);
+          print("missed");
           continue;
         } else if (isToday(date)) {
           _todayTasks.add(taskDate);
-          break;
+          print("today");
+          return;
         } else if (isInCurrentWeek(date)) {
           _weekTasks.add(taskDate);
-          break;
+          print("week");
+          return;
         } else if (isInCurrentMonth(date)) {
           _monthTasks.add(taskDate);
-          break;
+          print("month");
+          return;
         }
       }
     }
