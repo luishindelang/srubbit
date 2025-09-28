@@ -4,6 +4,7 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
 class EDoneBottons extends StatelessWidget {
   const EDoneBottons({
@@ -78,7 +79,7 @@ class EDoneBottons extends StatelessWidget {
             SizedBox(
               width: sizeDoneButtonsOutside,
               child: Center(
-                child: Text("Bearbeiten", style: taskPopupDescription),
+                child: Text(textEdit, style: taskPopupDescription),
               ),
             ),
             SizedBox(width: spaceBetweenButtons),
@@ -86,7 +87,7 @@ class EDoneBottons extends StatelessWidget {
               width: sizeDoneButtonMiddle,
               child: Center(
                 child: Text(
-                  "Geschafft!",
+                  textDone,
                   style:
                       canBeDone
                           ? taskPopupDoneDescriptionActive
@@ -98,7 +99,7 @@ class EDoneBottons extends StatelessWidget {
             SizedBox(
               width: sizeDoneButtonsOutside,
               child: Center(
-                child: Text("Verschieben", style: taskPopupDescription),
+                child: Text(textMove, style: taskPopupDescription),
               ),
             ),
           ],

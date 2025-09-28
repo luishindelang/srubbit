@@ -5,6 +5,7 @@ import 'package:scrubbit/Fronend/Components/Elements/e_time_picker.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
 class SelectTimeFromUntil extends StatefulWidget {
   const SelectTimeFromUntil({
@@ -127,7 +128,7 @@ class _SelectTimeFromUntilState extends State<SelectTimeFromUntil> {
                   ),
                   SizedBox(width: 5),
                   Text(
-                    "Repeating",
+                    textRepeating,
                     style: isRepeating ? buttonSelected : buttonSelect,
                   ),
                 ],
@@ -145,7 +146,7 @@ class _SelectTimeFromUntilState extends State<SelectTimeFromUntil> {
                 paddingHor: 14,
                 child: Row(
                   children: [
-                    Text(showTime ? "-" : "+", style: buttonSelect),
+                    Text(showTime ? '-' : '+', style: buttonSelect),
                     SizedBox(width: 5),
                     Icon(
                       Icons.access_time_rounded,
@@ -169,14 +170,14 @@ class _SelectTimeFromUntilState extends State<SelectTimeFromUntil> {
                       child: Row(
                         children: [
                           Text(
-                            "von ${showTimeString(timeFrom)}",
+                            "$textFrom ${showTimeString(timeFrom)}",
                             style: buttonSelect,
                           ),
                         ],
                       ),
                     ),
                     SizedBox(width: 10),
-                    Text("-", style: buttonSelect),
+                    Text('-', style: buttonSelect),
                     SizedBox(width: 10),
                     CButton(
                       onPressed: openTimeUntilPicker,
@@ -187,7 +188,7 @@ class _SelectTimeFromUntilState extends State<SelectTimeFromUntil> {
                       child: Row(
                         children: [
                           Text(
-                            "bis ${showTimeString(timeUntil)}",
+                            "$textUntil ${showTimeString(timeUntil)}",
                             style: buttonSelect,
                           ),
                         ],

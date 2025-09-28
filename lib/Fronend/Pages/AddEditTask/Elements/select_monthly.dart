@@ -111,8 +111,8 @@ class SelectMonthly extends StatelessWidget {
                               createTask.selectedDates.isEmpty
                                   ? ""
                                   : createTask.isOr
-                                  ? "ODER"
-                                  : "UND",
+                                      ? textOrUpper
+                                      : textAndUpper,
                               style: selectedCalendarTitle,
                             ),
                           ],

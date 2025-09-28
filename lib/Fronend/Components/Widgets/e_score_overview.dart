@@ -9,6 +9,7 @@ import 'package:scrubbit/Fronend/Components/Widgets/e_task_done_history.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/de.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
 
 class EScoreOverview extends StatefulWidget {
@@ -46,7 +47,7 @@ class _EScoreOverviewState extends State<EScoreOverview> {
 
     return ETaskBoxTitle(
       flex: 2,
-      title: "Score Overview",
+      title: textScoreOverview,
       withScroll: false,
       behindTitle: Expanded(
         child: ESelectAccount(
@@ -76,7 +77,7 @@ class _EScoreOverviewState extends State<EScoreOverview> {
                 spacing: 5,
                 children: [
                   Icon(Icons.history_rounded, color: buttonColor, size: 32),
-                  Text("Task History", style: taskHistory),
+                  Text(textTaskHistory, style: taskHistory),
                 ],
               ),
             ),

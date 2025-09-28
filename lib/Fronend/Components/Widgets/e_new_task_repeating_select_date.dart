@@ -119,9 +119,9 @@ class _ENewTaskRepeatingSelectDateState
   void initState() {
     selectedDate = widget.selectedDate;
     if (widget.isEnd) {
-      options = ["Never", "After", "Other date", "Repeating"];
+      options = [textNever, textAfter, textOtherDate, textRepeating];
     } else {
-      options = ["Now", "Other date"];
+      options = [textNow, textOtherDate];
     }
     startDate = widget.startDate;
     super.initState();
@@ -140,7 +140,7 @@ class _ENewTaskRepeatingSelectDateState
                 return itemValue;
               },
               onChangedItem: (value) {
-                if (value == "Other date") {
+                if (value == textOtherDate) {
                   setState(() {
                     showAfter = false;
                     showRepeatingCount = false;
@@ -155,14 +155,14 @@ class _ENewTaskRepeatingSelectDateState
                     showRepeatingCount = false;
                   });
                 }
-                if (value == "After") {
+                if (value == textAfter) {
                   setState(() {
                     updateEndDate();
                     showAfter = true;
                     showRepeatingCount = false;
                   });
                 }
-                if (value == "Repeating") {
+                if (value == textRepeating) {
                   setState(() {
                     selectedDate = null;
                     showAfter = false;

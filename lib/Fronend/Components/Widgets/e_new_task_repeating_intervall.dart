@@ -51,7 +51,7 @@ class _ENewTaskRepeatingIntervallState
       children: [
         Visibility(
           visible: widget.showTitle,
-          child: Text("Wiederholt sich alle:", style: repeatingCategoryTitle),
+          child: Text(textRepeatEvery, style: repeatingCategoryTitle),
         ),
 
         Row(

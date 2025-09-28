@@ -7,6 +7,7 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/de.dart';
 
 class EScaffold extends StatelessWidget {
   const EScaffold({
