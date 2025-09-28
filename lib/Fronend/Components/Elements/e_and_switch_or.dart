@@ -3,6 +3,7 @@ import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_switch.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class EAndSwitchOr extends StatelessWidget {
   const EAndSwitchOr({super.key, required this.isOr, required this.onChange});
@@ -19,7 +20,10 @@ class EAndSwitchOr extends StatelessWidget {
           backgroundColor: Colors.transparent,
           forgroundColor: Colors.transparent,
           splashColor: Colors.transparent,
-          child: Text("Und", style: !isOr ? switchSelected : switchUnselected),
+          child: Text(
+            textAnd,
+            style: !isOr ? switchSelected : switchUnselected,
+          ),
         ),
         CSwitch(
           value: isOr,
@@ -36,7 +40,7 @@ class EAndSwitchOr extends StatelessWidget {
           forgroundColor: Colors.transparent,
           splashColor: Colors.transparent,
           paddingVert: 0,
-          child: Text("Oder", style: isOr ? switchSelected : switchUnselected),
+          child: Text(textOr, style: isOr ? switchSelected : switchUnselected),
         ),
       ],
     );

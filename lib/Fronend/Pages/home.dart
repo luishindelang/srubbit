@@ -8,7 +8,7 @@ import 'package:scrubbit/Fronend/Components/Elements/e_task_element.dart';
 import 'package:scrubbit/Fronend/Pages/AddEditTask/add_edit_task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/task_popup.dart';
 import 'package:scrubbit/Fronend/Pages/overview.dart';
-import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
@@ -59,7 +59,7 @@ class Home extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ETaskBoxTitle(
-            title: "Heute",
+            title: textToday,
             children:
                 home.todayTasks
                     .map(
@@ -75,7 +75,7 @@ class Home extends StatelessWidget {
           ),
           SizedBox(width: 10),
           ETaskBoxTitle(
-            title: "Diese Woche",
+            title: textThisWeek,
             children:
                 home.weekTasks
                     .map(
@@ -91,7 +91,7 @@ class Home extends StatelessWidget {
           ),
           SizedBox(width: 10),
           ETaskBoxTitle(
-            title: "Diesen Monat",
+            title: textThisMonth,
             children:
                 home.monthTasks
                     .map(

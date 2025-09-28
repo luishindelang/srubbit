@@ -6,6 +6,7 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class ETaskElement extends StatelessWidget {
   const ETaskElement({super.key, required this.task});
@@ -17,9 +18,9 @@ class ETaskElement extends StatelessWidget {
       String text = "";
       if (task.timeUntil != null) {
         text =
-            "${formatTime(task.timeFrom!)} - ${formatTime(task.timeUntil!)} Uhr";
+            "${formatTime(task.timeFrom!)} - ${formatTime(task.timeUntil!)} $textClockSuffix";
       } else {
-        text = "${formatTime(task.timeFrom!)} Uhr";
+        text = "${formatTime(task.timeFrom!)} $textClockSuffix";
       }
       return Text(
         text,

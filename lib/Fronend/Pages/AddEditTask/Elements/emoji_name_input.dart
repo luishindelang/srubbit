@@ -6,6 +6,7 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class EmojiNameInput extends StatefulWidget {
   const EmojiNameInput({
@@ -113,7 +114,7 @@ class _EmojiNameInputState extends State<EmojiNameInput> {
                     controller: _nameController,
                     fontSize: inputText.fontSize!,
                     fontWeight: inputText.fontWeight!,
-                    hintText: "name eingeben",
+                    hintText: textEnterName,
                     textColor: inputText.color!,
                     onChanged: (newName) => widget.onChangeName(newName),
                   ),

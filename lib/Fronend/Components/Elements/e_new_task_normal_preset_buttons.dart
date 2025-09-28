@@ -4,6 +4,7 @@ import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dar
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class ENewTaskNormalPresetButtons extends StatelessWidget {
   const ENewTaskNormalPresetButtons({
@@ -21,25 +22,25 @@ class ENewTaskNormalPresetButtons extends StatelessWidget {
       children: [
         ESelectAccountButton(
           onPressed: () => onChange(0),
-          text: "Heute",
+          text: textToday,
           isSelected: type == 0,
           selectedBackground: buttonColor,
         ),
         ESelectAccountButton(
           onPressed: () => onChange(1),
-          text: "Morgen",
+          text: textTomorrow,
           isSelected: type == 1,
           selectedBackground: buttonColor,
         ),
         ESelectAccountButton(
           onPressed: () => onChange(2),
-          text: "Diese Woche",
+          text: textThisWeek,
           isSelected: type == 2,
           selectedBackground: buttonColor,
         ),
         ESelectAccountButton(
           onPressed: () => onChange(3),
-          text: "Diesen Monat",
+          text: textThisMonth,
           isSelected: type == 3,
           selectedBackground: buttonColor,
         ),
@@ -61,7 +62,7 @@ class ENewTaskNormalPresetButtons extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  "Anderes Datum",
+                  textOtherDatePreset,
                   style: type == 4 ? buttonSelected : buttonSelect,
                 ),
               ],

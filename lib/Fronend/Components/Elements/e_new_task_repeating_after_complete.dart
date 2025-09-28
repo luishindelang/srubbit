@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_switch.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class ENewTaskRepeatingAfterComplete extends StatelessWidget {
   const ENewTaskRepeatingAfterComplete({
@@ -28,7 +29,7 @@ class ENewTaskRepeatingAfterComplete extends StatelessWidget {
         ),
         SizedBox(width: 10),
         Text(
-          "after complete",
+          textAfterComplete,
           style: value ? switchSelected : switchUnselected,
         ),
       ],

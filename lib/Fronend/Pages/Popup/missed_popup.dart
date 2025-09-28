@@ -7,6 +7,7 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
 class MissedPopup extends StatelessWidget {
@@ -45,7 +46,7 @@ class MissedPopup extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
-                    Text("Missed Tasks", style: scaffoldAppBarTitleMissed),
+                    Text(textMissedTasks, style: scaffoldAppBarTitleMissed),
                   ],
                 ),
               ),

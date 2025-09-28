@@ -8,7 +8,7 @@ import 'package:scrubbit/Fronend/Components/Widgets/e_new_task_repeating_interva
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
-import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class ENewTaskRepeatingSelectDate extends StatefulWidget {
   const ENewTaskRepeatingSelectDate({
@@ -119,9 +119,9 @@ class _ENewTaskRepeatingSelectDateState
   void initState() {
     selectedDate = widget.selectedDate;
     if (widget.isEnd) {
-      options = ["Never", "After", "Other date", "Repeating"];
+      options = [textNever, textAfter, textOtherDate, textRepeating];
     } else {
-      options = ["Now", "Other date"];
+      options = [textNow, textOtherDate];
     }
     startDate = widget.startDate;
     super.initState();
@@ -140,7 +140,7 @@ class _ENewTaskRepeatingSelectDateState
                 return itemValue;
               },
               onChangedItem: (value) {
-                if (value == "Other date") {
+                if (value == textOtherDate) {
                   setState(() {
                     showAfter = false;
                     showRepeatingCount = false;
@@ -155,14 +155,14 @@ class _ENewTaskRepeatingSelectDateState
                     showRepeatingCount = false;
                   });
                 }
-                if (value == "After") {
+                if (value == textAfter) {
                   setState(() {
                     updateEndDate();
                     showAfter = true;
                     showRepeatingCount = false;
                   });
                 }
-                if (value == "Repeating") {
+                if (value == textRepeating) {
                   setState(() {
                     selectedDate = null;
                     showAfter = false;

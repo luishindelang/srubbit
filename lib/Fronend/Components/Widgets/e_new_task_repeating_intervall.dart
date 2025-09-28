@@ -7,7 +7,7 @@ import 'package:scrubbit/Fronend/Components/Controlls/c_text_input.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
-import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class ENewTaskRepeatingIntervall extends StatefulWidget {
   const ENewTaskRepeatingIntervall({
@@ -51,7 +51,7 @@ class _ENewTaskRepeatingIntervallState
       children: [
         Visibility(
           visible: widget.showTitle,
-          child: Text("Wiederholt sich alle:", style: repeatingCategoryTitle),
+          child: Text(textRepeatEvery, style: repeatingCategoryTitle),
         ),
 
         Row(

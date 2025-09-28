@@ -7,6 +7,7 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
@@ -27,7 +28,10 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
 
   void add() {
     setState(() {
-      final newaccount = DsAccount(name: "name", color: Colors.white);
+      final newaccount = DsAccount(
+        name: textAccountDefaultName,
+        color: Colors.white,
+      );
       accounts.add(newaccount);
       accountsAdd.add(newaccount);
     });
@@ -81,7 +85,7 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("User Settings", style: scaffoldAppBarTitleMissed),
+                    Text(textUserSettings, style: scaffoldAppBarTitleMissed),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       decoration: BoxDecoration(
@@ -101,7 +105,7 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
                             horizontal: 15,
                             vertical: 5,
                           ),
-                          child: Text("+ Add user", style: editAccount),
+                          child: Text('+ $textAddUser', style: editAccount),
                         ),
                       ),
                     ),
