@@ -7,7 +7,7 @@ import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
-import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 
@@ -28,7 +28,10 @@ class _EditAccountPopupState extends State<EditAccountPopup> {
 
   void add() {
     setState(() {
-      final newaccount = DsAccount(name: textAccountDefaultName, color: Colors.white);
+      final newaccount = DsAccount(
+        name: textAccountDefaultName,
+        color: Colors.white,
+      );
       accounts.add(newaccount);
       accountsAdd.add(newaccount);
     });

@@ -7,7 +7,7 @@ import 'package:scrubbit/Fronend/Components/Elements/e_scaffold.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_score_overview.dart';
 import 'package:scrubbit/Fronend/Pages/AddEditTask/edit_repeating_task_popup.dart';
-import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_create_task.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_home.dart';
 

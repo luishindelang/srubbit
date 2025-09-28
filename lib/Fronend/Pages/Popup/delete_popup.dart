@@ -3,7 +3,7 @@ import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
-import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class DeletePopup extends StatelessWidget {
   const DeletePopup({super.key, required this.onDelete});

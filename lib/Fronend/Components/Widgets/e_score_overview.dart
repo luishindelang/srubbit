@@ -9,7 +9,7 @@ import 'package:scrubbit/Fronend/Components/Widgets/e_task_done_history.dart';
 import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
-import 'package:scrubbit/Fronend/Style/Language/de.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 import 'package:scrubbit/Fronend/UI-State/ui_account.dart';
 
 class EScoreOverview extends StatefulWidget {

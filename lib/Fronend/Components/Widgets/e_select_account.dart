@@ -5,6 +5,7 @@ import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dar
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
+import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class ESelectAccount extends StatefulWidget {
   const ESelectAccount({
@@ -92,7 +93,7 @@ class _ESelectAccountState extends State<ESelectAccount> {
                     onAllSelect();
                     widget.onSelectAll();
                   },
-                  text: "Alle",
+                  text: textAll,
                   isSelected: selectAll,
                   selectedBackground: buttonColor,
                   withShadow: widget.withShadow,
