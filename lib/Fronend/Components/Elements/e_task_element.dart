@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_task.dart';
+import 'package:scrubbit/Backend/DB/DataStrukture/ds_task_date.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Backend/Functions/f_time.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
@@ -9,11 +10,24 @@ import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/eng.dart';
 
 class ETaskElement extends StatelessWidget {
-  const ETaskElement({super.key, required this.task});
+  const ETaskElement({super.key, required this.task, this.taskDate});
 
   final DsTask task;
+  final DsTaskDate? taskDate;
 
   Widget showTime() {
+    if (taskDate != null ? taskDate!.doneDate != null : false) {
+      final date = formatDateDay(taskDate!.doneDate!, true, true);
+      final time = formatDateTime(taskDate!.doneDate!);
+      return Text(
+        "$date, $time",
+        style: taskElementDate,
+        textHeightBehavior: TextHeightBehavior(
+          applyHeightToFirstAscent: false,
+          applyHeightToLastDescent: false,
+        ),
+      );
+    }
     if (task.timeFrom != null) {
       String text = "";
       if (task.timeUntil != null) {

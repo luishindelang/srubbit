@@ -26,7 +26,11 @@ class ETaskDoneHistory extends StatelessWidget {
                       (taskDate) => Padding(
                         padding: const EdgeInsets.all(10),
                         child: InkWell(
-                          child: ETaskElement(task: taskDate.task),
+                          onTap: () {},
+                          child: ETaskElement(
+                            task: taskDate.task,
+                            taskDate: taskDate,
+                          ),
                         ),
                       ),
                     )
