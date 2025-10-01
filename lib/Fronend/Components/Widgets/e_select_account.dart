@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/DB/DataStrukture/ds_account.dart';
 import 'package:scrubbit/Fronend/Components/Controlls/c_button.dart';
 import 'package:scrubbit/Fronend/Components/Elements/e_select_account_button.dart';
+import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
@@ -13,7 +14,6 @@ class ESelectAccount extends StatefulWidget {
     required this.accounts,
     required this.selectedAccounts,
     required this.onSelectedAccount,
-    required this.onExtraPressed,
     required this.onSelectAll,
     required this.selectAll,
     this.reverse = false,
@@ -24,7 +24,6 @@ class ESelectAccount extends StatefulWidget {
   final List<DsAccount> accounts;
   final List<DsAccount> selectedAccounts;
   final void Function(List<DsAccount>) onSelectedAccount;
-  final VoidCallback onExtraPressed;
   final void Function() onSelectAll;
   final bool selectAll;
   final bool reverse;
@@ -66,6 +65,13 @@ class _ESelectAccountState extends State<ESelectAccount> {
       }
       widget.onSelectedAccount(selectedAccounts);
     });
+  }
+
+  void onEditAccouts() {
+    showDialog(
+      context: context,
+      builder: (context) => EditAccountPopup(accounts: widget.accounts),
+    );
   }
 
   @override
@@ -122,7 +128,7 @@ class _ESelectAccountState extends State<ESelectAccount> {
                               )
                               : null,
                       child: CButton(
-                        onPressed: widget.onExtraPressed,
+                        onPressed: onEditAccouts,
                         backgroundColor: buttonBackgroundColor,
                         radius: borderRadiusButtons,
                         paddingVert: 6,
@@ -154,7 +160,7 @@ class _ESelectAccountState extends State<ESelectAccount> {
                       )
                       : null,
               child: CButton(
-                onPressed: widget.onExtraPressed,
+                onPressed: onEditAccouts,
                 backgroundColor: buttonBackgroundColor,
                 radius: borderRadiusButtons,
                 paddingVert: 6,

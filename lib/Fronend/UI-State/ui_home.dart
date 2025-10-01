@@ -50,12 +50,10 @@ class UiHome extends ChangeNotifier {
   }
 
   void _putTaskInRightList(DsTask task) {
-    print(task.name);
     if (task.repeatingTemplate != null) {
       _repeatingTasks.add(task);
     }
     if (task.onEveryDate) {
-      print("hier");
       for (var taskDate in task.taskDates) {
         final date = taskDate.plannedDate;
         if (taskDate.doneDate != null) {
@@ -99,19 +97,15 @@ class UiHome extends ChangeNotifier {
         }
         if (date.isBefore(getNowWithoutTime())) {
           _missedTasks.add(taskDate);
-          print("missed");
           continue;
         } else if (isToday(date)) {
           _todayTasks.add(taskDate);
-          print("today");
           return;
         } else if (isInCurrentWeek(date)) {
           _weekTasks.add(taskDate);
-          print("week");
           return;
         } else if (isInCurrentMonth(date)) {
           _monthTasks.add(taskDate);
-          print("month");
           return;
         }
       }

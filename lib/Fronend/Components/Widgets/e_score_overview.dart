@@ -6,7 +6,6 @@ import 'package:scrubbit/Fronend/Components/Elements/e_task_box_title.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_score_overview_diagramm.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_select_account.dart';
 import 'package:scrubbit/Fronend/Components/Widgets/e_task_done_history.dart';
-import 'package:scrubbit/Fronend/Pages/Popup/edit_account_popup.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/eng.dart';
@@ -38,13 +37,6 @@ class _EScoreOverviewState extends State<EScoreOverview> {
   Widget build(BuildContext context) {
     final account = context.watch<UiAccount>();
 
-    void onEditAccouts() {
-      showDialog(
-        context: context,
-        builder: (context) => EditAccountPopup(accounts: account.accounts),
-      );
-    }
-
     return ETaskBoxTitle(
       flex: 2,
       title: textScoreOverview,
@@ -55,7 +47,6 @@ class _EScoreOverviewState extends State<EScoreOverview> {
           accounts: account.accounts,
           selectedAccounts: selectedAccounts,
           onSelectedAccount: onSelectAccount,
-          onExtraPressed: onEditAccouts,
           onSelectAll: onSelectAll,
           selectAll: selectedAccounts.isEmpty,
           withShadow: true,

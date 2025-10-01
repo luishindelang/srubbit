@@ -28,10 +28,10 @@ const repeatingTypes = ["Days", "Weeks", "Months", "Years"];
 
 const textAll = 'All';
 
-const textEnterName = "enter name";
+const textEnterName = "Name";
 
 const textToday = 'Today';
-const textTomorrow = 'Tomorror';
+const textTomorrow = 'Tomorrow';
 const textThisWeek = 'This week';
 const textThisMonth = 'This month';
 const textOtherDatePreset = 'Other date';

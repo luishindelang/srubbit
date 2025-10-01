@@ -37,7 +37,6 @@ class ENewTaskBottomButton extends StatelessWidget {
               accounts: account.accounts,
               selectedAccounts: createTask.selecedAccounts,
               onSelectedAccount: createTask.onSelectAccount,
-              onExtraPressed: () {},
               onSelectAll: createTask.onSelectAllAccounts,
               selectAll: createTask.selectAll,
             ),

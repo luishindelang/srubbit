@@ -93,7 +93,6 @@ class _TaskPopupState extends State<TaskPopup> {
                           (newSelectedAccounts) => setState(() {
                             selectedAccounts = newSelectedAccounts;
                           }),
-                      onExtraPressed: () {},
                       onSelectAll:
                           () => setState(() {
                             selectedAccounts = [];

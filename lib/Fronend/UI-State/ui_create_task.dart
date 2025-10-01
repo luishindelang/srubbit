@@ -260,7 +260,6 @@ class UiCreateTask extends ChangeNotifier {
           _newTask.update(newOnEveryDate: false);
         }
         if (setType == 0 && !isRepeating) {
-          print("hier");
           onSelectedDates([getNowWithoutTime()]);
         } else if (setType == 1 && !isRepeating) {
           onSelectedDates([getNowWithoutTime(addDay: 1)]);
