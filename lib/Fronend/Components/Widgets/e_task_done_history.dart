@@ -13,32 +13,37 @@ class ETaskDoneHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final home = context.read<UiHome>();
-    return SizedBox(
-      width: 500,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children:
-            home
-                .doneTask(accounts)
-                .map(
-                  (taskDate) => Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (context) => TaskDonePopup(taskDate: taskDate),
-                        );
-                      },
-                      child: ETaskElement(
-                        task: taskDate.task,
-                        taskDate: taskDate,
+    return Expanded(
+      child: SizedBox(
+        width: 500,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+                home
+                    .doneTask(accounts)
+                    .map(
+                      (taskDate) => Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder:
+                                  (context) =>
+                                      TaskDonePopup(taskDate: taskDate),
+                            );
+                          },
+                          child: ETaskElement(
+                            task: taskDate.task,
+                            taskDate: taskDate,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                )
-                .toList(),
+                    )
+                    .toList(),
+          ),
+        ),
       ),
     );
   }

@@ -40,8 +40,7 @@ class _EScoreOverviewState extends State<EScoreOverview> {
     return ETaskBoxTitle(
       flex: 2,
       title: textScoreOverview,
-      withScroll: true,
-      withScrollPhysiks: true,
+      withScroll: false,
       behindTitle: Expanded(
         child: ESelectAccount(
           reverse: true,

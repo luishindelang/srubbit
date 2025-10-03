@@ -11,7 +11,6 @@ class ETaskBoxTitle extends StatelessWidget {
     this.behindTitle,
     this.flex = 1,
     this.withScroll = true,
-    this.withScrollPhysiks = true,
   });
 
   final String title;
@@ -19,7 +18,6 @@ class ETaskBoxTitle extends StatelessWidget {
   final Widget? behindTitle;
   final int flex;
   final bool withScroll;
-  final bool withScrollPhysiks;
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +45,6 @@ class ETaskBoxTitle extends StatelessWidget {
               child:
                   withScroll
                       ? SingleChildScrollView(
-                        physics:
-                            withScrollPhysiks
-                                ? AlwaysScrollableScrollPhysics()
-                                : NeverScrollableScrollPhysics(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: children,
