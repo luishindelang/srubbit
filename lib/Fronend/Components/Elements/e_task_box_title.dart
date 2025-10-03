@@ -47,10 +47,9 @@ class ETaskBoxTitle extends StatelessWidget {
               child:
                   withScroll
                       ? SingleChildScrollView(
-                        physics:
-                            withScrollPhysiks
-                                ? AlwaysScrollableScrollPhysics()
-                                : NeverScrollableScrollPhysics(),
+                        physics: withScrollPhysiks
+                            ? const AlwaysScrollableScrollPhysics()
+                            : null,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: children,
