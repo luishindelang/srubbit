@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scrubbit/Backend/Functions/f_assets.dart';
 import 'package:scrubbit/Fronend/Style/Constants/colors.dart';
+import 'package:scrubbit/Fronend/Style/Constants/shadows.dart';
 import 'package:scrubbit/Fronend/Style/Constants/sizes.dart';
 import 'package:scrubbit/Fronend/Style/Constants/text_style.dart';
 import 'package:scrubbit/Fronend/Style/Language/eng.dart';
@@ -16,26 +17,19 @@ class DeletePopup extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadiusTaskElement),
       ),
+      backgroundColor: scaffoldBackgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 40),
             decoration: BoxDecoration(
+              color: scaffoldBackgroundColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(borderRadiusTaskElement),
                 topRight: Radius.circular(borderRadiusTaskElement),
               ),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  scaffoldTopBarGradient1,
-                  scaffoldTopBarGradient1,
-                  scaffoldTopBarGradient2,
-                  scaffoldTopBarGradient3,
-                ],
-              ),
+              boxShadow: [shadowScaffoldAppbar],
             ),
             child: Text(textDeleteEntryQuestion, style: deleteTitle),
           ),
