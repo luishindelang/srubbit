@@ -41,7 +41,7 @@ class _EScoreOverviewState extends State<EScoreOverview> {
       flex: 2,
       title: textScoreOverview,
       withScroll: true,
-      withScrollPhysiks: true,
+      withScrollPhysiks: false,
       behindTitle: Expanded(
         child: ESelectAccount(
           reverse: true,
@@ -55,40 +55,60 @@ class _EScoreOverviewState extends State<EScoreOverview> {
         ),
       ),
       children: [
-        EScoreOverviewDiagramm(
-          accounts:
-              selectedAccounts.isEmpty ? account.accounts : selectedAccounts,
-        ),
-        SizedBox(height: 20),
-        Row(
-          spacing: 260,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(6),
-              child: Row(
-                spacing: 5,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              EScoreOverviewDiagramm(
+                accounts:
+                    selectedAccounts.isEmpty
+                        ? account.accounts
+                        : selectedAccounts,
+              ),
+              SizedBox(height: 20),
+              Row(
+                spacing: 260,
                 children: [
-                  Icon(Icons.history_rounded, color: buttonColor, size: 32),
-                  Text(textTaskHistory, style: taskHistory),
+                  Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Row(
+                      spacing: 5,
+                      children: [
+                        Icon(
+                          Icons.history_rounded,
+                          color: buttonColor,
+                          size: 32,
+                        ),
+                        Text(textTaskHistory, style: taskHistory),
+                      ],
+                    ),
+                  ),
+                  CIconButton(
+                    onPressed: () {},
+                    icon: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()..scale(-1.0, 1.0, 1.0),
+                      child: const Icon(
+                        Icons.sort_rounded,
+                        size: 32,
+                        color: buttonColor,
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-            CIconButton(
-              onPressed: () {},
-              icon: Transform(
-                alignment: Alignment.center,
-                transform: Matrix4.identity()..scale(-1.0, 1.0, 1.0),
-                child: const Icon(
-                  Icons.sort_rounded,
-                  size: 32,
-                  color: buttonColor,
+              SizedBox(height: 10),
+              Expanded(
+                child: ETaskDoneHistory(
+                  accounts:
+                      selectedAccounts.isEmpty
+                          ? account.accounts
+                          : selectedAccounts,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        SizedBox(height: 10),
-        ETaskDoneHistory(accounts: selectedAccounts),
       ],
     );
   }
