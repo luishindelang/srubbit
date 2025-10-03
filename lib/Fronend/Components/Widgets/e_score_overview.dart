@@ -41,7 +41,7 @@ class _EScoreOverviewState extends State<EScoreOverview> {
       flex: 2,
       title: textScoreOverview,
       withScroll: true,
-      withScrollPhysiks: true,
+      withScrollPhysiks: false,
       behindTitle: Expanded(
         child: ESelectAccount(
           reverse: true,
@@ -88,7 +88,11 @@ class _EScoreOverviewState extends State<EScoreOverview> {
           ],
         ),
         SizedBox(height: 10),
-        ETaskDoneHistory(accounts: selectedAccounts),
+        ETaskDoneHistory(
+          accounts: selectedAccounts.isEmpty
+              ? account.accounts
+              : selectedAccounts,
+        ),
       ],
     );
   }
