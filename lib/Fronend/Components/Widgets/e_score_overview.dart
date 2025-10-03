@@ -40,7 +40,7 @@ class _EScoreOverviewState extends State<EScoreOverview> {
     return ETaskBoxTitle(
       flex: 2,
       title: textScoreOverview,
-      withScroll: false,
+      withScroll: true,
       withScrollPhysiks: false,
       behindTitle: Expanded(
         child: ESelectAccount(
@@ -60,9 +60,10 @@ class _EScoreOverviewState extends State<EScoreOverview> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               EScoreOverviewDiagramm(
-                accounts: selectedAccounts.isEmpty
-                    ? account.accounts
-                    : selectedAccounts,
+                accounts:
+                    selectedAccounts.isEmpty
+                        ? account.accounts
+                        : selectedAccounts,
               ),
               SizedBox(height: 20),
               Row(
@@ -73,8 +74,11 @@ class _EScoreOverviewState extends State<EScoreOverview> {
                     child: Row(
                       spacing: 5,
                       children: [
-                        Icon(Icons.history_rounded,
-                            color: buttonColor, size: 32),
+                        Icon(
+                          Icons.history_rounded,
+                          color: buttonColor,
+                          size: 32,
+                        ),
                         Text(textTaskHistory, style: taskHistory),
                       ],
                     ),
@@ -96,9 +100,10 @@ class _EScoreOverviewState extends State<EScoreOverview> {
               SizedBox(height: 10),
               Expanded(
                 child: ETaskDoneHistory(
-                  accounts: selectedAccounts.isEmpty
-                      ? account.accounts
-                      : selectedAccounts,
+                  accounts:
+                      selectedAccounts.isEmpty
+                          ? account.accounts
+                          : selectedAccounts,
                 ),
               ),
             ],
