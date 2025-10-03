@@ -39,10 +39,10 @@ class DeletePopup extends StatelessWidget {
             ),
             child: Text(textDeleteEntryQuestion, style: deleteTitle),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 30),
           Row(
             mainAxisSize: MainAxisSize.min,
-            spacing: 40,
+            spacing: 70,
             children: [
               InkWell(
                 onTap: () {
@@ -50,8 +50,8 @@ class DeletePopup extends StatelessWidget {
                 },
                 borderRadius: BorderRadius.circular(100),
                 child: SizedBox(
-                  width: sizeDoneButtonMiddle,
-                  height: sizeDoneButtonMiddle,
+                  width: sizeNotDeleteButton,
+                  height: sizeNotDeleteButton,
                   child: FAssets.xInactive,
                 ),
               ),
@@ -59,14 +59,14 @@ class DeletePopup extends StatelessWidget {
                 onTap: onDelete,
                 borderRadius: BorderRadius.circular(100),
                 child: SizedBox(
-                  width: sizeDoneButtonMiddle,
-                  height: sizeDoneButtonMiddle,
+                  width: sizeDeleteButton,
+                  height: sizeDeleteButton,
                   child: FAssets.doneActive,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 35),
         ],
       ),
     );
