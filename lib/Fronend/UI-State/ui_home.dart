@@ -127,6 +127,24 @@ class UiHome extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeDone(DsTaskDate taskDate) async {
+    _doneTasks.removeWhere((taskDateList) => taskDateList.id == taskDate.id);
+    taskDate.task.taskDates.remove(taskDate);
+    final dbService = await DatabaseService.init();
+    await dbService.daoTaskDates.delete(taskDate.id);
+    if (taskDate.task.taskDates.isEmpty) {
+      _removeFromList(taskDate.task.id);
+      await dbService.daoTasks.delete(taskDate.task.id);
+    }
+    if (taskDate.doneBy != null ? taskDate.doneBy!.isNotEmpty : false) {
+      for (var account in taskDate.doneBy!) {
+        account.update(newScore: account.score - 1);
+        await dbService.daoAccounts.update(account);
+      }
+    }
+    notifyListeners();
+  }
+
   void loadData() async {
     if (!_isLoaded) {
       final dbService = await DatabaseService.init();

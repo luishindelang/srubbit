@@ -30,6 +30,18 @@ const taskDateTimeNormal = TextStyle(
   color: textTitleColor,
 );
 
+const taskDoneTitle = TextStyle(
+  fontSize: 22,
+  fontWeight: FontWeight.w500,
+  color: textTitleColor,
+);
+
+const taskDoneNormal = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+  color: textNegativeColor,
+);
+
 const taskBoxTitle = TextStyle(
   fontSize: 32,
   fontWeight: FontWeight.w500,

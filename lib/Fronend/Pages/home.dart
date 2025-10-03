@@ -35,9 +35,10 @@ class Home extends StatelessWidget {
     }
 
     void routeOverview() {
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => Overview()),
+        (route) => false,
       );
     }
 

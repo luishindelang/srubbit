@@ -65,3 +65,5 @@ const textNow = 'Now';
 
 const textFrom = 'from';
 const textUntil = 'until';
+
+const textDoneByUser = "Done by:";

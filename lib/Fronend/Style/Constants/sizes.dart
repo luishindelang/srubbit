@@ -28,3 +28,6 @@ const sizeDoneButtonNewTask = 70.0;
 const newTaskBodySedePadding = 10.0;
 
 const calendarBoxSize = 60.0;
+
+const sizeDeleteButton = 80.0;
+const sizeNotDeleteButton = 70.0;
