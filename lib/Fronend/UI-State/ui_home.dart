@@ -92,6 +92,9 @@ class UiHome extends ChangeNotifier {
         }
       }
     }
+  }
+
+  void sortLists() {
     _todayTasks.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
     _weekTasks.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
     _monthTasks.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
@@ -137,6 +140,7 @@ class UiHome extends ChangeNotifier {
       final data = await dbService.daoTasks.getAll();
       for (var task in data) {
         _putTaskInRightList(task);
+        sortLists();
       }
       _isLoaded = true;
       notifyListeners();
@@ -159,6 +163,7 @@ class UiHome extends ChangeNotifier {
     await dbService.daoTasks.insert(task);
     task.createRepeatingDates();
     _putTaskInRightList(task);
+    sortLists();
     notifyListeners();
   }
 
@@ -167,6 +172,7 @@ class UiHome extends ChangeNotifier {
     dbService.daoTasks.update(task);
     _removeFromList(task.id);
     _putTaskInRightList(task);
+    sortLists();
     notifyListeners();
   }
 
@@ -196,6 +202,7 @@ class UiHome extends ChangeNotifier {
     taskDate.task.createRepeatingDates();
     _removeFromList(taskDate.task.id);
     _putTaskInRightList(taskDate.task);
+    sortLists();
     notifyListeners();
   }
 
@@ -207,6 +214,7 @@ class UiHome extends ChangeNotifier {
     await dbService.daoTaskDates.update(taskDate);
     _removeFromList(taskDate.task.id);
     _putTaskInRightList(taskDate.task);
+    sortLists();
     notifyListeners();
   }
 }

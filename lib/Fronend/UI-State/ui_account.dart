@@ -92,4 +92,8 @@ class UiAccount extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void onDeleteTaskDate() {
+    notifyListeners();
+  }
 }

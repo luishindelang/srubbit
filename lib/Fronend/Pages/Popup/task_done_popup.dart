@@ -94,7 +94,7 @@ class TaskDonePopup extends StatelessWidget {
                                   (context) => DeletePopup(
                                     onDelete: () {
                                       home.removeDone(taskDate);
-                                      account.reloadAccounts();
+                                      account.onDeleteTaskDate();
                                       Navigator.popUntil(
                                         context,
                                         (route) => route.isFirst,
