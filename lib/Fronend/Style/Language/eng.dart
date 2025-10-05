@@ -44,7 +44,7 @@ const textAfterComplete = 'after complete';
 const textEdit = 'Edit';
 const textDone = 'Done!';
 const textMove = 'Move';
-const textClockSuffix = 'Clock';
+const textClockSuffix = 'o\'clock';
 
 const textMissedTasks = 'Missed Tasks';
 const textUserSettings = 'User Settings';
