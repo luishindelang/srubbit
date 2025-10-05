@@ -45,49 +45,49 @@ class UiHome extends ChangeNotifier {
         seenTaskIds.add(taskId);
       }
     }
-
+    result.sort((a, b) => b.plannedDate.compareTo(a.plannedDate));
     return UnmodifiableListView(result);
   }
 
   void _putTaskInRightList(DsTask task) {
     if (task.repeatingTemplate != null) {
-      _repeatingTasks.add(task);
+      _repeatingTasks.insert(0, task);
     }
     if (task.onEveryDate) {
       for (var taskDate in task.taskDates) {
         final date = taskDate.plannedDate;
         if (taskDate.doneDate != null) {
-          _doneTasks.add(taskDate);
+          _doneTasks.insert(0, taskDate);
           continue;
         }
         if (date.isBefore(getNowWithoutTime())) {
-          _missedTasks.add(taskDate);
+          _missedTasks.insert(0, taskDate);
         } else if (isToday(date)) {
-          _todayTasks.add(taskDate);
+          _todayTasks.insert(0, taskDate);
         } else if (isInCurrentWeek(date)) {
-          _weekTasks.add(taskDate);
+          _weekTasks.insert(0, taskDate);
         } else if (isInCurrentMonth(date)) {
-          _monthTasks.add(taskDate);
+          _monthTasks.insert(0, taskDate);
         }
       }
     } else {
       for (var taskDate in task.taskDates) {
         final date = taskDate.plannedDate;
         if (taskDate.doneDate != null) {
-          _doneTasks.add(taskDate);
+          _doneTasks.insert(0, taskDate);
           continue;
         }
         if (date.isBefore(getNowWithoutTime())) {
-          _missedTasks.add(taskDate);
+          _missedTasks.insert(0, taskDate);
           continue;
         } else if (isToday(date)) {
-          _todayTasks.add(taskDate);
+          _todayTasks.insert(0, taskDate);
           return;
         } else if (isInCurrentWeek(date)) {
-          _weekTasks.add(taskDate);
+          _weekTasks.insert(0, taskDate);
           return;
         } else if (isInCurrentMonth(date)) {
-          _monthTasks.add(taskDate);
+          _monthTasks.insert(0, taskDate);
           return;
         }
       }
