@@ -92,6 +92,9 @@ class UiHome extends ChangeNotifier {
         }
       }
     }
+    _todayTasks.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
+    _weekTasks.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
+    _monthTasks.sort((a, b) => a.plannedDate.compareTo(b.plannedDate));
   }
 
   void _removeFromList(String id) {

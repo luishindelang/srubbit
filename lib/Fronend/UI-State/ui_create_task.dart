@@ -96,7 +96,6 @@ class UiCreateTask extends ChangeNotifier {
   bool get canDoDone => _newTask.name.isNotEmpty && _newTask.emoji.isNotEmpty;
 
   void onSetType(int newType) {
-    _newTask.update(newOnEveryDate: false);
     setType = newType;
   }
 

@@ -204,7 +204,12 @@ class DsTask {
   void createRepeatingDates() {
     if (_repeatingTemplate != null) {
       for (var date in _repeatingTemplate!.getDates()) {
-        _taskDates.add(DsTaskDate(plannedDate: date, task: this));
+        final existing = _taskDates.where(
+          (taskDate) => taskDate.plannedDate == date,
+        );
+        if (existing.isEmpty) {
+          _taskDates.add(DsTaskDate(plannedDate: date, task: this));
+        }
       }
     }
   }

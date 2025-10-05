@@ -61,7 +61,7 @@ class DaoTaskDate extends MappingTaskDate {
   Future<DateTime?> getLastDoneDateByTaskId(DsTask task) async {
     final List<Map<String, dynamic>> rawData = await db.query(
       TTaskDate.tableName,
-      where: "${TTaskDate.taskId} = ?",
+      where: "${TTaskDate.taskId} = ? AND ${TTaskDate.doneDate} NOT NULL",
       whereArgs: [task.id],
       orderBy: "${TTaskDate.plannedDate} ASC",
     );

@@ -165,25 +165,28 @@ class DsRepeatingTemplates {
       }
 
       final list = <DateTime>[];
-      if (_lastDoneDate != null) {
-        var lastDate = _repeatingDates.last.getDate(daysToNext);
-        if (!isSameDay(_lastDoneDate, lastDate)) {
-          if (lastDate != null) {
-            list.add(lastDate);
-          }
-        }
-      }
+      // if (_lastDoneDate != null) {
+      //   for (var date in _repeatingDates) {
+      //     var lastDate = date.getDate(daysToNext);
+      //     if (isSameDay(_lastDoneDate, lastDate)) {
+      //       break;
+      //     }
+      //   }
+      // }
+
       for (var repeatingDate in _repeatingDates) {
         var date = repeatingDate.getDate(daysToNext);
+
         if (date != null) {
           if (date.isBefore(_startDate) || isSameDay(date, _lastDoneDate)) {
-            date = _repeatingDates.last.getDate((daysToNext + 1));
+            date = repeatingDate.getDate((daysToNext + 1));
           }
           if (date != null) {
             list.add(date);
           }
         }
       }
+      list.sort((a, b) => a.compareTo(b));
       return list;
     }
   }
