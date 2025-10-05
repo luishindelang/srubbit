@@ -44,7 +44,7 @@ class _TaskPopupState extends State<TaskPopup> {
   @override
   void initState() {
     if (widget.taskDate.task.taskOwners != null) {
-      selectedAccounts = widget.taskDate.task.taskOwners!;
+      selectedAccounts = [...widget.taskDate.task.taskOwners!];
     }
     super.initState();
   }
