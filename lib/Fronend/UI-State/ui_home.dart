@@ -71,24 +71,6 @@ class UiHome extends ChangeNotifier {
         }
       }
     } else {
-      // final datesNotDone =
-      //     task.taskDates
-      //         .where((taskDate) => taskDate.doneDate == null)
-      //         .toList();
-      // final dates =
-      //     datesNotDone.map((taskDate) => taskDate.plannedDate).toList();
-      // print(dates);
-      // if (allDaysUntilEndOfMonthIncluded(dates) && dates.length > 1) {
-      //   _monthTasks.add(task.taskDates.first);
-      //   print("kompleteMonth");
-      //   return;
-      // }
-
-      // if (allDaysUntilSundayIncluded(dates) && dates.length > 1) {
-      //   _weekTasks.add(task.taskDates.first);
-      //   print("kompleteWeek");
-      //   return;
-      // }
       for (var taskDate in task.taskDates) {
         final date = taskDate.plannedDate;
         if (taskDate.doneDate != null) {

@@ -251,7 +251,7 @@ class UiCreateTask extends ChangeNotifier {
         }
         _repeatingTemplate.update(newRepeatingDates: repeatingDates);
         _newTask.update(newRepeatingTemplate: _repeatingTemplate);
-        _newTask.update(newTaskDates: []);
+        // _newTask.update(newTaskDates: []);
       } else {
         _newTask.update(newRepeatingTemplate: null);
         if ((setType == 2 || setType == 3) &&
