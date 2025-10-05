@@ -96,6 +96,7 @@ class UiCreateTask extends ChangeNotifier {
   bool get canDoDone => _newTask.name.isNotEmpty && _newTask.emoji.isNotEmpty;
 
   void onSetType(int newType) {
+    _newTask.update(newOnEveryDate: false);
     setType = newType;
   }
 
@@ -133,6 +134,7 @@ class UiCreateTask extends ChangeNotifier {
   }
 
   void onSelectCompleteWeek() {
+    _newTask.update(newOnEveryDate: false);
     completeWeek = !completeWeek;
     if (!completeWeek) {
       onSelectedDates([]);
@@ -145,6 +147,7 @@ class UiCreateTask extends ChangeNotifier {
   }
 
   void onSelectCompleteMonth() {
+    _newTask.update(newOnEveryDate: false);
     completeMonth = !completeMonth;
     if (!completeMonth) {
       onSelectedDates([]);
@@ -207,6 +210,7 @@ class UiCreateTask extends ChangeNotifier {
   }
 
   void onRepeatingType(int repeatingType) {
+    _newTask.update(newOnEveryDate: false);
     _repeatingTemplate.update(newRepeatingType: repeatingType);
     notifyListeners();
   }

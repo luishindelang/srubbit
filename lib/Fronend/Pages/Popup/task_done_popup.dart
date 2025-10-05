@@ -37,7 +37,7 @@ class TaskDonePopup extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ETaskElement(task: taskDate.task),
+              ETaskElement(task: taskDate.task, taskDate: taskDate),
               Padding(
                 padding: const EdgeInsets.all(paddingBox),
                 child: Column(

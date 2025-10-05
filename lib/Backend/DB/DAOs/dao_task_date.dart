@@ -16,6 +16,14 @@ class DaoTaskDate extends MappingTaskDate {
       toMap(taskDate, taskId),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    if (taskDate.doneBy != null) {
+      for (var account in taskDate.doneBy!) {
+        await db.insert(TTaskDoneByAccount.tableName, {
+          TTaskDoneByAccount.taskDateId: taskDate.id,
+          TTaskDoneByAccount.accountId: account.id,
+        });
+      }
+    }
   }
 
   Future<void> update(DsTaskDate taskDate) async {

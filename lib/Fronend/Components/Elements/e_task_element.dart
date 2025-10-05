@@ -92,16 +92,21 @@ class ETaskElement extends StatelessWidget {
   }
 
   Widget showOwner() {
-    if (task.taskOwners == null ? true : task.taskOwners!.isEmpty) {
+    final isDone = taskDate != null ? taskDate!.doneBy != null : false;
+    if (task.taskOwners == null ? true : task.taskOwners!.isEmpty && !isDone) {
       return SizedBox(width: 14);
+    }
+    List<Color> colors = [];
+    if (isDone) {
+      colors = taskDate!.doneBy!.map((account) => account.color).toList();
+    } else {
+      colors = task.taskOwners!.map((account) => account.color).toList();
     }
     return Container(
       margin: EdgeInsets.only(right: 4),
       width: 10,
       height: 63,
-      decoration: bandBackground(
-        task.taskOwners!.map((account) => account.color).toList(),
-      ),
+      decoration: bandBackground(colors),
     );
   }
 
